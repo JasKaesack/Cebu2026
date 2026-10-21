@@ -1,0 +1,17 @@
+{
+  "name": "Cebu × Bohol 2026｜沙丁魚風暴與鯨鯊之旅",
+  "short_name": "Cebu 2026",
+  "description": "2026/12/3–12/9 宿霧・薄荷島 10 人團行程表",
+  "lang": "zh-Hant",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#04121F",
+  "theme_color": "#04121F",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

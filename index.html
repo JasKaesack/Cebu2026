@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Cebu × Bohol 2026｜沙丁魚風暴與鯨鯊之旅</title>
+<meta name="description" content="2026/12/3–12/9 宿霧・薄荷島 10 人團行程：墨寶沙丁魚自潛拍照、奧斯陸鯨鯊共游、薄荷島陸遊與跳島。含逐段時間軸、硬線提醒、裝備清單、費用粗估與風險盤點。">
+
+<!-- PWA -->
+<meta name="theme-color" content="#04121F">
+<meta name="application-name" content="Cebu 2026">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cebu 2026">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" referrerpolicy="no-referrer">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+window.tailwind = window.tailwind || {};
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        abyss: '#04121F',   /* 深海：頁面底色 */
+        deep:  '#0A2740',   /* 水中層：卡片底色 */
+        reef:  '#14506B',   /* 礁壁：邊框 */
+        aqua:  '#27C6C0',   /* 墨寶綠松：主強調 */
+        sun:   '#FFC24B',   /* 水下陽光：次強調 */
+        coral: '#FF6B52',   /* 警示・硬線 */
+        sand:  '#F2E6D0',   /* 標題 */
+        mist:  '#BBD3DC'    /* 內文 */
+      },
+      fontFamily: {
+        display: ['"Noto Serif TC"','serif'],
+        body:    ['"Noto Sans TC"','sans-serif'],
+        mono:    ['"JetBrains Mono"','ui-monospace','monospace']
+      }
+    }
+  }
+}
+</script>
+
+<style>
+html{scroll-behavior:smooth;scroll-padding-top:calc(5rem + env(safe-area-inset-top))}
+::selection{background:#27C6C0;color:#04121F}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid #27C6C0;outline-offset:2px;border-radius:4px}
+body{background:#04121F}
+
+/* ── 水面波光：區塊底紋 ── */
+.caustics{
+  background-image:
+    repeating-linear-gradient(72deg, rgba(39,198,192,.055) 0 2px, transparent 2px 34px),
+    repeating-linear-gradient(-58deg, rgba(39,198,192,.04) 0 2px, transparent 2px 46px);
+}
+
+/* ── 水深漸層分隔 ── */
+.depthline{height:1px;background:linear-gradient(90deg,transparent,rgba(39,198,192,.5),transparent)}
+
+/* ── 時間軸 ── */
+.tl{position:relative}
+.tl::before{content:"";position:absolute;left:15px;top:8px;bottom:8px;width:2px;
+  background:linear-gradient(to bottom,rgba(39,198,192,.8),rgba(39,198,192,.35),rgba(20,80,107,.3))}
+.node{position:relative;padding-left:3rem;padding-bottom:1.75rem}
+.node:last-child{padding-bottom:.25rem}
+.dot{position:absolute;left:16px;top:3px;transform:translateX(-50%);width:32px;height:32px;border-radius:9999px;
+  display:flex;align-items:center;justify-content:center;background:#0A2740;border:2px solid rgba(39,198,192,.55);
+  color:#27C6C0;box-shadow:0 0 0 4px #04121F,0 0 14px rgba(39,198,192,.22);font-size:.8rem}
+.node.star .dot{border-color:#FFC24B;color:#FFC24B;box-shadow:0 0 0 4px #04121F,0 0 20px rgba(255,194,75,.45)}
+.node.hard .dot{border-color:#FF6B52;color:#FF6B52;animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4px #04121F,0 0 10px rgba(255,107,82,.4)}50%{box-shadow:0 0 0 4px #04121F,0 0 24px rgba(255,107,82,.85)}}
+
+/* ── 時間標籤：等寬對齊 ── */
+.t{font-family:"JetBrains Mono",monospace;font-weight:700;letter-spacing:-.02em}
+
+/* ── 導覽列 ── */
+.nav-link{position:relative;color:#BBD3DC;transition:color .25s;flex:0 0 auto}
+.nav-link::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;background:#27C6C0;transition:width .25s}
+.nav-link:hover{color:#27C6C0}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+.nav-link.active{color:#27C6C0}
+.navscroll{scrollbar-width:none;-ms-overflow-style:none}
+.navscroll::-webkit-scrollbar{display:none}
+#navbar{padding-top:env(safe-area-inset-top)}
+footer{padding-bottom:calc(2.5rem + env(safe-area-inset-bottom))}
+
+/* ── 主視覺 ── */
+#baitball{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.rays{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.ray{position:absolute;top:-20%;width:14vw;height:150%;
+  background:linear-gradient(to bottom,rgba(190,240,250,.16),rgba(190,240,250,0) 75%);
+  filter:blur(18px);transform-origin:top center;animation:sway 11s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(6deg) translateX(0)}50%{transform:rotate(11deg) translateX(3vw)}}
+
+/* ── 進場 ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .9s ease-out both}
+.d1{animation-delay:.14s}.d2{animation-delay:.28s}.d3{animation-delay:.42s}.d4{animation-delay:.56s}
+
+/* ── 收合元件 ── */
+.emb summary{list-style:none}
+.emb summary::-webkit-details-marker{display:none}
+.chev{display:inline-block;transition:transform .25s}
+.emb[open] summary .chev{transform:rotate(180deg)}
+
+/* ── 起動畫面 ── */
+#splash{transition:opacity .7s ease}
+.splash-lock{overflow:hidden}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body class="bg-abyss font-body text-mist antialiased overflow-x-hidden">
+
+<!-- ═══════ 起動スプラッシュ ═══════ -->
+<div id="splash" class="fixed inset-0 z-[100] flex items-center justify-center bg-abyss" role="presentation">
+  <canvas id="splashFish" class="absolute inset-0 h-full w-full" aria-hidden="true"></canvas>
+  <div class="rays" aria-hidden="true">
+    <div class="ray" style="left:8%"></div>
+    <div class="ray" style="left:38%;animation-delay:-3s"></div>
+    <div class="ray" style="left:68%;animation-delay:-6s"></div>
+  </div>
+  <div class="relative z-10 px-6 text-center">
+    <p class="fade-up mb-3 font-mono text-[11px] tracking-[.4em] text-aqua">CEBU · BOHOL</p>
+    <p class="fade-up d1 font-display text-4xl font-black tracking-wide text-sand md:text-6xl">沙丁魚風暴</p>
+    <p class="fade-up d2 mt-3 text-sm tracking-[.3em] text-mist/80 md:text-base">2026 . 12 . 03 — 12 . 09</p>
+    <p class="fade-up d4 mt-8 text-[11px] tracking-widest text-mist/50">輕觸畫面可跳過</p>
+  </div>
+</div>
+
+<!-- ═══════ 導覽列 ═══════ -->
+<nav id="navbar" class="fixed inset-x-0 top-0 z-50 transition-all duration-300">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-6">
+    <a href="#home" class="flex shrink-0 items-center gap-2 font-display text-base font-black text-sand md:text-lg">
+      <span class="text-lg" aria-hidden="true">🐟</span><span>Cebu<span class="text-aqua">×</span>Bohol</span>
+    </a>
+    <div class="navscroll hidden items-center gap-4 overflow-x-auto whitespace-nowrap text-[13px] font-medium lg:flex xl:gap-5">
+      <a href="#home"      data-link="home"      class="nav-link active">首頁</a>
+      <a href="#overview"  data-link="overview"  class="nav-link">總覽</a>
+      <a href="#itinerary" data-link="itinerary" class="nav-link">每日行程</a>
+      <a href="#sardine"   data-link="sardine"   class="nav-link">12/4 作戰</a>
+      <a href="#freedive"  data-link="freedive"  class="nav-link">自潛攻略</a>
+      <a href="#gear"      data-link="gear"      class="nav-link">裝備清單</a>
+      <a href="#stay"      data-link="stay"      class="nav-link">住宿</a>
+      <a href="#risk"      data-link="risk"      class="nav-link">風險</a>
+      <a href="#cost"      data-link="cost"      class="nav-link">費用</a>
+    </div>
+    <button id="menuBtn" class="shrink-0 px-2 py-1 text-xl text-sand lg:hidden" aria-label="開啟選單" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+  </div>
+  <div id="mobileMenu" class="hidden border-t border-reef/40 bg-abyss/95 px-6 py-4 backdrop-blur lg:hidden">
+    <div class="grid grid-cols-2 gap-3 text-sm">
+      <a href="#home"      class="flex items-center gap-2 text-mist"><i class="fa-solid fa-house w-4 text-center text-aqua"></i>首頁</a>
+      <a href="#overview"  class="flex items-center gap-2 text-mist"><i class="fa-solid fa-map w-4 text-center text-aqua"></i>總覽</a>
+      <a href="#itinerary" class="flex items-center gap-2 text-mist"><i class="fa-solid fa-route w-4 text-center text-aqua"></i>每日行程</a>
+      <a href="#sardine"   class="flex items-center gap-2 text-mist"><i class="fa-solid fa-sun w-4 text-center text-aqua"></i>12/4 作戰</a>
+      <a href="#freedive"  class="flex items-center gap-2 text-mist"><i class="fa-solid fa-water w-4 text-center text-aqua"></i>自潛攻略</a>
+      <a href="#gear"      class="flex items-center gap-2 text-mist"><i class="fa-solid fa-list-check w-4 text-center text-aqua"></i>裝備清單</a>
+      <a href="#stay"      class="flex items-center gap-2 text-mist"><i class="fa-solid fa-bed w-4 text-center text-aqua"></i>住宿</a>
+      <a href="#risk"      class="flex items-center gap-2 text-mist"><i class="fa-solid fa-triangle-exclamation w-4 text-center text-aqua"></i>風險</a>
+      <a href="#cost"      class="flex items-center gap-2 text-mist"><i class="fa-solid fa-coins w-4 text-center text-aqua"></i>費用</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════ 主視覺 ═══════ -->
+<header id="home" class="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-b from-[#0E5F6B] via-[#083349] to-abyss"></div>
+  <div class="rays" aria-hidden="true">
+    <div class="ray" style="left:4%"></div>
+    <div class="ray" style="left:26%;animation-delay:-2.5s"></div>
+    <div class="ray" style="left:52%;animation-delay:-5s"></div>
+    <div class="ray" style="left:78%;animation-delay:-7.5s"></div>
+  </div>
+  <canvas id="baitball" class="opacity-60" aria-hidden="true"></canvas>
+  <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-abyss to-transparent"></div>
+
+  <div class="pointer-events-none absolute inset-0"
+       style="background:linear-gradient(180deg, rgba(4,18,31,0) 0%, rgba(4,18,31,.30) 18%, rgba(4,18,31,.62) 34%, rgba(4,18,31,.62) 58%, rgba(4,18,31,.26) 74%, rgba(4,18,31,0) 92%)" aria-hidden="true"></div>
+  <div class="relative z-10 mx-auto max-w-3xl px-5 py-24 text-center">
+    <p class="fade-up mb-5 inline-flex items-center gap-2 rounded-full border border-aqua/40 bg-abyss/40 px-4 py-1.5 font-mono text-[11px] tracking-[.3em] text-aqua backdrop-blur md:text-xs">
+      <i class="fa-solid fa-fish"></i>PHILIPPINES · 10 PAX
+    </p>
+    <h1 class="fade-up d1 font-display font-black text-sand drop-shadow-[0_4px_30px_rgba(0,0,0,.6)]">
+      <span class="block text-4xl leading-tight tracking-wide md:text-6xl">沙丁魚風暴<span class="text-aqua">與</span>鯨鯊</span>
+      <span class="mt-3 block font-mono text-base font-bold tracking-[.25em] text-aqua md:text-xl">CEBU × BOHOL 2026</span>
+    </h1>
+    <p class="fade-up d2 mt-5 text-sm leading-7 text-mist md:text-base">
+      墨寶 Panagsama 的常駐魚球、奧斯陸的鯨鯊、薄荷島的巧克力山與跳島<br class="hidden md:block">
+      <span class="text-mist/70">六天五夜、10 人同行、三段海路</span>
+    </p>
+
+    <div class="fade-up d3 mx-auto mt-8 grid max-w-md grid-cols-4 gap-2 md:gap-3">
+      <div class="rounded-xl border border-reef/60 bg-deep/70 px-2 py-3 backdrop-blur">
+        <div id="cd-d" class="t text-2xl text-aqua md:text-3xl">--</div>
+        <div class="mt-1 text-[10px] tracking-widest text-mist/70">天</div>
+      </div>
+      <div class="rounded-xl border border-reef/60 bg-deep/70 px-2 py-3 backdrop-blur">
+        <div id="cd-h" class="t text-2xl text-aqua md:text-3xl">--</div>
+        <div class="mt-1 text-[10px] tracking-widest text-mist/70">時</div>
+      </div>
+      <div class="rounded-xl border border-reef/60 bg-deep/70 px-2 py-3 backdrop-blur">
+        <div id="cd-m" class="t text-2xl text-aqua md:text-3xl">--</div>
+        <div class="mt-1 text-[10px] tracking-widest text-mist/70">分</div>
+      </div>
+      <div class="rounded-xl border border-reef/60 bg-deep/70 px-2 py-3 backdrop-blur">
+        <div id="cd-s" class="t text-2xl text-aqua md:text-3xl">--</div>
+        <div class="mt-1 text-[10px] tracking-widest text-mist/70">秒</div>
+      </div>
+    </div>
+    <p class="fade-up d3 mt-2 font-mono text-[10px] tracking-[.3em] text-mist/60">— 距 JX781 起飛 —</p>
+
+    <div class="fade-up d4 mt-9 flex flex-wrap items-center justify-center gap-3">
+      <a href="#itinerary" class="rounded-full bg-aqua px-6 py-2.5 text-sm font-bold text-abyss shadow-lg shadow-aqua/25 transition hover:brightness-110">🐟 查看每日行程</a>
+      <a href="#sardine" class="rounded-full border border-mist/30 px-6 py-2.5 text-sm font-medium text-mist transition hover:border-aqua hover:text-aqua">12/4 作戰計畫</a>
+    </div>
+  </div>
+  <a href="#overview" class="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-mist/60 hover:text-aqua" aria-label="向下捲動"><i class="fa-solid fa-chevron-down animate-bounce"></i></a>
+</header>
+
+<main>
+<!-- ═══════ 行程總覽 ═══════ -->
+<section id="overview" class="caustics relative py-20 md:py-24">
+  <div class="mx-auto max-w-5xl px-5">
+    <p class="text-center font-mono text-[11px] tracking-[.4em] text-aqua/90">OVERVIEW</p>
+    <h2 class="mt-2 text-center font-display text-3xl font-black text-sand md:text-4xl">行程總覽</h2>
+    <p class="mx-auto mt-5 max-w-3xl text-center text-sm leading-8 text-mist/90 md:text-base">
+      六天五夜、10 人同行。主角是 <span class="font-bold text-aqua">12/4 墨寶 Panagsama 的沙丁魚自潛拍照</span>——那是一顆常駐、不分季節的魚球，從沙灘走下水 20–30 公尺就到。
+      配角依序是奧斯陸鯨鯊、薄荷島陸遊與跳島。全程有三段海路、三個連續天未亮的早起，以及兩條<span class="font-bold text-coral">不能妥協的硬線</span>。
+    </p>
+
+    <!-- 關鍵數字 -->
+    <div class="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-5 text-center backdrop-blur">
+        <div class="t text-3xl text-aqua">6</div><div class="mt-1 text-xs text-mist/70">天 5 夜</div></div>
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-5 text-center backdrop-blur">
+        <div class="t text-3xl text-aqua">10</div><div class="mt-1 text-xs text-mist/70">人同行</div></div>
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-5 text-center backdrop-blur">
+        <div class="t text-3xl text-sun">2:35</div><div class="mt-1 text-xs text-mist/70">沙丁魚水中時間</div></div>
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-5 text-center backdrop-blur">
+        <div class="t text-3xl text-coral">2</div><div class="mt-1 text-xs text-mist/70">條硬線</div></div>
+    </div>
+
+    <!-- 航班 -->
+    <div class="mt-6 rounded-2xl border border-aqua/30 bg-gradient-to-br from-deep/90 to-[#0d3350]/90 p-6 md:p-7">
+      <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-plane text-aqua"></i>航班</h3>
+      <div class="mt-4 grid gap-3 md:grid-cols-2">
+        <div class="rounded-xl border border-reef/40 bg-abyss/40 p-4">
+          <div class="flex items-center justify-between gap-2">
+            <span class="rounded-full bg-aqua/15 px-2.5 py-0.5 text-[11px] font-bold text-aqua">去程・大家</span>
+            <span class="font-mono text-[11px] text-mist/70">12/3 (四)</span>
+          </div>
+          <div class="mt-2.5 flex items-center gap-3">
+            <div class="flex-1 text-center"><div class="t text-lg text-sand">06:55</div><div class="mt-0.5 text-[11px] text-mist/70">TPE T2</div></div>
+            <div class="shrink-0 text-center text-mist/50"><i class="fa-solid fa-plane text-aqua/80"></i><div class="mt-0.5 font-mono text-[10px]">星宇 JX781</div></div>
+            <div class="flex-1 text-center"><div class="t text-lg text-sand">09:50</div><div class="mt-0.5 text-[11px] text-mist/70">CEB T2</div></div>
+          </div>
+          <p class="mt-2 text-center text-[11px] text-aqua/80">已訂（機位確認）</p>
+        </div>
+        <div class="rounded-xl border border-reef/40 bg-abyss/40 p-4">
+          <div class="flex items-center justify-between gap-2">
+            <span class="rounded-full bg-mist/15 px-2.5 py-0.5 text-[11px] font-bold text-mist">去程・Jas</span>
+            <span class="font-mono text-[11px] text-mist/70">12/3 (四)</span>
+          </div>
+          <div class="mt-2.5 flex items-center gap-3">
+            <div class="flex-1 text-center"><div class="t text-lg text-sand">08:20</div><div class="mt-0.5 text-[11px] text-mist/70">TPE</div></div>
+            <div class="shrink-0 text-center text-mist/50"><i class="fa-solid fa-plane text-aqua/80"></i><div class="mt-0.5 font-mono text-[10px]">長榮 BR281</div></div>
+            <div class="flex-1 text-center"><div class="t text-lg text-sand">11:15</div><div class="mt-0.5 text-[11px] text-mist/70">CEB</div></div>
+          </div>
+          <p class="mt-2 text-center text-[11px] text-aqua/80">已訂・DPD6WA</p>
+        </div>
+        <div class="rounded-xl border border-reef/40 bg-abyss/40 p-4">
+          <div class="flex items-center justify-between gap-2">
+            <span class="rounded-full bg-aqua/15 px-2.5 py-0.5 text-[11px] font-bold text-aqua">回程・大家</span>
+            <span class="font-mono text-[11px] text-mist/70">12/8 (二)</span>
+          </div>
+          <div class="mt-2.5 flex items-center gap-3">
+            <div class="flex-1 text-center"><div class="t text-lg text-sand">19:35</div><div class="mt-0.5 text-[11px] text-mist/70">CEB T2</div></div>
+            <div class="shrink-0 text-center text-mist/50"><i class="fa-solid fa-plane text-aqua/80"></i><div class="mt-0.5 font-mono text-[10px]">星宇 JX784</div></div>
+            <div class="flex-1 text-center"><div class="t text-lg text-sand">22:25</div><div class="mt-0.5 text-[11px] text-mist/70">TPE T2</div></div>
+          </div>
+          <p class="mt-2 text-center text-[11px] text-aqua/80">已訂（機位確認）</p>
+        </div>
+        <div class="rounded-xl border border-reef/40 bg-abyss/40 p-4">
+          <div class="flex items-center justify-between gap-2">
+            <span class="rounded-full bg-mist/15 px-2.5 py-0.5 text-[11px] font-bold text-mist">回程・Jas</span>
+            <span class="font-mono text-[11px] text-mist/70">12/9 (三)</span>
+          </div>
+          <div class="mt-2.5 flex items-center gap-3">
+            <div class="flex-1 text-center"><div class="t text-lg text-sand">12:30</div><div class="mt-0.5 text-[11px] text-mist/70">CEB</div></div>
+            <div class="shrink-0 text-center text-mist/50"><i class="fa-solid fa-plane text-aqua/80"></i><div class="mt-0.5 font-mono text-[10px]">長榮 BR282</div></div>
+            <div class="flex-1 text-center"><div class="t text-lg text-sand">15:20</div><div class="mt-0.5 text-[11px] text-mist/70">TPE</div></div>
+          </div>
+          <p class="mt-2 text-center text-[11px] text-aqua/80">已訂・D9LKHW</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 每日概要卡 -->
+    <div class="mt-6 grid gap-4 md:grid-cols-3">
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-6 backdrop-blur transition hover:-translate-y-1 hover:border-aqua/60">
+        <div class="flex items-center justify-between">
+          <span class="t text-lg text-aqua">D1</span>
+          <span class="rounded-full bg-aqua/15 px-3 py-0.5 text-[11px] font-bold text-aqua">宿霧市區</span>
+        </div>
+        <p class="mt-1 font-mono text-xs text-mist/60">12/3（四）</p>
+        <h3 class="mt-2 flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-plane-arrival text-aqua/80"></i>抵達宿霧</h3>
+        <p class="mt-2 text-[13px] leading-7 text-mist/85">凌晨出門、09:50 落地。等 Jas 或先進市區，15:00 入住 Holiday Inn。今晚要先結帳、備外帶早餐、領足現金。</p>
+      </div>
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-6 backdrop-blur transition hover:-translate-y-1 hover:border-sun/60">
+        <div class="flex items-center justify-between">
+          <span class="t text-lg text-sun">D2</span>
+          <span class="rounded-full bg-sun/15 px-3 py-0.5 text-[11px] font-bold text-sun">墨寶 → 奧斯陸</span>
+        </div>
+        <p class="mt-1 font-mono text-xs text-mist/60">12/4（五）</p>
+        <h3 class="mt-2 flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-fish text-sun/80"></i>★ 沙丁魚 × 卡瓦森</h3>
+        <p class="mt-2 text-[13px] leading-7 text-mist/85">全天主角。05:00 出發，08:40–11:15 下水拍攝，13:30 瀑布，14:30 硬線離開，17:00 前抵奧斯陸。</p>
+      </div>
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-6 backdrop-blur transition hover:-translate-y-1 hover:border-aqua/60">
+        <div class="flex items-center justify-between">
+          <span class="t text-lg text-aqua">D3</span>
+          <span class="rounded-full bg-aqua/15 px-3 py-0.5 text-[11px] font-bold text-aqua">奧斯陸 → 薄荷島</span>
+        </div>
+        <p class="mt-1 font-mono text-xs text-mist/60">12/5（六）</p>
+        <h3 class="mt-2 flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-water text-aqua/80"></i>鯨鯊 × 跨海</h3>
+        <p class="mt-2 text-[13px] leading-7 text-mist/85">05:00 出門看鯨鯊，11:30 搭螃蟹船跨海，14:00 入住私人泳池別墅。</p>
+      </div>
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-6 backdrop-blur transition hover:-translate-y-1 hover:border-aqua/60">
+        <div class="flex items-center justify-between">
+          <span class="t text-lg text-aqua">D4</span>
+          <span class="rounded-full bg-aqua/15 px-3 py-0.5 text-[11px] font-bold text-aqua">Loboc・巧克力山</span>
+        </div>
+        <p class="mt-1 font-mono text-xs text-mist/60">12/6（日）</p>
+        <h3 class="mt-2 flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-mountain-sun text-aqua/80"></i>薄荷島陸遊</h3>
+        <p class="mt-2 text-[13px] leading-7 text-mist/85">唯一能睡飽的一天，但 12:00 一定要出發。Loboc 遊船午餐 → Bilar 人造林 → 巧克力山夕陽。</p>
+      </div>
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-6 backdrop-blur transition hover:-translate-y-1 hover:border-aqua/60">
+        <div class="flex items-center justify-between">
+          <span class="t text-lg text-aqua">D5</span>
+          <span class="rounded-full bg-aqua/15 px-3 py-0.5 text-[11px] font-bold text-aqua">Balicasag・Virgin Is.</span>
+        </div>
+        <p class="mt-1 font-mono text-xs text-mist/60">12/7（一）</p>
+        <h3 class="mt-2 flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-dolphin text-aqua/80"></i>跳島看海豚</h3>
+        <p class="mt-2 text-[13px] leading-7 text-mist/85">05:15 出發才看得到海豚。11:00 回來，下午補眠、別墅泳池。</p>
+      </div>
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-6 backdrop-blur transition hover:-translate-y-1 hover:border-coral/60">
+        <div class="flex items-center justify-between">
+          <span class="t text-lg text-coral">D6</span>
+          <span class="rounded-full bg-coral/15 px-3 py-0.5 text-[11px] font-bold text-coral">薄荷島 → 宿霧 → 台北</span>
+        </div>
+        <p class="mt-1 font-mono text-xs text-mist/60">12/8（二）</p>
+        <h3 class="mt-2 flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-ship text-coral/80"></i>返程</h3>
+        <p class="mt-2 text-[13px] leading-7 text-mist/85">上午可以睡飽，11:15 出發去碼頭。13:00 的船是主推，14:00 是最晚底線。</p>
+      </div>
+    </div>
+
+    <!-- 兩條硬線 -->
+    <div class="mt-6 rounded-2xl border border-coral/45 bg-coral/10 p-6">
+      <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-triangle-exclamation text-coral"></i>全程只有兩條硬線，其餘都可以調整</h3>
+      <div class="mt-4 grid gap-3 md:grid-cols-2">
+        <div class="rounded-xl border border-coral/35 bg-abyss/40 p-4">
+          <p class="t text-sm text-coral">12/4 · 14:30</p>
+          <p class="mt-1 text-sm font-bold text-sand">離開卡瓦森瀑布</p>
+          <p class="mt-1 text-[13px] leading-6 text-mist/85">一到就起身走人。晚 20 分鐘，17:00 抵奧斯陸就變 17:20–17:40，還要摸黑走海岸彎路。請指定一個人負責看錶。</p>
+        </div>
+        <div class="rounded-xl border border-coral/35 bg-abyss/40 p-4">
+          <p class="t text-sm text-coral">12/8 · 14:00</p>
+          <p class="mt-1 text-sm font-bold text-sand">最晚要搭上的船班</p>
+          <p class="mt-1 text-[13px] leading-6 text-mist/85">「傍晚搭船」會趕不上 19:35 的 JX784。主推 13:00 開船，14:00 是可接受的最晚班次，15:20 以後就來不及。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="depthline mx-auto max-w-5xl"></div>
+<!-- ═══════ 每日行程 ═══════ -->
+<section id="itinerary" class="py-16 md:py-20">
+  <div class="mx-auto max-w-3xl px-5">
+    <p class="text-center font-mono text-[11px] tracking-[.4em] text-aqua/90">ITINERARY</p>
+    <h2 class="mt-2 text-center font-display text-3xl font-black text-sand md:text-4xl">每日行程</h2>
+    <p class="mt-4 text-center text-xs leading-6 text-mist/70 md:text-sm">依「行程總表」逐段排定。各日天氣會在開啟頁面時即時載入（Open-Meteo，約 16 天內的預報）。</p>
+    <div class="mt-14 rounded-2xl border border-aqua/35 bg-gradient-to-r from-deep to-[#0d3350] px-5 py-4 shadow-lg shadow-black/30 md:px-7 md:py-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-baseline gap-3">
+          <span class="t text-2xl text-aqua">D1</span>
+          <span class="font-display text-lg font-bold text-sand md:text-xl">12月3日<span class="text-base text-mist/70">（四）</span></span>
+        </div>
+        <span id="wx-0" class="inline-flex flex-wrap items-center gap-1 rounded-full border border-reef/60 bg-abyss/60 px-3 py-1 text-xs text-mist md:text-sm"><i class="fa-solid fa-cloud-sun mr-1 text-aqua"></i>天氣載入中…</span>
+      </div>
+    </div>
+
+    <div class="tl mt-8">
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-plane-departure"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">約 04:55 前</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">到桃園機場第二航廈</h4>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">星宇 JX781 06:55 起飛。國際線一般建議起飛前 2 小時到機場。</p>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85"><span class="font-bold text-coral">🔴 大家 12/3 凌晨就要出門。</span>接著 12/4 04:20 起床、12/5 05:00 看鯨鯊——連續三天天未亮，這就是 12/6 最適合睡飽的原因。</div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-plane"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">06:55 → 09:50</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">大家：台北 → 宿霧</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-aqua/15 px-2.5 py-0.5 text-[11px] font-bold text-aqua"><i class="fa-solid fa-circle-check text-[10px]"></i>已訂・已確認</span>
+        </div>
+        <p class="mt-1 font-mono text-[11px] tracking-wide text-aqua/70">JX781 · STARLUX</p>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">星宇 JX781　TPE 第二航廈 06:55 → CEB 第二航廈 09:50。</p>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-plane"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">08:20 → 11:15</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">Jas：台北 → 宿霧</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-aqua/15 px-2.5 py-0.5 text-[11px] font-bold text-aqua"><i class="fa-solid fa-circle-check text-[10px]"></i>已訂</span>
+        </div>
+        <p class="mt-1 font-mono text-[11px] tracking-wide text-aqua/70">BR281 · EVA AIR</p>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">長榮 BR281　TPE 08:20 → CEB 11:15（訂位代號 DPD6WA）。</p>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85">Jas 比大家晚 1 小時 25 分落地。大家出關約 10:45–11:15，Jas 約 12:00–12:30（入境＋行李時間為推估）。</div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-code-branch"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">10:45–12:30</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">會合方式（二選一）</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-sun/15 px-2.5 py-0.5 text-[11px] font-bold text-sun"><i class="fa-solid fa-code-branch text-[10px]"></i>待決定</span>
+        </div>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85"><div class="grid gap-2 sm:grid-cols-2"><div class="rounded-lg border border-aqua/30 bg-abyss/40 p-2.5"><span class="font-bold text-aqua">方案 A</span>　大家在機場等 Jas、順便吃午餐，一起叫一台大車進市區。<br><span class="text-mist/70">省事，但要在機場等約 1–1.5 小時。</span></div><div class="rounded-lg border border-aqua/30 bg-abyss/40 p-2.5"><span class="font-bold text-aqua">方案 B</span>　大家先進市區寄放行李、吃午餐，Jas 自己叫 Grab 到飯店會合。<br><span class="text-mist/70">時間利用較好。</span></div></div></div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-hotel"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">15:00</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">Check in</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-aqua/15 px-2.5 py-0.5 text-[11px] font-bold text-aqua"><i class="fa-solid fa-circle-check text-[10px]"></i>已訂・已確認</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">Holiday Inn Cebu City by IHG（1 筆訂單、3 間房；入住 15:00、退房 12:00）。</p>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85">⚠ 入住是 <span class="t text-sand">15:00</span>。凌晨出門會很想補眠，可先寫信請飯店盡量提早入住（看房況、不保證）。寄放行李一般飯店都可以，但這家的規定未查證。</div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-utensils"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">傍晚–晚上</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">相見歡、吃吃逛逛</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-mist/15 px-2.5 py-0.5 text-[11px] font-bold text-mist"><i class="fa-solid fa-feather text-[10px]"></i>自由</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">宿霧市區。</p>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85"><p class="font-bold text-coral">🔴 今晚務必完成四件事（隔天 05:00 就要走）</p><ul class="mt-1.5 space-y-1"><li>① 先到櫃檯結帳</li><li>② 請飯店準備外帶早餐</li><li>③ 在市區領足現金——卡瓦森<span class="font-bold text-sun">只收現金</span>，10 人一天抓 ₱10,000–15,000</li><li>④ 打包好「下水包」，然後早睡</li></ul></div>
+      </article>
+
+    </div>
+
+    <div class="mt-14 rounded-2xl border border-aqua/35 bg-gradient-to-r from-deep to-[#0d3350] px-5 py-4 shadow-lg shadow-black/30 md:px-7 md:py-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-baseline gap-3">
+          <span class="t text-2xl text-aqua">D2</span>
+          <span class="font-display text-lg font-bold text-sand md:text-xl">12月4日<span class="text-base text-mist/70">（五）</span></span>
+        </div>
+        <span id="wx-1" class="inline-flex flex-wrap items-center gap-1 rounded-full border border-reef/60 bg-abyss/60 px-3 py-1 text-xs text-mist md:text-sm"><i class="fa-solid fa-cloud-sun mr-1 text-aqua"></i>天氣載入中…</span>
+      </div>
+    </div>
+
+    <div class="tl mt-8">
+      <article class="node star">
+        <span class="dot">★</span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">05:00 出發</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">墨寶沙丁魚自潛拍照</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-sun/15 px-2.5 py-0.5 text-[11px] font-bold text-sun"><i class="fa-solid fa-clock text-[10px]"></i>待訂</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">Panagsama Beach 下水 08:40–11:15（約 2 小時 35 分）。全程包車（coaster 或兩台 van）。</p>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85">本日有完整的作戰計畫：逐段時間、太陽仰角分析、落後時怎麼砍，請見下方 <a class="font-bold text-aqua underline decoration-aqua/40 underline-offset-4 hover:text-sand" href="#sardine">12/4 作戰計畫</a> 與 <a class="font-bold text-aqua underline decoration-aqua/40 underline-offset-4 hover:text-sand" href="#freedive">自潛攻略</a>。</div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-water"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">13:30–14:30</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">卡瓦森瀑布（配角）</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-sun/15 px-2.5 py-0.5 text-[11px] font-bold text-sun"><i class="fa-solid fa-clock text-[10px]"></i>待訂</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">Kawasan Falls Level 1，拍照玩水 1 小時。門票 ₱200／人，<span class="font-bold text-sun">現場只收現金</span>。</p>
+      </article>
+
+      <article class="node hard">
+        <span class="dot"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">14:30</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">硬線：起身離開瀑布</h4>
+        </div>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85"><span class="font-bold text-coral">這是全天唯一不能妥協的時間點。</span>14:30 一到就走，晚 20 分鐘就到不了 17:00 的奧斯陸。</div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-hotel"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">16:55–17:15</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">抵達奧斯陸、Check in、晚餐</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-aqua/15 px-2.5 py-0.5 text-[11px] font-bold text-aqua"><i class="fa-solid fa-circle-check text-[10px]"></i>已訂・已確認</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">W Golf Resort（1 筆訂單、3 間房；入住 14:00、退房 12:00）。</p>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85">🟢 日落 17:24，進飯店時天還亮著。W Golf 本身有餐廳與池畔酒吧；鎮上餐廳未查證，到了再問櫃檯。隔天 05:00 又要出發看鯨鯊，21:00 就早點休息。</div>
+      </article>
+
+    </div>
+
+    <div class="mt-14 rounded-2xl border border-aqua/35 bg-gradient-to-r from-deep to-[#0d3350] px-5 py-4 shadow-lg shadow-black/30 md:px-7 md:py-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-baseline gap-3">
+          <span class="t text-2xl text-aqua">D3</span>
+          <span class="font-display text-lg font-bold text-sand md:text-xl">12月5日<span class="text-base text-mist/70">（六）</span></span>
+        </div>
+        <span id="wx-2" class="inline-flex flex-wrap items-center gap-1 rounded-full border border-reef/60 bg-abyss/60 px-3 py-1 text-xs text-mist md:text-sm"><i class="fa-solid fa-cloud-sun mr-1 text-aqua"></i>天氣載入中…</span>
+      </div>
+    </div>
+
+    <div class="tl mt-8">
+      <article class="node star">
+        <span class="dot">★</span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">05:00–07:30</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">鯨鯊共游</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-aqua/15 px-2.5 py-0.5 text-[11px] font-bold text-aqua"><i class="fa-solid fa-circle-check text-[10px]"></i>已訂</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">Barangay Tan-awan（營運 06:00–12:00，報名截止 11:00）。愈早海況愈平、能見度愈好、人愈少。</p>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85">建議動線：05:00 離開飯店 → 05:30 報到 → 06:00 下水 → 約 07:00–07:30 結束。W Golf 住客評論寫距鯨鯊點約 15 分鐘車程，與 11:00 登船之間有 3 個多小時緩衝。<br>（選配）Tumalog Falls 07:45–08:45，就在 Tan-awan 上方——但上船前又會濕一次。</div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-shower"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">09:00–10:15</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">回飯店沖洗、退房</h4>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">W Golf Resort（退房 12:00）。行李直接裝車。</p>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-ship"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">11:00 登船 / 11:30 開船 / 13:00 到</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">奧斯陸 → 薄荷島</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-aqua/15 px-2.5 py-0.5 text-[11px] font-bold text-aqua"><i class="fa-solid fa-circle-check text-[10px]"></i>已訂</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">Apekop Travel，Quartel Beach → Panglao Momo Beach，航程約 90 分鐘。單程 ₱1,000／人。</p>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85"><p class="font-bold text-coral">🔴 這不是渡輪，是螃蟹船</p><ul class="mt-1.5 space-y-1"><li>・官網自述「NOT A FERRY LINE」，兩端都不是正式碼頭，靠小艇接駁上下沙灘——官網原文：<span class="italic">你必須不介意把腳弄濕</span>。行李請用防水袋，貴重物品自己背。</li><li>・<span class="font-bold text-sun">務必加購 Momo Beach → Alona 接駁 ₱100／人</span>：Momo 在北岸，Bathala 在南岸 Alona 一帶。</li><li>・行李 10 kg 以下免費，超過每件 ₱100–150。10 人的大行李要先算進去。</li><li>・每天只有這一班。官網保留天候取消的權利，出發前 1–2 天請再確認。</li><li>・聯絡：Cleare 0938 283 4760／Grace 0936 534 6564／Jessel 0961 759 6711</li></ul></div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-key"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">14:00</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">Check in（入住 3 晚）</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-aqua/15 px-2.5 py-0.5 text-[11px] font-bold text-aqua"><i class="fa-solid fa-circle-check text-[10px]"></i>已訂</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">Bathala Resort：三臥室私人泳池別墅（12/5–12/8，不可退款；入住 14:00、退房 12:00）。</p>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85">⚠ 這款別墅的規格和 Aman Sinaya Villas 一樣，很可能在 Bathala 隔壁那一區。<span class="font-bold text-sun">入住手續在主樓還是別墅辦，請先問飯店。</span></div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-umbrella-beach"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">下午–晚上</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">附近逛逛、別墅泳池耍廢</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-mist/15 px-2.5 py-0.5 text-[11px] font-bold text-mist"><i class="fa-solid fa-feather text-[10px]"></i>自由</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">Alona Beach 看日落（17:24）。</p>
+      </article>
+
+    </div>
+
+    <div class="mt-14 rounded-2xl border border-aqua/35 bg-gradient-to-r from-deep to-[#0d3350] px-5 py-4 shadow-lg shadow-black/30 md:px-7 md:py-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-baseline gap-3">
+          <span class="t text-2xl text-aqua">D4</span>
+          <span class="font-display text-lg font-bold text-sand md:text-xl">12月6日<span class="text-base text-mist/70">（日）</span></span>
+        </div>
+        <span id="wx-3" class="inline-flex flex-wrap items-center gap-1 rounded-full border border-reef/60 bg-abyss/60 px-3 py-1 text-xs text-mist md:text-sm"><i class="fa-solid fa-cloud-sun mr-1 text-aqua"></i>天氣載入中…</span>
+      </div>
+    </div>
+
+    <div class="tl mt-8">
+      <article class="node star">
+        <span class="dot">★</span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">10:30 起床 / 12:00 出發</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">薄荷島陸遊（睡到自然醒版）</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-sun/15 px-2.5 py-0.5 text-[11px] font-bold text-sun"><i class="fa-solid fa-clock text-[10px]"></i>待訂</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">Loboc 河遊船午餐 → Bilar 人造林 → 巧克力山（有機會看夕陽）。</p>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85"><span class="font-bold text-sun">可以睡飽再出門，但 12:00 一定要出發</span>——Loboc 遊船最後一班約 14:00–14:30。下午出發會錯過 Corella 眼鏡猴保育區（8:30–15:00／16:00）。</div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-list-ul"></i></span>
+        <div class="rounded-2xl border border-reef/50 bg-deep/60 p-4 md:p-5">
+          <p class="flex items-center gap-2 text-sm font-bold text-aqua"><i class="fa-solid fa-clock-rotate-left"></i>下午版逐段建議</p>
+          <div class="mt-3 space-y-2 text-[13px] leading-6">
+            <div class="flex gap-3"><span class="t shrink-0 text-sun">12:00</span><span>包車出發。Alona Beach → Loboc 開車約 43 分鐘。</span></div>
+            <div class="flex gap-3"><span class="t shrink-0 text-sun">12:45</span><span>Loboc 河遊船 ＋ 自助午餐（75–90 分）。<span class="text-coral font-bold">13:30 前一定要到碼頭。</span>⚠ 訂單要寫明 floating restaurant river cruise，有旅客回報部分業者只有河邊餐廳。</span></div>
+            <div class="flex gap-3"><span class="t shrink-0 text-mist/70">14:30</span><span>眼鏡猴：Loboc 的 Tarsier Conservation Area（30 分，順路）。⚠ 有部落客批評此處非官方保護區、空間小、動物壓力大，要不要去自行決定。</span></div>
+            <div class="flex gap-3"><span class="t shrink-0 text-sun">15:15</span><span>Bilar 人造桃花心木林（15 分，免費，路邊停車拍照）。</span></div>
+            <div class="flex gap-3"><span class="t shrink-0 text-sun">16:15</span><span>巧克力山觀景台（Carmen，60–70 分）。成人非居民 ₱150。<span class="text-aqua font-bold">日落約 17:21，下午版的加分題。</span>⚠ 關門時間各來源寫 17:00/17:30/18:00 都有，到現場先問。⚠ 12 月草還是綠的，不是巧克力色。</span></div>
+            <div class="flex gap-3"><span class="t shrink-0 text-mist/70">17:30</span><span>回程 1.5–2 小時。天黑後走山路，請司機慢開。</span></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="mt-14 rounded-2xl border border-aqua/35 bg-gradient-to-r from-deep to-[#0d3350] px-5 py-4 shadow-lg shadow-black/30 md:px-7 md:py-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-baseline gap-3">
+          <span class="t text-2xl text-aqua">D5</span>
+          <span class="font-display text-lg font-bold text-sand md:text-xl">12月7日<span class="text-base text-mist/70">（一）</span></span>
+        </div>
+        <span id="wx-4" class="inline-flex flex-wrap items-center gap-1 rounded-full border border-reef/60 bg-abyss/60 px-3 py-1 text-xs text-mist md:text-sm"><i class="fa-solid fa-cloud-sun mr-1 text-aqua"></i>天氣載入中…</span>
+      </div>
+    </div>
+
+    <div class="tl mt-8">
+      <article class="node star">
+        <span class="dot">★</span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">05:15–11:00（建議）</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">跳島：清晨出發、下午補眠</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-sun/15 px-2.5 py-0.5 text-[11px] font-bold text-sun"><i class="fa-solid fa-clock text-[10px]"></i>待訂</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">海豚 → Balicasag 浮潛 → Virgin Island。</p>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85"><span class="font-bold text-coral">🔴 睡到中午就一定看不到海豚</span>——查到的跳島團全部清晨出發，海豚約 06:00–09:00 才看得到，日出後會往深處游。Balicasag 下午收不收也查不到。</div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-list-ul"></i></span>
+        <div class="rounded-2xl border border-reef/50 bg-deep/60 p-4 md:p-5">
+          <p class="flex items-center gap-2 text-sm font-bold text-aqua"><i class="fa-solid fa-route"></i>建議方案逐段</p>
+          <div class="mt-3 space-y-2 text-[13px] leading-6">
+            <div class="flex gap-3"><span class="t shrink-0 text-sun">05:00</span><span>起床。早餐請飯店前一天備外帶，或在別墅廚房自己準備。</span></div>
+            <div class="flex gap-3"><span class="t shrink-0 text-sun">05:15</span><span>接駁到出海點（Alona Beach 或 Panglao 港）。多數業者含市區來回接送。</span></div>
+            <div class="flex gap-3"><span class="t shrink-0 text-sun">05:45</span><span>海豚觀賞（Panglao 與 Balicasag 之間）。⚠ 野生動物不保證，業者普遍不退費。12/7 日出 05:49。</span></div>
+            <div class="flex gap-3"><span class="t shrink-0 text-sun">07:00</span><span>Balicasag 浮潛。環境／浮潛費約 ₱300／人。⚠ 海龜浮潛每人限 30–45 分鐘，10 人要問清楚幾艘船、怎麼分批。</span></div>
+            <div class="flex gap-3"><span class="t shrink-0 text-sun">09:45</span><span>Virgin Island 沙洲。環境費約 ₱100／人。此時水位接近白天最高（約 1.05 m），沙洲露出可能較少。</span></div>
+            <div class="flex gap-3"><span class="t shrink-0 text-aqua">11:00</span><span>回到岸上 → 下午完全自由。</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-person-swimming"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">下午</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">補眠、別墅泳池</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-mist/15 px-2.5 py-0.5 text-[11px] font-bold text-mist"><i class="fa-solid fa-feather text-[10px]"></i>自由</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">（選配）Hinagdanan Cave（約 16:00 關）、Bohol Bee Farm。12/6 陸遊沒去成的 Panglao 景點可以補在這裡。</p>
+      </article>
+
+    </div>
+
+    <div class="mt-14 rounded-2xl border border-aqua/35 bg-gradient-to-r from-deep to-[#0d3350] px-5 py-4 shadow-lg shadow-black/30 md:px-7 md:py-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-baseline gap-3">
+          <span class="t text-2xl text-aqua">D6</span>
+          <span class="font-display text-lg font-bold text-sand md:text-xl">12月8日<span class="text-base text-mist/70">（二）</span></span>
+        </div>
+        <span id="wx-5" class="inline-flex flex-wrap items-center gap-1 rounded-full border border-reef/60 bg-abyss/60 px-3 py-1 text-xs text-mist md:text-sm"><i class="fa-solid fa-cloud-sun mr-1 text-aqua"></i>天氣載入中…</span>
+      </div>
+    </div>
+
+    <div class="tl mt-8">
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-mug-hot"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">睡到自然醒</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">早餐、打包</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-mist/15 px-2.5 py-0.5 text-[11px] font-bold text-mist"><i class="fa-solid fa-feather text-[10px]"></i>自由</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">Bathala 退房 12:00。11:15 出發去碼頭就好，所以 12/8 早上也能睡飽。</p>
+      </article>
+
+      <article class="node hard">
+        <span class="dot"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">13:00（最晚 14:00）</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">薄荷島 → 宿霧</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-sun/15 px-2.5 py-0.5 text-[11px] font-bold text-sun"><i class="fa-solid fa-clock text-[10px]"></i>待訂</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">OceanJet　Tagbilaran → Cebu Pier 1，航程約 2 小時。Tourist 約 ₱880–920，另加碼頭費約 ₱25（現金）。</p>
+        <div class="mt-2.5 rounded-xl border border-reef/45 bg-deep/50 p-3 text-[13px] leading-6 text-mist/85"><p class="font-bold text-coral">🔴 不能「傍晚搭船」，會趕不上 19:35 的班機</p><div class="mt-2 overflow-hidden rounded-lg border border-reef/40"><table class="w-full text-left text-[12px]"><thead class="bg-abyss/60 text-mist/70"><tr><th class="px-2.5 py-1.5">開船</th><th class="px-2.5 py-1.5">抵 Pier 1</th><th class="px-2.5 py-1.5">到機場</th><th class="px-2.5 py-1.5">緩衝</th></tr></thead><tbody><tr class="border-t border-reef/30 bg-aqua/10"><td class="t px-2.5 py-1.5 text-aqua">13:00</td><td class="px-2.5 py-1.5">15:00</td><td class="px-2.5 py-1.5">約 16:00</td><td class="px-2.5 py-1.5 font-bold text-aqua">3 小時 20 分・主推</td></tr><tr class="border-t border-reef/30"><td class="t px-2.5 py-1.5 text-sun">14:00</td><td class="px-2.5 py-1.5">16:00</td><td class="px-2.5 py-1.5">約 17:00</td><td class="px-2.5 py-1.5 text-sun">2 小時 20 分・最晚底線</td></tr><tr class="border-t border-reef/30"><td class="t px-2.5 py-1.5 text-coral">15:20</td><td class="px-2.5 py-1.5">17:20</td><td class="px-2.5 py-1.5">約 18:20</td><td class="px-2.5 py-1.5 text-coral">1 小時・不行</td></tr><tr class="border-t border-reef/30"><td class="t px-2.5 py-1.5 text-coral">16:20</td><td class="px-2.5 py-1.5">18:20</td><td class="px-2.5 py-1.5">約 19:20</td><td class="px-2.5 py-1.5 text-coral">15 分・趕不上</td></tr></tbody></table></div><p class="mt-2">報到抓 1 小時（10 人一起）。12 月旺季請提前線上訂：<a class="font-bold text-aqua underline decoration-aqua/40 underline-offset-4" href="https://www.oceanjet.net/" target="_blank" rel="noopener">oceanjet.net</a>｜客服 (032) 255-7560</p></div>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-plane-departure"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">19:35 → 22:25</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">大家回台北</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-aqua/15 px-2.5 py-0.5 text-[11px] font-bold text-aqua"><i class="fa-solid fa-circle-check text-[10px]"></i>已訂・已確認</span>
+        </div>
+        <p class="mt-1 font-mono text-[11px] tracking-wide text-aqua/70">JX784 · STARLUX</p>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">星宇 JX784　CEB 第二航廈 19:35 → TPE 第二航廈 22:25。</p>
+      </article>
+
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-bed"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">晚上</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">Jas 多住宿霧一晚</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-coral/15 px-2.5 py-0.5 text-[11px] font-bold text-coral"><i class="fa-solid fa-circle-xmark text-[10px]"></i>未訂</span>
+        </div>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">尚未訂房。建議訂 Mactan／Lapu-Lapu 機場側，隔天 10:00 前到機場即可。</p>
+      </article>
+
+    </div>
+
+    <div class="mt-14 rounded-2xl border border-aqua/35 bg-gradient-to-r from-deep to-[#0d3350] px-5 py-4 shadow-lg shadow-black/30 md:px-7 md:py-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-baseline gap-3">
+          <span class="t text-2xl text-aqua">D7</span>
+          <span class="font-display text-lg font-bold text-sand md:text-xl">12月9日<span class="text-base text-mist/70">（三）</span></span>
+        </div>
+        <span id="wx-6" class="inline-flex flex-wrap items-center gap-1 rounded-full border border-reef/60 bg-abyss/60 px-3 py-1 text-xs text-mist md:text-sm"><i class="fa-solid fa-cloud-sun mr-1 text-aqua"></i>天氣載入中…</span>
+      </div>
+    </div>
+
+    <div class="tl mt-8">
+      <article class="node">
+        <span class="dot"><i class="fa-solid fa-plane"></i></span>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <span class="t rounded-full border border-aqua/35 bg-abyss/70 px-3 py-0.5 text-[13px] text-aqua">12:30 → 15:20</span>
+          <h4 class="text-base font-bold text-sand md:text-lg">Jas 回台北</h4>
+          <span class="inline-flex items-center gap-1 rounded-full bg-aqua/15 px-2.5 py-0.5 text-[11px] font-bold text-aqua"><i class="fa-solid fa-circle-check text-[10px]"></i>已訂</span>
+        </div>
+        <p class="mt-1 font-mono text-[11px] tracking-wide text-aqua/70">BR282 · EVA AIR</p>
+        <p class="mt-1.5 text-sm leading-7 text-mist/85">長榮 BR282　CEB 12:30 → TPE 15:20（訂位代號 D9LKHW）。</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<div class="depthline mx-auto max-w-5xl"></div>
+<!-- ═══════ 12/4 作戰計畫 ═══════ -->
+<section id="sardine" class="caustics relative py-20 md:py-24">
+  <div class="mx-auto max-w-5xl px-5">
+    <p class="text-center font-mono text-[11px] tracking-[.4em] text-sun/90">THE MAIN EVENT · 12 / 04</p>
+    <h2 class="mt-2 text-center font-display text-3xl font-black text-sand md:text-4xl">12/4 作戰計畫</h2>
+    <p class="mx-auto mt-4 max-w-2xl text-center text-sm leading-7 text-mist/80">
+      為什麼是 05:00 出發、08:40 下水？因為水下的光線強度取決於太陽仰角——這是整份行程最關鍵的一個判斷。
+    </p>
+
+    <!-- ★ 太陽仰角圖（本頁的招牌） -->
+    <div class="mt-10 rounded-2xl border border-sun/35 bg-gradient-to-br from-deep/90 to-[#0d3350]/90 p-5 md:p-7">
+      <div class="flex flex-wrap items-baseline justify-between gap-2">
+        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-sun text-sun"></i>水下光線 ＝ 太陽仰角</h3>
+        <p class="font-mono text-[11px] text-mist/60">Panagsama · 2026-12-04</p>
+      </div>
+
+      <p class="mt-4 text-center font-mono text-[10px] tracking-wider text-mist/45 md:hidden">← 左右滑動可看完整時間軸 →</p>
+      <div class="mt-3 overflow-x-auto md:mt-5">
+      <svg viewBox="0 0 760 352" class="h-auto w-full min-w-[620px]" role="img" aria-label="2026年12月4日墨寶的太陽仰角變化圖，標示三輪下水時段">
+        <defs>
+          <linearGradient id="sunfill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FFC24B" stop-opacity=".40"/>
+            <stop offset="100%" stop-color="#FFC24B" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="goodwin" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#27C6C0" stop-opacity=".30"/>
+            <stop offset="100%" stop-color="#27C6C0" stop-opacity=".04"/>
+          </linearGradient>
+        </defs>
+        <line x1="46" y1="250.0" x2="744" y2="250.0" stroke="#14506B" stroke-opacity=".45" stroke-width="1"/>
+        <text x="38" y="254.0" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#BBD3DC" fill-opacity=".65">0°</text>
+        <line x1="46" y1="193.9" x2="744" y2="193.9" stroke="#14506B" stroke-opacity=".45" stroke-width="1"/>
+        <text x="38" y="197.9" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#BBD3DC" fill-opacity=".65">15°</text>
+        <line x1="46" y1="137.7" x2="744" y2="137.7" stroke="#14506B" stroke-opacity=".45" stroke-width="1"/>
+        <text x="38" y="141.7" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#BBD3DC" fill-opacity=".65">30°</text>
+        <line x1="46" y1="81.6" x2="744" y2="81.6" stroke="#14506B" stroke-opacity=".45" stroke-width="1"/>
+        <text x="38" y="85.6" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#BBD3DC" fill-opacity=".65">45°</text>
+        <line x1="46" y1="25.5" x2="744" y2="25.5" stroke="#14506B" stroke-opacity=".45" stroke-width="1"/>
+        <text x="38" y="29.5" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="11" fill="#BBD3DC" fill-opacity=".65">60°</text>
+        <rect x="395.0" y="18" width="290.8" height="232.0" fill="url(#goodwin)"/>
+        <text x="540.4" y="34" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="12" font-weight="700" fill="#27C6C0">好光線窗口　45°–58°</text>
+        <path d="M 104.2 193.9 C 123.6 185.8, 191.4 157.1, 220.5 145.2 C 249.6 133.4, 259.3 130.3, 278.7 122.8 C 298.1 115.3, 317.4 107.2, 336.8 100.3 C 356.2 93.5, 375.6 87.8, 395.0 81.6 C 414.4 75.4, 433.8 68.5, 453.2 62.9 C 472.6 57.3, 491.9 52.3, 511.3 47.9 C 530.7 43.6, 550.1 39.2, 569.5 36.7 C 588.9 34.2, 608.3 33.0, 627.7 33.0 C 647.1 33.0, 676.1 36.1, 685.8 36.7 L 685.8 250.0 L 104.2 250.0 Z" fill="url(#sunfill)"/>
+        <path d="M 104.2 193.9 C 123.6 185.8, 191.4 157.1, 220.5 145.2 C 249.6 133.4, 259.3 130.3, 278.7 122.8 C 298.1 115.3, 317.4 107.2, 336.8 100.3 C 356.2 93.5, 375.6 87.8, 395.0 81.6 C 414.4 75.4, 433.8 68.5, 453.2 62.9 C 472.6 57.3, 491.9 52.3, 511.3 47.9 C 530.7 43.6, 550.1 39.2, 569.5 36.7 C 588.9 34.2, 608.3 33.0, 627.7 33.0 C 647.1 33.0, 676.1 36.1, 685.8 36.7" fill="none" stroke="#FFC24B" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="104.2" cy="193.9" r="3.5" fill="#04121F" stroke="#FFC24B" stroke-width="2"/>
+        <circle cx="220.5" cy="145.2" r="3.5" fill="#04121F" stroke="#FFC24B" stroke-width="2"/>
+        <circle cx="278.7" cy="122.8" r="3.5" fill="#04121F" stroke="#FFC24B" stroke-width="2"/>
+        <circle cx="336.8" cy="100.3" r="3.5" fill="#04121F" stroke="#FFC24B" stroke-width="2"/>
+        <circle cx="395.0" cy="81.6" r="3.5" fill="#04121F" stroke="#FFC24B" stroke-width="2"/>
+        <circle cx="453.2" cy="62.9" r="3.5" fill="#04121F" stroke="#FFC24B" stroke-width="2"/>
+        <circle cx="511.3" cy="47.9" r="3.5" fill="#04121F" stroke="#FFC24B" stroke-width="2"/>
+        <circle cx="569.5" cy="36.7" r="3.5" fill="#04121F" stroke="#FFC24B" stroke-width="2"/>
+        <circle cx="627.7" cy="33.0" r="3.5" fill="#04121F" stroke="#FFC24B" stroke-width="2"/>
+        <circle cx="685.8" cy="36.7" r="3.5" fill="#04121F" stroke="#FFC24B" stroke-width="2"/>
+        <text x="104.2" y="181.9" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#FF6B52">15°</text>
+        <text x="627.7" y="21.0" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700" fill="#FFC24B">58°</text>
+        <text x="104.2" y="270" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#BBD3DC" fill-opacity=".65">07:00</text>
+        <text x="220.5" y="270" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#BBD3DC" fill-opacity=".65">08:00</text>
+        <text x="336.8" y="270" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#BBD3DC" fill-opacity=".65">09:00</text>
+        <text x="453.2" y="270" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#BBD3DC" fill-opacity=".65">10:00</text>
+        <text x="569.5" y="270" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#BBD3DC" fill-opacity=".65">11:00</text>
+        <text x="685.8" y="270" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#BBD3DC" fill-opacity=".65">12:00</text>
+        <line x1="46" y1="284" x2="744" y2="284" stroke="#14506B" stroke-opacity=".3" stroke-width="1"/>
+        <text x="38" y="316" text-anchor="end" font-family="Noto Sans TC, sans-serif" font-size="10" fill="#BBD3DC" fill-opacity=".5">下水</text>
+        <rect x="298.1" y="308" width="87.2" height="10" rx="5" fill="#27C6C0" fill-opacity=".9"/>
+        <text x="298.1" y="300" font-family="Noto Sans TC, sans-serif" font-size="11" fill="#27C6C0">定位適應</text>
+        <text x="341.7" y="335" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#BBD3DC" fill-opacity=".55">8:40</text>
+        <rect x="424.1" y="308" width="87.2" height="10" rx="5" fill="#FFC24B" fill-opacity=".9"/>
+        <text x="424.1" y="300" font-family="Noto Sans TC, sans-serif" font-size="11" font-weight="700" fill="#FFC24B">★ 主力拍攝</text>
+        <text x="467.7" y="335" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#BBD3DC" fill-opacity=".55">9:45</text>
+        <rect x="540.4" y="308" width="58.2" height="10" rx="5" fill="#27C6C0" fill-opacity=".9"/>
+        <text x="540.4" y="300" font-family="Noto Sans TC, sans-serif" font-size="11" fill="#27C6C0">補拍・海龜</text>
+        <text x="569.5" y="335" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#BBD3DC" fill-opacity=".55">10:45</text>
+      </svg>
+      </div>
+
+      <div class="mt-5 grid gap-3 md:grid-cols-2">
+        <div class="rounded-xl border border-coral/35 bg-coral/10 p-4">
+          <p class="text-sm font-bold text-coral"><i class="fa-solid fa-xmark mr-1"></i>為什麼不 04:00 摸黑出發？</p>
+          <p class="mt-1.5 text-[13px] leading-6 text-mist/90">仰角低時，大部分陽光在水面就被反射掉，水下會暗、顏色會灰。<span class="font-bold text-sand">06:30–08:00 就算下了水，也是全天拍照條件最差的時段</span>——為了拍照而摸黑早起，換到的是最沒用的那段光線。</p>
+        </div>
+        <div class="rounded-xl border border-aqua/35 bg-aqua/10 p-4">
+          <p class="text-sm font-bold text-aqua"><i class="fa-solid fa-check mr-1"></i>所以：05:00 出發、08:40 下水</p>
+          <p class="mt-1.5 text-[13px] leading-6 text-mist/90">整個 2 小時 35 分的水中時間剛好<span class="font-bold text-sand">從仰角 35° 一路升到 57°，全程都在好光線裡</span>，而且不用 03:30 起床。05:00 出發也已避開上班尖峰。</p>
+        </div>
+      </div>
+      <p class="mt-3 text-[11px] text-mist/55"><i class="fa-solid fa-circle-info mr-1"></i>仰角數值為試算表作者依當日太陽位置計算，非引自網站。日出 05:49／日落 17:24。</p>
+    </div>
+
+    <div class="mt-6 rounded-2xl border border-reef/50 bg-deep/70 p-5 md:p-7">
+      <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-stopwatch text-aqua"></i>12/4 逐段行程</h3>
+      <p class="mt-2 text-[13px] leading-6 text-mist/75">設計原則：沙丁魚給滿 2 小時 35 分且全落在水下光線最好的時段；瀑布壓到 1 小時；17:00 到奧斯陸。</p>
+      <div class="mt-4 space-y-px overflow-hidden rounded-xl border border-reef/40">
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">04:20</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">起床</span><span class="text-[11px] text-mist/55">Holiday Inn Cebu City</span>
+            </div>
+            <p class="text-mist/85">前一晚就要：結完帳、行李打包好、泳具與相機單獨裝一個「下水包」。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">04:55</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">大廳集合、行李上車</span><span class="text-[11px] text-mist/55">—</span>
+            </div>
+            <p class="text-mist/85">行李整天留在車上，不用拖到海邊。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">05:00</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">出發</span><span class="text-[11px] text-mist/55">宿霧市區 → 墨寶（約 89–100 km）</span>
+            </div>
+            <p class="text-mist/85">05:00 出發已避開上班尖峰。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">05:48</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">（日出）</span><span class="text-[11px] text-mist/55">約在 Carcar 一帶天亮</span>
+            </div>
+            <p class="text-mist/85">依當日太陽位置計算。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">06:15</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">Carcar 休息站</span><span class="text-[11px] text-mist/55">20 分</span>
+            </div>
+            <p class="text-mist/85">上廁所、吃外帶早餐。Carcar 以 chicharon（炸豬皮）、ampao 聞名。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/50 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">08:00</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">抵達 Panagsama Beach</span><span class="text-[11px] text-mist/55">墨寶</span>
+            </div>
+            <p class="text-mist/85">⚠ 若 08:30 還沒到，直接把瀑布從今天拿掉。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">08:15</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">租裝備、換裝、安全簡報、分組</span><span class="text-[11px] text-mist/55">25 分</span>
+            </div>
+            <p class="text-mist/85">10 人分成兩組輪流下水（互相擋鏡頭、也方便互相戒護）。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-sun/10 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-sun">08:40</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">★ 第 1 輪：定位與適應</span><span class="text-[11px] text-mist/55">45 分</span>
+            </div>
+            <p class="text-mist/85">先找到當天魚球位置、適應水溫與浮力、調相機設定。太陽仰角 35°→41°。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">09:25</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">水面休息</span><span class="text-[11px] text-mist/55">20 分</span>
+            </div>
+            <p class="text-mist/85">喝水、檢視照片、調白平衡。自潛最忌連續憋氣不休息。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-sun/10 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-sun">09:45</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">★ 第 2 輪：主力拍攝</span><span class="text-[11px] text-mist/55">45 分</span>
+            </div>
+            <p class="text-mist/85">🟢 太陽仰角 46°→54°，<b class="text-sun">這 45 分鐘是全天水下光線最好的時段</b>，重點照片在這輪拍完。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">10:30</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">水面休息</span><span class="text-[11px] text-mist/55">15 分</span>
+            </div>
+            <p class="text-mist/85">換電池、換記憶卡、補防霧。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-sun/10 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-sun">10:45</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">★ 第 3 輪：補拍 ＋ 找海龜</span><span class="text-[11px] text-mist/55">30 分</span>
+            </div>
+            <p class="text-mist/85">仰角 55°→57°（全天最高）。綠蠵龜與玳瑁常在離岸 2–4 公尺的海草區吃草。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">11:15</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">上岸、沖洗、換乾衣、還裝備</span><span class="text-[11px] text-mist/55">25 分</span>
+            </div>
+            <p class="text-mist/85">相機與裝備要用淡水沖，鹽分會咬壞 O 形環。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/50 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">11:40</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">午餐</span><span class="text-[11px] text-mist/55">45 分</span>
+            </div>
+            <p class="text-mist/85">🔴 10 人現場點餐很慢。請在 10:45 休息時就先請司機去把餐點點好，這招省 20–25 分鐘。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">12:30</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">出發往卡瓦森瀑布</span><span class="text-[11px] text-mist/55">18 km</span>
+            </div>
+            <p class="text-mist/85">從 Panagsama 開回大馬路本身就要約 10 分鐘，已算進去。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">13:10</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">抵達 Matutinao 國道入口</span><span class="text-[11px] text-mist/55">地標：Sto. Tomas de Villanueva 教堂</span>
+            </div>
+            <p class="text-mist/85">跟司機說「Matutinao 教堂」比說「卡瓦森瀑布」好找。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">13:10</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">步行進入</span><span class="text-[11px] text-mist/55">20 分・1.5 km 平緩鋪面</span>
+            </div>
+            <p class="text-mist/85">可搭 habal-habal 載一段 ₱20–30。門票 ₱200／人在入口付，<b class="text-sun">只收現金</b>。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">13:30</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">瀑布玩水、拍照</span><span class="text-[11px] text-mist/55">60 分</span>
+            </div>
+            <p class="text-mist/85">Level 1 主瀑布。竹筏 ₱300／艘、置物櫃 ₱100。⚠ 中午後是峽谷探險團下來的人潮高峰。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-coral/15 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-coral">14:30</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">🔴 硬線：起身離開</span><span class="text-[11px] text-mist/55">—</span>
+            </div>
+            <p class="text-mist/85"><b class="text-coral">全天唯一不能妥協的時間點。晚 20 分鐘就到不了 17:00。</b></p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/50 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">14:55</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">出發往奧斯陸</span><span class="text-[11px] text-mist/55">約 85–95 km 海岸彎路</span>
+            </div>
+            <p class="text-mist/85">⚠ 2–2.5 小時為依距離與路況推估，不是官方數字。會暈車的人先吃藥。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-aqua/10 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua">16:55</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">抵達 W Golf Resort、Check in</span><span class="text-[11px] text-mist/55">奧斯陸 Lagunde Beach 旁</span>
+            </div>
+            <p class="text-mist/85">🟢 日落 17:24，進飯店時天還亮。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">18:30</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">奧斯陸晚餐</span><span class="text-[11px] text-mist/55">飯店餐廳或鎮上</span>
+            </div>
+            <p class="text-mist/85">W Golf 本身有餐廳與池畔酒吧。</p>
+          </div>
+        </div>
+        <div class="flex gap-3 bg-abyss/40 px-3.5 py-2.5 text-[13px] leading-6">
+          <span class="t w-[46px] shrink-0 text-aqua/85">21:00</span>
+          <div class="min-w-0 flex-1">
+            <div class="flex flex-wrap items-baseline gap-x-2">
+              <span class="font-bold text-sand">早點休息</span><span class="text-[11px] text-mist/55">—</span>
+            </div>
+            <p class="text-mist/85">隔天 05:00 又要出發看鯨鯊。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 grid gap-5 md:grid-cols-2">
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-6">
+        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-scissors text-coral"></i>落後時，照這個順序砍</h3>
+        <ol class="mt-3 space-y-2.5 text-[13px] leading-6 text-mist/90">
+          <li><span class="t mr-1.5 text-coral">1</span><b class="text-sand">卡瓦森停留時間</b>（🟢 最高彈性）——這是今天的調節閥，可砍到 40 分、30 分，或整個不去。</li>
+          <li><span class="t mr-1.5 text-coral">2</span><b class="text-sand">步道改搭 habal-habal</b>（🟢 高）——進出各省 8–10 分。</li>
+          <li><span class="t mr-1.5 text-coral">3</span><b class="text-sand">午餐改車上吃外帶</b>（🟡 中）——可再省 30 分。</li>
+          <li><span class="t mr-1.5 text-mist/60">—</span><b class="text-aqua">沙丁魚不砍。</b>這是今天的主角，要砍就砍瀑布。</li>
+        </ol>
+        <div class="mt-4 rounded-xl border border-coral/35 bg-coral/10 p-3 text-[13px] leading-6">
+          <b class="text-coral">如果 08:30 還沒到墨寶：</b>直接把瀑布從今天拿掉，當天只做沙丁魚，13:30 左右出發去奧斯陸，15:30 就到，還能去 Tumalog Falls。
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-aqua/35 bg-aqua/5 p-6">
+        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-lightbulb text-aqua"></i>放棄瀑布的「最輕鬆版本」</h3>
+        <p class="mt-3 text-[13px] leading-6 text-mist/90">
+          06:00 出發 → 09:15 到墨寶 → <b class="text-aqua">09:40–12:40 沙丁魚（整整 3 小時，全程好光線）</b> → 12:40 午餐 → 13:45 出發 → 15:15–15:45 到奧斯陸。
+        </p>
+        <ul class="mt-3 space-y-1.5 text-[13px] leading-6 text-mist/85">
+          <li>・多睡 1 小時</li><li>・沙丁魚還多 25 分鐘</li>
+          <li>・下午 3 點半就進飯店，傍晚還能去 Tumalog Falls</li>
+          <li>・代價：沒去卡瓦森</li>
+        </ul>
+        <p class="mt-3 rounded-lg bg-abyss/50 p-2.5 text-[13px] leading-6 text-sun">如果對瀑布真的只是「不去白不去」，這個版本划算很多。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="depthline mx-auto max-w-5xl"></div>
+<!-- ═══════ 自潛攻略 ═══════ -->
+<section id="freedive" class="py-16 md:py-20">
+  <div class="mx-auto max-w-5xl px-5">
+    <p class="text-center font-mono text-[11px] tracking-[.4em] text-aqua/90">FREEDIVING · SAFETY &amp; PHOTO</p>
+    <h2 class="mt-2 text-center font-display text-3xl font-black text-sand md:text-4xl">沙丁魚自潛攻略</h2>
+    <p class="mx-auto mt-4 max-w-2xl text-center text-sm leading-7 text-mist/80">
+      標示<span class="font-bold text-aqua">【查證】</span>的是有找到出處的資料；<span class="font-bold text-mist">【通則】</span>是水下攝影與自潛的一般常識，沒有針對墨寶查到特定來源，請當作參考而非權威。
+    </p>
+
+    <!-- 現場 -->
+    <div class="mt-10 grid gap-4 md:grid-cols-2">
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-6">
+        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-location-dot text-aqua"></i>現場狀況</h3>
+        <dl class="mt-3 space-y-3 text-[13px] leading-6">
+          <div><dt class="font-bold text-aqua">【查證】魚群在哪裡</dt><dd class="text-mist/90">離 Panagsama Beach 岸邊約 20–30 公尺的礁壁上方，<b class="text-sand">從沙灘直接走下水即可，不用搭船</b>。這是常駐魚球，不是季節性洄游，全年每天都在。</dd></div>
+          <div><dt class="font-bold text-aqua">【查證】深度</dt><dd class="text-mist/90">各來源寫 1–10 公尺或 3–15 公尺。有指南直接寫「能下潛到 4–5 公尺就會有難忘的體驗」。</dd></div>
+          <div><dt class="font-bold text-aqua">【查證】費用</dt><dd class="text-mist/90">浮潛本身免費、沒有門票、自備裝備不需許可。裝備租借：一般蛙鞋約 ₱100／天、自潛長蛙約 ₱200／天。嚮導約 ₱300–500／人，Panagsama 入口有小亭子可找。</dd></div>
+          <div><dt class="font-bold text-aqua">【查證】順便看海龜</dt><dd class="text-mist/90">綠蠵龜與玳瑁常在岸邊 2–4 公尺的海草區吃草，是順手的加分題材。</dd></div>
+        </dl>
+      </div>
+
+      <!-- 安全（紅） -->
+      <div class="rounded-2xl border border-coral/45 bg-coral/10 p-6">
+        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-shield-heart text-coral"></i>安全：真正的風險不是深度</h3>
+        <p class="mt-3 text-[13px] leading-6 text-mist/90">
+          多個來源一致指出，自潛真正的風險是<b class="text-coral">淺水昏迷（shallow-water blackout）</b>，成因是獨自下潛、過度換氣、硬撐極限——<b class="text-sand">在 5 公尺一樣會發生</b>。
+          昏迷的人在水面是安靜地沉下去的，不會掙扎，旁邊不懂的人通常看不出來。
+        </p>
+        <div class="mt-3 rounded-xl border border-coral/40 bg-abyss/50 p-3.5">
+          <p class="text-sm font-bold text-coral">標準做法：one up, one down</p>
+          <p class="mt-1 text-[13px] leading-6 text-mist/90">一個人下潛，一個<b class="text-sand">受過訓練</b>的人在水面全程盯著，直到他浮上來並完成恢復呼吸。</p>
+        </div>
+        <div class="mt-3 rounded-xl border border-coral/40 bg-abyss/50 p-3.5">
+          <p class="text-sm font-bold text-coral">🔴 拿相機的人風險最高</p>
+          <p class="mt-1 text-[13px] leading-6 text-mist/90">注意力全在構圖上，不知不覺拉長憋氣、忽略身體訊號，而且因為「正在做事」看起來很正常，水面的人更不會警覺。<br><b class="text-sand">規則：拍照的人一定要有專人戒護，而且戒護的人不能同時也在拍照。兩人互拍＝兩個人都沒有被看著。</b></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 分組與嚮導 -->
+    <div class="mt-4 grid gap-4 md:grid-cols-2">
+      <div class="rounded-2xl border border-reef/50 bg-deep/70 p-6">
+        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-people-group text-aqua"></i>10 人要分組</h3>
+        <p class="mt-3 text-[13px] leading-6 text-mist/90">10 個人同時下水會互相擋鏡頭、也沒人真的在看誰。建議<b class="text-sand">分兩組 5 人輪流，每組裡固定配對</b>（A 下 B 看、B 下 A 看）。這個配對剛好也能兼任「模特兒」——純魚群的照片看不出規模，有人入鏡才有尺度感。</p>
+        <div class="mt-3 rounded-xl border border-reef/40 bg-abyss/50 p-3.5 text-[13px] leading-6">
+          <p class="font-bold text-aqua">要不要請嚮導？</p>
+          <ul class="mt-1.5 space-y-1 text-mist/90">
+            <li>・<b class="text-sand">只浮潛、不下潛</b> → 不用請，結伴就好。</li>
+            <li>・<b class="text-sand">想下潛拍照但團裡沒人有證照</b> → 建議請一位當地嚮導（₱300–500／人）。買的不是技術，是「有一個懂的人專門在水面看著」。</li>
+            <li>・<b class="text-sand">團裡有持證自潛員</b> → 由他戒護就夠。</li>
+          </ul>
+          <p class="mt-2 text-mist/70">⚠「查不到強制規定」不等於「確定沒有」。到現場先看入口公告或問亭子。</p>
+        </div>
+        <p class="mt-3 text-[13px] leading-6 text-mist/85"><b class="text-aqua">【查證】船隻與水流</b>：Panagsama 同時有潛水船進出，礁壁外側就是陡降的深水。別一路往外游，<b class="text-sand">水面浮球／浮標能大幅提高能見度</b>。</p>
+      </div>
+
+      <div class="rounded-2xl border border-sun/35 bg-sun/5 p-6">
+        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-camera text-sun"></i>拍攝要點</h3>
+        <ul class="mt-3 space-y-2.5 text-[13px] leading-6 text-mist/90">
+          <li><b class="text-sun">由下往上拍</b>——從魚群下方往上，可以同時收進魚群剪影與水面波光，張力最強。由上往下容易把魚群拍成一團暗塊。</li>
+          <li><b class="text-sun">白平衡</b>——水下 5 公尺紅光已大量衰減。能手動白平衡就<b class="text-sand">在要拍的深度做一次自訂白平衡</b>；GoPro 類設「水下」白平衡或關掉自動；能拍 RAW 就拍 RAW。</li>
+          <li><b class="text-sun">不要用閃燈／補光燈直打</b>——懸浮微粒會把光反射回鏡頭，變成滿畫面白點（backscatter）。沒有可外移的雙燈臂就老實用自然光。</li>
+          <li><b class="text-sun">接近魚群的方式</b>——慢速、平行、不正面衝。猛衝會把魚球打散，一散要等很久才重聚；放慢反而會被魚群包圍。</li>
+          <li><b class="text-sun">器材細節</b>——相機加浮力把手或繫繩（掉了會沉到礁壁下）、備用電池與記憶卡、防霧劑、每次下水前檢查 O 形環有沒有卡頭髮或沙粒。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="depthline mx-auto max-w-5xl"></div>
+
+<!-- ═══════ 裝備清單 ═══════ -->
+<section id="gear" class="caustics relative py-16 md:py-20">
+  <div class="mx-auto max-w-5xl px-5">
+    <p class="text-center font-mono text-[11px] tracking-[.4em] text-aqua/90">PACKING · 12 / 04</p>
+    <h2 class="mt-2 text-center font-display text-3xl font-black text-sand md:text-4xl">裝備與現金清單</h2>
+    <p class="mx-auto mt-4 max-w-2xl text-center text-sm leading-7 text-mist/80">12/4 這天會濕兩次（沙丁魚＋瀑布），而且卡瓦森現場只收現金、沒有 ATM。可以直接在手機上勾選。</p>
+
+    <div class="mt-10 grid gap-4 md:grid-cols-2">
+      <div class="rounded-2xl border border-coral/40 bg-deep/70 p-6">
+        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-circle-exclamation text-coral"></i>前一晚必辦（12/3 晚）</h3>
+        <ul class="mt-3 space-y-2 text-[13px] leading-6 text-mist/90">
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="在飯店先結帳——05:00 出發，不要在櫃檯耗時間"><span><b class="text-coral">在飯店先結帳</b>——05:00 出發，不要在櫃檯耗時間</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="請飯店準備外帶早餐——05:00 沒有早餐供應"><span><b class="text-coral">請飯店準備外帶早餐</b>——05:00 沒有早餐供應</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="在宿霧市區領足現金——10 人一天抓 ₱10,000–15,000"><span><b class="text-coral">在宿霧市區領足現金</b>——10 人一天抓 ₱10,000–15,000</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="打包「下水包」——泳具、相機、毛巾、換洗衣物另外裝一袋，不要跟行李箱混在一起"><span><b class="text-coral">打包「下水包」</b>——泳具、相機、毛巾、換洗衣物另外裝一袋，不要跟行李箱混在一起</span></li>
+        </ul>
+        <p class="mt-3 rounded-lg bg-abyss/50 p-2.5 text-[12px] leading-6 text-mist/75">IHG 通常可以前一晚預約外帶早餐，但這家的實際政策未查證，請直接問櫃檯。</p>
+      </div>
+
+      <div class="rounded-2xl border border-aqua/40 bg-deep/70 p-6">
+        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-water text-aqua"></i>水下裝備</h3>
+        <ul class="mt-3 space-y-2 text-[13px] leading-6 text-mist/90">
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="面鏡＋呼吸管（自潛建議低容積面鏡，平壓比較省氣）"><span>面鏡＋呼吸管（自潛建議低容積面鏡，平壓比較省氣）</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="蛙鞋（一般約 ₱100／天、自潛長蛙約 ₱200／天；10 人建議前一天先請業者預留尺寸）"><span>蛙鞋（一般約 ₱100／天、自潛長蛙約 ₱200／天；10 人建議前一天先請業者預留尺寸）</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="水母衣／薄防寒衣（泡 2 小時以上一定會冷，也可取代防曬乳）"><span>水母衣／薄防寒衣（泡 2 小時以上一定會冷，也可取代防曬乳）</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="配重帶　⚠ 沒受過訓練不要自己亂配重，過重在水面是危險的"><span>配重帶　<span class="text-coral">⚠ 沒受過訓練不要自己亂配重，過重在水面是危險的</span></span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="水面浮球／浮標＋繩（安全＋定位＋休息時有東西抓）"><span>水面浮球／浮標＋繩（安全＋定位＋休息時有東西抓）</span></li>
+        </ul>
+        <p class="mt-3 rounded-lg bg-abyss/50 p-2.5 text-[12px] leading-6 text-mist/75">⚠ 墨寶 12 月的實際水溫未查證。魚群與珊瑚區不建議塗防曬乳。</p>
+      </div>
+
+      <div class="rounded-2xl border border-sun/40 bg-deep/70 p-6">
+        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-camera text-sun"></i>攝影</h3>
+        <ul class="mt-3 space-y-2 text-[13px] leading-6 text-mist/90">
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="相機＋防水殼"><span>相機＋防水殼</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="浮力把手或繫繩"><span>浮力把手或繫繩</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="備用電池"><span>備用電池</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="備用記憶卡"><span>備用記憶卡</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="防霧劑"><span>防霧劑</span></li>
+        </ul>
+      </div>
+
+      <div class="rounded-2xl border border-mist/40 bg-deep/70 p-6">
+        <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-shirt text-mist"></i>衣物與其他</h3>
+        <ul class="mt-3 space-y-2 text-[13px] leading-6 text-mist/90">
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="每人兩套換洗（一套給沙丁魚、一套給瀑布）"><span>每人兩套換洗（一套給沙丁魚、一套給瀑布）</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="兩條大毛巾"><span>兩條大毛巾</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="防水袋 ＋ 濕衣袋（濕衣服要跟行李箱隔開，不然整車都是鹹味）"><span>防水袋 ＋ 濕衣袋（濕衣服要跟行李箱隔開，不然整車都是鹹味）</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="瀑布可穿的鞋（涼鞋或溯溪鞋比夾腳拖好，岩石濕滑）"><span>瀑布可穿的鞋（涼鞋或溯溪鞋比夾腳拖好，岩石濕滑）</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="暈車藥（卡瓦森→奧斯陸是 2 小時多的海岸彎路）"><span>暈車藥（卡瓦森→奧斯陸是 2 小時多的海岸彎路）</span></li>
+          <li class="flex items-start gap-2.5"><input type="checkbox" class="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-[#27C6C0]" aria-label="水與零食（南下沿途不是隨時有便利商店）"><span>水與零食（南下沿途不是隨時有便利商店）</span></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- 當天現金 -->
+    <div class="mt-6 rounded-2xl border border-sun/35 bg-gradient-to-br from-deep/90 to-[#0d3350]/90 p-6">
+      <h3 class="flex items-center gap-2 font-display text-lg font-bold text-sand"><i class="fa-solid fa-money-bill-wave text-sun"></i>12/4 當天現金支出（可查證部分）</h3>
+      <div class="mt-4 overflow-hidden rounded-xl border border-reef/40">
+        <table class="w-full text-left text-[13px]">
+          <thead class="bg-abyss/60 text-mist/70"><tr>
+            <th class="px-3 py-2 font-medium">項目</th><th class="px-3 py-2 font-medium">單價</th>
+            <th class="px-3 py-2 font-medium">數量</th><th class="px-3 py-2 text-right font-medium">小計</th></tr></thead>
+          <tbody class="text-mist/90">
+            <tr class="border-t border-reef/30"><td class="px-3 py-2">卡瓦森門票</td><td class="t px-3 py-2">₱200</td><td class="px-3 py-2">10 人</td><td class="t px-3 py-2 text-right text-sun">₱2,000</td></tr>
+            <tr class="border-t border-reef/30"><td class="px-3 py-2">裝備租借（自潛長蛙）</td><td class="t px-3 py-2">₱200</td><td class="px-3 py-2">10 人</td><td class="t px-3 py-2 text-right text-sun">₱2,000</td></tr>
+            <tr class="border-t border-reef/30"><td class="px-3 py-2">沙丁魚嚮導（若請）</td><td class="t px-3 py-2">₱300–500</td><td class="px-3 py-2">10 人</td><td class="t px-3 py-2 text-right text-sun">₱3,000–5,000</td></tr>
+            <tr class="border-t border-reef/30"><td class="px-3 py-2">卡瓦森竹筏（可選）</td><td class="t px-3 py-2">₱300</td><td class="px-3 py-2">約 2 艘</td><td class="t px-3 py-2 text-right text-mist/70">₱600</td></tr>
+            <tr class="border-t border-reef/30"><td class="px-3 py-2">卡瓦森置物櫃（可選）</td><td class="t px-3 py-2">₱100</td><td class="px-3 py-2">約 3 個</td><td class="t px-3 py-2 text-right text-mist/70">₱300</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-3 rounded-lg border border-coral/35 bg-coral/10 p-3 text-[13px] leading-6 text-mist/90">
+        <b class="text-coral">🔴 查不到的：</b>全日包車（宿霧→墨寶→卡瓦森→奧斯陸，10 人）、早餐、午餐、小費。<b class="text-sand">包車是這天最大的一筆</b>，但查不到可引用的 10 人報價，請自行向飯店或當地業者詢價。
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="depthline mx-auto max-w-5xl"></div>
+<!-- ═══════ 住宿 ═══════ -->
+<section id="stay" class="py-16 md:py-20">
+  <div class="mx-auto max-w-5xl px-5">
+    <p class="text-center font-mono text-[11px] tracking-[.4em] text-aqua/90">ACCOMMODATION</p>
+    <h2 class="mt-2 text-center font-display text-3xl font-black text-sand md:text-4xl">住宿逐晚盤點</h2>
+    <p class="mx-auto mt-4 max-w-2xl text-center text-sm leading-7 text-mist/80">12/3–12/7 五晚全部已訂。只有 Jas 的 12/8 那晚還沒訂。</p>
+    <div class="mt-10 grid gap-4 md:grid-cols-2">
+      <div class="rounded-2xl border border-aqua/40 bg-deep/70 p-6">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <span class="t text-sm text-aqua">12/3 晚</span>
+          <span class="rounded-full bg-aqua/15 px-3 py-0.5 text-[11px] font-bold text-aqua">已確認</span>
+        </div>
+        <h3 class="mt-2 font-display text-lg font-bold text-sand">Holiday Inn Cebu City by IHG</h3>
+        <p class="mt-0.5 text-[12px] text-mist/60">宿霧市區　·　四</p>
+        <dl class="mt-3 space-y-1.5 text-[13px]">
+          <div class="flex justify-between gap-3 border-b border-reef/30 pb-1.5"><dt class="text-mist/65">房型</dt><dd class="text-right text-mist/90">1 筆訂單、3 間房</dd></div>
+          <div class="flex justify-between gap-3 pb-1"><dt class="text-mist/65">入住 / 退房</dt><dd class="t text-mist/90">15:00 / 12:00</dd></div>
+        </dl>
+        <p class="mt-3 rounded-lg bg-abyss/50 p-2.5 text-[12px] leading-6 text-mist/80">入住是 <b class="text-sand">15:00</b>。想早點進房可先寫信問，不保證。</p>
+      </div>
+      <div class="rounded-2xl border border-aqua/40 bg-deep/70 p-6">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <span class="t text-sm text-aqua">12/4 晚</span>
+          <span class="rounded-full bg-aqua/15 px-3 py-0.5 text-[11px] font-bold text-aqua">已確認</span>
+        </div>
+        <h3 class="mt-2 font-display text-lg font-bold text-sand">W Golf Resort</h3>
+        <p class="mt-0.5 text-[12px] text-mist/60">奧斯陸 Lagunde Beach　·　五</p>
+        <dl class="mt-3 space-y-1.5 text-[13px]">
+          <div class="flex justify-between gap-3 border-b border-reef/30 pb-1.5"><dt class="text-mist/65">房型</dt><dd class="text-right text-mist/90">1 筆訂單、3 間房</dd></div>
+          <div class="flex justify-between gap-3 pb-1"><dt class="text-mist/65">入住 / 退房</dt><dd class="t text-mist/90">14:00 / 12:00</dd></div>
+        </dl>
+        <p class="mt-3 rounded-lg bg-abyss/50 p-2.5 text-[12px] leading-6 text-mist/80">距鯨鯊點約 15 分鐘車程（住客評論）。本身有餐廳與池畔酒吧。</p>
+      </div>
+      <div class="rounded-2xl border border-sun/40 bg-deep/70 p-6">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <span class="t text-sm text-sun">12/5–12/7（3 晚）</span>
+          <span class="rounded-full bg-sun/15 px-3 py-0.5 text-[11px] font-bold text-sun">已訂・不可退款</span>
+        </div>
+        <h3 class="mt-2 font-display text-lg font-bold text-sand">Bathala Resort</h3>
+        <p class="mt-0.5 text-[12px] text-mist/60">薄荷島 Panglao　·　六・日・一</p>
+        <dl class="mt-3 space-y-1.5 text-[13px]">
+          <div class="flex justify-between gap-3 border-b border-reef/30 pb-1.5"><dt class="text-mist/65">房型</dt><dd class="text-right text-mist/90">三臥室私人泳池別墅：140 ㎡、3 臥 3 衛、全套廚房、專用入口</dd></div>
+          <div class="flex justify-between gap-3 pb-1"><dt class="text-mist/65">入住 / 退房</dt><dd class="t text-mist/90">14:00 / 12:00</dd></div>
+        </dl>
+        <p class="mt-3 rounded-lg bg-abyss/50 p-2.5 text-[12px] leading-6 text-mist/80">截圖價 NT$9,763／晚（含稅）。<b class="text-sun">🟡 截圖底部「房數」顯示 3——請打開訂單確認最後訂了 1 棟還是 3 棟。</b>每棟上限 9 位大人，10 位大人會超過 1 位。</p>
+      </div>
+      <div class="rounded-2xl border border-coral/40 bg-deep/70 p-6">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <span class="t text-sm text-coral">12/8 晚</span>
+          <span class="rounded-full bg-coral/15 px-3 py-0.5 text-[11px] font-bold text-coral">未訂</span>
+        </div>
+        <h3 class="mt-2 font-display text-lg font-bold text-sand">Jas 一人：未定</h3>
+        <p class="mt-0.5 text-[12px] text-mist/60">建議 Mactan／Lapu-Lapu 機場側　·　二</p>
+        <dl class="mt-3 space-y-1.5 text-[13px]">
+          <div class="flex justify-between gap-3 border-b border-reef/30 pb-1.5"><dt class="text-mist/65">房型</dt><dd class="text-right text-mist/90">—</dd></div>
+          <div class="flex justify-between gap-3 pb-1"><dt class="text-mist/65">入住 / 退房</dt><dd class="t text-mist/90">—</dd></div>
+        </dl>
+        <p class="mt-3 rounded-lg bg-abyss/50 p-2.5 text-[12px] leading-6 text-mist/80">隔天 BR282 12:30 起飛，10:00 前到機場即可。空房與價格未查證。</p>
+      </div>
+    </div>
+
+    <div class="mt-4 rounded-2xl border border-reef/50 bg-deep/60 p-6">
+      <h3 class="flex items-center gap-2 font-display text-base font-bold text-sand"><i class="fa-solid fa-circle-info text-aqua"></i>關於 Bathala 別墅</h3>
+      <ul class="mt-3 space-y-2 text-[13px] leading-6 text-mist/90">
+        <li><b class="text-aqua">位置</b>——Bathala 官網把「Aman Sinaya Villas」（140 ㎡、可住 9 人、私人泳池）列為自家 8 棟別墅；Aman Sinaya 官網說在 Bathala「隔壁」。你們訂的規格完全吻合，<b class="text-sand">很可能不是住在主樓而是隔壁別墅區，入住手續在哪裡辦請先問。</b></li>
+        <li><b class="text-aqua">設施</b>——別墅住客可用 Bathala 的泳池、泳池吧台、餐廳、酒窖、健身房。主泳池同時開放給隔壁 Amihan Resort（25 間）住客，人可能比想像中多，但你們有私人泳池。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="depthline mx-auto max-w-5xl"></div>
+
+<!-- ═══════ 風險與待確認 ═══════ -->
+<section id="risk" class="caustics relative py-16 md:py-20">
+  <div class="mx-auto max-w-5xl px-5">
+    <p class="text-center font-mono text-[11px] tracking-[.4em] text-coral/90">RISK &amp; TODO</p>
+    <h2 class="mt-2 text-center font-display text-3xl font-black text-sand md:text-4xl">風險與待確認</h2>
+    <div class="mt-5 flex flex-wrap justify-center gap-2 text-[12px]">
+      <span class="rounded-full bg-coral/15 px-3 py-1 font-bold text-coral">🔴 會讓行程走不下去</span>
+      <span class="rounded-full bg-sun/15 px-3 py-1 font-bold text-sun">🟡 要注意</span>
+      <span class="rounded-full bg-aqua/15 px-3 py-1 font-bold text-aqua">🟢 小提醒</span>
+    </div>
+    <div class="mt-9 space-y-3">
+      <details class="emb group rounded-2xl border border-coral/35 bg-deep/60 transition hover:border-coral/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🔴</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">12/8「傍晚搭船」會趕不上 19:35 的班機</span>
+          <span class="chev shrink-0 text-coral">▾</span>
+        </summary>
+        <div class="border-t border-coral/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">OceanJet 航程約 2 小時，Pier 1 到機場還要 45–60 分鐘。傍晚班次抵達時班機已起飛或只剩十幾分鐘。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-coral">建議做法</b>　最晚 14:00，建議 13:00。現在就上 oceanjet.net 訂。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-coral/35 bg-deep/60 transition hover:border-coral/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🔴</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">12/4 的 14:30 離開瀑布是硬線</span>
+          <span class="chev shrink-0 text-coral">▾</span>
+        </summary>
+        <div class="border-t border-coral/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">整天只有這一個不能妥協的時間點。晚 20 分鐘，17:00 到奧斯陸就變 17:20–17:40，還要摸黑走海岸彎路。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-coral">建議做法</b>　指定一個人負責看錶。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-coral/35 bg-deep/60 transition hover:border-coral/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🔴</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">12/4 卡瓦森只收現金、現場無 ATM</span>
+          <span class="chev shrink-0 text-coral">▾</span>
+        </summary>
+        <div class="border-t border-coral/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">門票、竹筏、置物櫃全部現金。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-coral">建議做法</b>　12/3 晚上在宿霧市區就領好 ₱10,000–15,000。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-coral/35 bg-deep/60 transition hover:border-coral/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🔴</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">12/5 的 Apekop 船：螃蟹船、一天一班、天候可能停開</span>
+          <span class="chev shrink-0 text-coral">▾</span>
+        </summary>
+        <div class="border-t border-coral/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">官網自述不是渡輪、要涉水上下船、明列不適合帶幼兒的家長／年長者／行動不便者／孕婦。Bathala 別墅不可退款，船停開也得想辦法當天到薄荷島。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-coral">建議做法</b>　①確認團員狀況 ②想好 Plan B（Oslob→宿霧市區→OceanJet→Tagbilaran，那天等於全毀）③買旅遊不便險。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-sun/35 bg-deep/60 transition hover:border-sun/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟡</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">連續三天天未亮出門</span>
+          <span class="chev shrink-0 text-sun">▾</span>
+        </summary>
+        <div class="border-t border-sun/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">12/3 搭 06:55 班機（04:55 前到機場）、12/4 04:20 起床、12/5 05:00 看鯨鯊。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-sun">建議做法</b>　12/6 睡飽是對的。12/3、12/4 晚上都要早睡。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-sun/35 bg-deep/60 transition hover:border-sun/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟡</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">12/7 若睡到中午，一定看不到海豚</span>
+          <span class="chev shrink-0 text-sun">▾</span>
+        </summary>
+        <div class="border-t border-sun/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">跳島團全部清晨出發，海豚約 06:00–09:00 才看得到。Balicasag 下午收不收也查不到。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-sun">建議做法</b>　建議清晨去、11:00 回來補眠。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-sun/35 bg-deep/60 transition hover:border-sun/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟡</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">12/6 若 13:00 後才出門，Loboc 遊船午餐會趕不上</span>
+          <span class="chev shrink-0 text-sun">▾</span>
+        </summary>
+        <div class="border-t border-sun/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">最後一班約 14:00–14:30；Corella 眼鏡猴 15:00–16:00 關、不順路。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-sun">建議做法</b>　12:00 準時出發；Corella 與遊船只能二選一。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-sun/35 bg-deep/60 transition hover:border-sun/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟡</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">Bathala 別墅：棟數與人數上限</span>
+          <span class="chev shrink-0 text-sun">▾</span>
+        </summary>
+        <div class="border-t border-sun/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">截圖底部「房數」顯示 3；每棟上限 9 位大人（兒童免費）。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-sun">建議做法</b>　打開訂單確認棟數。只有 1 棟又是 10 位大人的話，先問飯店能否加人。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-sun/35 bg-deep/60 transition hover:border-sun/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟡</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">12/3 Jas 晚 1 小時 25 分落地</span>
+          <span class="chev shrink-0 text-sun">▾</span>
+        </summary>
+        <div class="border-t border-sun/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">大家 09:50 到、Jas 11:15 到，Holiday Inn 15:00 才能入住。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-sun">建議做法</b>　決定要在機場等 Jas，還是先進市區寄放行李。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-sun/35 bg-deep/60 transition hover:border-sun/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟡</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">12/4 包車還沒詢價</span>
+          <span class="chev shrink-0 text-sun">▾</span>
+        </summary>
+        <div class="border-t border-sun/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">宿霧→墨寶→卡瓦森→奧斯陸的 10 人全日包車，是這天最大的支出。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-sun">建議做法</b>　同時問幾家業者，收到報價後比較。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-sun/35 bg-deep/60 transition hover:border-sun/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟡</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">10 人＋行李，一台 van 可能放不下</span>
+          <span class="chev shrink-0 text-sun">▾</span>
+        </summary>
+        <div class="border-t border-sun/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">van 舒適可載 6 人各帶 1 件中大型行李，或 10 人不帶行李；Hiace 7–12 人＋7 件小行李。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-sun">建議做法</b>　請業者寫明行李容量；多半要兩台 van，或一台 coaster。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-sun/35 bg-deep/60 transition hover:border-sun/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟡</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">05:00 出發可能有非常規時段加價</span>
+          <span class="chev shrink-0 text-sun">▾</span>
+        </summary>
+        <div class="border-t border-sun/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">有業者寫「非一般時段加收 ₱500」、「23:00–02:59 加收 ₱400」。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-sun">建議做法</b>　詢價時問清楚。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-sun/35 bg-deep/60 transition hover:border-sun/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟡</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">拍照的人是自潛風險最高的人</span>
+          <span class="chev shrink-0 text-sun">▾</span>
+        </summary>
+        <div class="border-t border-sun/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">注意力在構圖上，容易不自覺拉長憋氣，水面的人也不容易警覺。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-sun">建議做法</b>　拍照的人要有專人戒護，戒護的人不能同時拍照。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-sun/35 bg-deep/60 transition hover:border-sun/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟡</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">卡瓦森→奧斯陸的車程沒有官方數據</span>
+          <span class="chev shrink-0 text-sun">▾</span>
+        </summary>
+        <div class="border-t border-sun/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">依距離（約 85–95 km 海岸彎路）推估 2–2.5 小時。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-sun">建議做法</b>　訂車時直接問司機。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-sun/35 bg-deep/60 transition hover:border-sun/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟡</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">12 月的天氣與海況</span>
+          <span class="chev shrink-0 text-sun">▾</span>
+        </summary>
+        <div class="border-t border-sun/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">12 月屬 amihan 季，海岸防衛隊仍會因湧浪或熱帶氣旋停航（2025/11 曾有整批宿霧–薄荷島航線停航）。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-sun">建議做法</b>　行前每天看 PAGASA 與業者 FB。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-sun/35 bg-deep/60 transition hover:border-sun/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟡</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">Jas 的 12/8 宿霧住宿仍未訂</span>
+          <span class="chev shrink-0 text-sun">▾</span>
+        </summary>
+        <div class="border-t border-sun/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">隔天 BR282 12:30 起飛。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-sun">建議做法</b>　建議訂 Mactan 機場側。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-aqua/35 bg-deep/60 transition hover:border-aqua/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟢</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">Bathala 主泳池是三處共用</span>
+          <span class="chev shrink-0 text-aqua">▾</span>
+        </summary>
+        <div class="border-t border-aqua/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">Bathala、隔壁 Amihan（25 間）、別墅住客都能用。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-aqua">建議做法</b>　你們別墅有私人泳池，影響不大。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-aqua/35 bg-deep/60 transition hover:border-aqua/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟢</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">卡瓦森每月第三個週三公休</span>
+          <span class="chev shrink-0 text-aqua">▾</span>
+        </summary>
+        <div class="border-t border-aqua/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">2026 年 12 月是 12/16。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-aqua">建議做法</b>　✅ 你們 12/4 去不受影響。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-aqua/35 bg-deep/60 transition hover:border-aqua/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟢</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">12 月看不到巧克力色的巧克力山</span>
+          <span class="chev shrink-0 text-aqua">▾</span>
+        </summary>
+        <div class="border-t border-aqua/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">草皮要乾季才轉褐。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-aqua">建議做法</b>　先跟團員講清楚。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-aqua/35 bg-deep/60 transition hover:border-aqua/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟢</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">Balicasag 有時間管制</span>
+          <span class="chev shrink-0 text-aqua">▾</span>
+        </summary>
+        <div class="border-t border-aqua/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">海龜浮潛每人限 30–45 分鐘。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-aqua">建議做法</b>　訂團時問清楚怎麼分批。</p>
+        </div>
+      </details>
+      <details class="emb group rounded-2xl border border-aqua/35 bg-deep/60 transition hover:border-aqua/60">
+        <summary class="flex cursor-pointer items-start gap-3 p-4">
+          <span class="mt-0.5 shrink-0 text-sm">🟢</span>
+          <span class="min-w-0 flex-1 text-[14px] font-bold leading-6 text-sand">「Loboc 河遊船」可能貨不對板</span>
+          <span class="chev shrink-0 text-aqua">▾</span>
+        </summary>
+        <div class="border-t border-aqua/25 px-4 py-3.5 text-[13px] leading-6">
+          <p class="text-mist/85">有旅客回報只有河邊餐廳＋SUP。</p>
+          <p class="mt-2 rounded-lg bg-abyss/50 p-2.5"><b class="text-aqua">建議做法</b>　訂單寫明 floating restaurant river cruise。</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="mt-6 rounded-2xl border border-aqua/35 bg-aqua/5 p-6">
+      <h3 class="flex items-center gap-2 font-display text-base font-bold text-sand"><i class="fa-solid fa-circle-check text-aqua"></i>已排除的疑慮與更正</h3>
+      <ul class="mt-3 space-y-1.5 text-[13px] leading-6 text-mist/85">
+        <li>✅ 大家搭<b class="text-sand">星宇 JX781</b>，不是長榮 BR281——只有 Jas 搭長榮（BR281 去、BR282 回）。</li>
+        <li>✅ Bathala <b class="text-sand">12/5 早就訂了</b>，訂的是 12/5–12/8 三晚。</li>
+        <li>✅ Holiday Inn 入住是 <b class="text-sand">15:00</b>（不是 14:00）。</li>
+        <li>✅ 航班時刻全部與訂位一致。</li>
+        <li>✅「越早下水越好」是錯的——算過太陽仰角後，墨寶 07:00 僅 15°、09:30 才 45°，太早下水反而光線最差。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="depthline mx-auto max-w-5xl"></div>
+
+<!-- ═══════ 費用 ═══════ -->
+<section id="cost" class="py-16 md:py-20">
+  <div class="mx-auto max-w-5xl px-5">
+    <p class="text-center font-mono text-[11px] tracking-[.4em] text-sun/90">BUDGET</p>
+    <h2 class="mt-2 text-center font-display text-3xl font-black text-sand md:text-4xl">費用粗估</h2>
+    <p class="mx-auto mt-4 max-w-2xl text-center text-sm leading-7 text-mist/80">
+      <b class="text-sun">只列出有查到出處的數字，查不到的留白。</b>這不是預算表，只是量級參考。幣別：PHP（Bathala 別墅為新台幣，見住宿）。
+    </p>
+
+    <div class="mt-10 overflow-hidden rounded-2xl border border-reef/50">
+      <table class="w-full text-left text-[13px]">
+        <thead class="bg-deep/80 text-mist/70"><tr>
+          <th class="px-3 py-2.5 font-medium">日期</th><th class="px-3 py-2.5 font-medium">項目</th>
+          <th class="px-3 py-2.5 text-right font-medium">單價</th><th class="px-3 py-2.5 text-right font-medium">數量</th>
+          <th class="px-3 py-2.5 text-right font-medium">小計</th></tr></thead>
+        <tbody class="text-mist/90">
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/4</td><td class="px-3 py-2">沙丁魚裝備租借（自潛長蛙）</td><td class="t px-3 py-2 text-right">₱200</td><td class="t px-3 py-2 text-right text-mist/60">10</td><td class="t px-3 py-2 text-right text-sun">₱2,000</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/4</td><td class="px-3 py-2">沙丁魚嚮導（若決定要請）</td><td class="t px-3 py-2 text-right">₱400</td><td class="t px-3 py-2 text-right text-mist/60">10</td><td class="t px-3 py-2 text-right text-sun">₱4,000</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/4</td><td class="px-3 py-2">卡瓦森瀑布門票（Level 1）</td><td class="t px-3 py-2 text-right">₱200</td><td class="t px-3 py-2 text-right text-mist/60">10</td><td class="t px-3 py-2 text-right text-sun">₱2,000</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/4</td><td class="px-3 py-2">卡瓦森竹筏（可選）</td><td class="t px-3 py-2 text-right">₱300</td><td class="t px-3 py-2 text-right text-mist/60">2</td><td class="t px-3 py-2 text-right text-sun">₱600</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/4</td><td class="px-3 py-2">卡瓦森置物櫃（可選）</td><td class="t px-3 py-2 text-right">₱100</td><td class="t px-3 py-2 text-right text-mist/60">3</td><td class="t px-3 py-2 text-right text-sun">₱300</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/5</td><td class="px-3 py-2">Apekop 船 Oslob → Panglao（單程）</td><td class="t px-3 py-2 text-right">₱1,000</td><td class="t px-3 py-2 text-right text-mist/60">10</td><td class="t px-3 py-2 text-right text-sun">₱10,000</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/5</td><td class="px-3 py-2">Momo Beach → Alona 接駁</td><td class="t px-3 py-2 text-right">₱100</td><td class="t px-3 py-2 text-right text-mist/60">10</td><td class="t px-3 py-2 text-right text-sun">₱1,000</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/6</td><td class="px-3 py-2">巧克力山門票（成人非居民）</td><td class="t px-3 py-2 text-right">₱150</td><td class="t px-3 py-2 text-right text-mist/60">10</td><td class="t px-3 py-2 text-right text-sun">₱1,500</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/7</td><td class="px-3 py-2">跳島＋海豚（10 人以上級距，含接送）</td><td class="t px-3 py-2 text-right">₱2,670</td><td class="t px-3 py-2 text-right text-mist/60">10</td><td class="t px-3 py-2 text-right text-sun">₱26,700</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/7</td><td class="px-3 py-2">Balicasag 環境／浮潛費</td><td class="t px-3 py-2 text-right">₱300</td><td class="t px-3 py-2 text-right text-mist/60">10</td><td class="t px-3 py-2 text-right text-sun">₱3,000</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/7</td><td class="px-3 py-2">Virgin Island 環境費</td><td class="t px-3 py-2 text-right">₱100</td><td class="t px-3 py-2 text-right text-mist/60">10</td><td class="t px-3 py-2 text-right text-sun">₱1,000</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/7</td><td class="px-3 py-2">Hinagdanan Cave 門票（選配）</td><td class="t px-3 py-2 text-right">₱75</td><td class="t px-3 py-2 text-right text-mist/60">10</td><td class="t px-3 py-2 text-right text-sun">₱750</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/8</td><td class="px-3 py-2">OceanJet Tagbilaran → Cebu（Tourist）</td><td class="t px-3 py-2 text-right">₱900</td><td class="t px-3 py-2 text-right text-mist/60">10</td><td class="t px-3 py-2 text-right text-sun">₱9,000</td></tr>
+          <tr class="border-t border-reef/30 hover:bg-deep/40"><td class="t px-3 py-2 text-aqua/80">12/8</td><td class="px-3 py-2">Tagbilaran 碼頭費</td><td class="t px-3 py-2 text-right">₱25</td><td class="t px-3 py-2 text-right text-mist/60">10</td><td class="t px-3 py-2 text-right text-sun">₱250</td></tr>
+        </tbody>
+        <tfoot><tr class="border-t-2 border-sun/40 bg-sun/10">
+          <td class="px-3 py-3 font-bold text-sand" colspan="4">已查證項目合計（10 人）</td>
+          <td class="t px-3 py-3 text-right text-lg font-bold text-sun">₱62,100</td></tr></tfoot>
+      </table>
+    </div>
+
+    <div class="mt-5 rounded-2xl border border-coral/40 bg-coral/10 p-6">
+      <h3 class="flex items-center gap-2 font-display text-base font-bold text-sand"><i class="fa-solid fa-circle-exclamation text-coral"></i>未納入（查不到可引用的數字，請自行詢價填入）</h3>
+      <ul class="mt-3 grid gap-1.5 text-[13px] leading-6 text-mist/85 md:grid-cols-2">
+        <li>・<b class="text-coral">12/4 全日包車</b>（宿霧→墨寶→卡瓦森→奧斯陸，這天最大的一筆）</li>
+        <li>・12/6 薄荷島全日包車（10 人）</li>
+        <li>・12/3 機場 → 宿霧市區接送</li>
+        <li>・12/4 沙丁魚、12/5 鯨鯊（已訂，金額未知）</li>
+        <li>・12/5 Apekop 超重行李費（&gt;10 kg 每件 ₱100–150）</li>
+        <li>・12/6 Loboc 河遊船午餐、眼鏡猴等零星門票</li>
+        <li>・12/8 Panglao → Tagbilaran 港包車、Pier 1 → 機場 Grab</li>
+        <li>・Jas 的 12/8 宿霧住宿</li>
+        <li>・全程餐費、小費、SIM 卡、旅遊不便險</li>
+      </ul>
+      <p class="mt-3 text-[12px] text-mist/70">公開參考價：宿霧→奧斯陸單程 van ₱5,775–7,000；薄荷島陸遊共乘團 US$19／人起、一般區間 US$48–107／人。多篇評論說直接跟當地業者訂比平台便宜一半以上。</p>
+    </div>
+  </div>
+</section>
+
+<div class="depthline mx-auto max-w-5xl"></div>
+
+<!-- ═══════ 注意事項 ═══════ -->
+<section id="notes" class="py-16 md:py-20">
+  <div class="mx-auto max-w-3xl px-5">
+    <p class="text-center font-mono text-[11px] tracking-[.4em] text-aqua/90">NOTES</p>
+    <h2 class="mt-2 text-center font-display text-3xl font-black text-sand md:text-4xl">關於這個網頁</h2>
+    <div class="mt-9 space-y-4">
+      <div class="flex gap-4 rounded-2xl border border-aqua/40 bg-deep/70 p-5">
+        <span class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-aqua/15 text-aqua"><i class="fa-solid fa-mobile-screen"></i></span>
+        <div>
+          <p class="font-bold text-sand">加到主畫面，就能像 App 一樣用</p>
+          <p class="mt-1 text-[13px] leading-6 text-mist/80">
+            <b class="text-aqua">iPhone：</b>用 Safari 開啟這一頁 → 下方分享鈕 → 「加入主畫面」。<br>
+            <b class="text-aqua">Android：</b>用 Chrome 開啟 → 右上選單 → 「安裝應用程式」或「加到主畫面」。<br>
+            ※ LINE 內建瀏覽器無法加入，請改用 Safari／Chrome 開啟。<br>
+            出發前先開過一次，<b class="text-sand">在墨寶、薄荷島沒訊號時也能離線看行程</b>（天氣需要連線）。
+          </p>
+        </div>
+      </div>
+      <div class="flex gap-4 rounded-2xl border border-reef/50 bg-deep/70 p-5">
+        <span class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-aqua/15 text-aqua"><i class="fa-solid fa-cloud-sun"></i></span>
+        <div>
+          <p class="font-bold text-sand">關於各日天氣</p>
+          <p class="mt-1 text-[13px] leading-6 text-mist/80">由 <a class="underline hover:text-aqua" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> 免費預報 API 於每次開啟網頁時即時取得，各日分別對應當天所在地（宿霧／墨寶／奧斯陸／薄荷島）。僅提供約 16 天內的預報，<b class="text-sand">出發前約兩週才會開始顯示</b>，在此之前顯示「尚未進入預報範圍」。本頁不顯示任何推測的天氣數值。資料授權 CC BY 4.0。</p>
+        </div>
+      </div>
+      <div class="flex gap-4 rounded-2xl border border-reef/50 bg-deep/70 p-5">
+        <span class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sun/15 text-sun"><i class="fa-solid fa-circle-info"></i></span>
+        <div>
+          <p class="font-bold text-sand">資料來源與可信度</p>
+          <p class="mt-1 text-[13px] leading-6 text-mist/80">
+            本頁所有內容整理自你提供的試算表<b class="text-sand">《Cebu / Bohol 2026 行程總表（10 人團・2026/10/4 第五版）》</b>，以分頁 1「行程總表」為主幹，並補入分頁 2–12 的細節。<br>
+            試算表中標示<b class="text-aqua">【查證】</b>的項目有原始出處；標示<b class="text-mist">【通則】</b>或「推估」的項目沒有針對當地查到來源。車程、水溫、部分營業時間屬推估值，<b class="text-sun">出發前請以各業者與官方最新公告為準</b>。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="border-t border-reef/40 py-10 text-center">
+  <p class="font-display text-lg font-bold text-sand">沙丁魚風暴<span class="text-aqua">與</span>鯨鯊</p>
+  <p class="mt-2 font-mono text-xs tracking-widest text-mist/60">CEBU × BOHOL · 2026.12.03 — 12.09 · 10 PAX</p>
+  <p class="mt-4 text-[11px] text-mist/45">
+    天氣資料：<a class="underline hover:text-aqua" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a>（CC BY 4.0）
+  </p>
+  <p class="mt-3 text-base" aria-hidden="true">🐟 🐋 🏝️</p>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var $ = function(id){ return document.getElementById(id); };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── 導覽列：捲動時加底色 ── */
+  var nav = $('navbar');
+  var SC = ['bg-abyss/90','backdrop-blur','border-b','border-reef/40','shadow-lg','shadow-black/30'];
+  function onScroll(){
+    if(window.scrollY > 24){ SC.forEach(function(c){ nav.classList.add(c); }); }
+    else { SC.forEach(function(c){ nav.classList.remove(c); }); }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ── 手機選單 ── */
+  var btn = $('menuBtn'), menu = $('mobileMenu');
+  btn.addEventListener('click', function(){
+    var open = !menu.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', String(open));
+    btn.innerHTML = open ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menu.classList.add('hidden');
+      btn.setAttribute('aria-expanded','false');
+      btn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    });
+  });
+
+  /* ── Scrollspy ── */
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  var spy = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(l){ l.classList.toggle('active', l.dataset.link === e.target.id); });
+      }
+    });
+  }, {rootMargin:'-45% 0px -50% 0px'});
+  ['home','overview','itinerary','sardine','freedive','gear','stay','risk','cost'].forEach(function(id){
+    var s = $(id); if(s) spy.observe(s);
+  });
+
+  /* ── 倒數：至 2026-12-03 06:55 台灣時間（JX781 起飛） ── */
+  var target = new Date('2026-12-03T06:55:00+08:00');
+  function pad(n){ return String(n).padStart(2,'0'); }
+  var timer = setInterval(tick, 1000);
+  function tick(){
+    var d = target - new Date();
+    if(d <= 0){
+      var el = document.querySelector('#cd-d');
+      if(el && el.parentElement && el.parentElement.parentElement){
+        el.parentElement.parentElement.innerHTML =
+          '<div class="col-span-4 rounded-xl border border-aqua/60 bg-aqua/15 px-6 py-3 font-display text-lg font-bold text-sand">🛫 出發！一路順風</div>';
+      }
+      clearInterval(timer); return;
+    }
+    var dd = Math.floor(d/86400000); d %= 86400000;
+    var hh = Math.floor(d/3600000);  d %= 3600000;
+    var mm = Math.floor(d/60000);    d %= 60000;
+    $('cd-d').textContent = dd;
+    $('cd-h').textContent = pad(hh);
+    $('cd-m').textContent = pad(mm);
+    $('cd-s').textContent = pad(Math.floor(d/1000));
+  }
+  tick();
+
+  /* ── 各日天氣：Open-Meteo（免金鑰・CORS 支援） ──
+     每天對應當天實際所在地；只顯示 API 真的回傳的預報，
+     查無該日期時顯示「尚未進入預報範圍」，絕不顯示推測值。 */
+  var WX = {
+    0:['fa-sun','晴朗'], 1:['fa-sun','大致晴朗'], 2:['fa-cloud-sun','晴時多雲'], 3:['fa-cloud','陰天'],
+    45:['fa-smog','霧'], 48:['fa-smog','霧'],
+    51:['fa-cloud-rain','毛毛雨'], 53:['fa-cloud-rain','毛毛雨'], 55:['fa-cloud-rain','毛毛雨'],
+    61:['fa-cloud-showers-heavy','小雨'], 63:['fa-cloud-showers-heavy','中雨'], 65:['fa-cloud-showers-heavy','大雨'],
+    80:['fa-cloud-rain','短暫陣雨'], 81:['fa-cloud-rain','陣雨'], 82:['fa-cloud-showers-heavy','強陣雨'],
+    95:['fa-cloud-bolt','雷雨'], 96:['fa-cloud-bolt','雷雨（夾冰雹）'], 99:['fa-cloud-bolt','雷雨（夾冰雹）']
+  };
+  /* 每天對應當天實際所在地。為避免依賴「多座標合併查詢」的回傳格式，
+     改為每個地點各發一次單點查詢（單點回傳格式明確），再分配回各天。 */
+  var SPOTS = {
+    cebu:    [10.3157, 123.8854, '宿霧'],
+    moalboal:[ 9.9500, 123.3667, '墨寶'],
+    oslob:   [ 9.4667, 123.3833, '奧斯陸'],
+    loboc:   [ 9.6361, 124.0294, 'Loboc'],
+    panglao: [ 9.5783, 123.7500, 'Panglao']
+  };
+  /* [天氣欄位 id, 日期, 地點 key] */
+  var DAYS = [
+    ['wx-0','2026-12-03','cebu'],
+    ['wx-1','2026-12-04','moalboal'],
+    ['wx-2','2026-12-05','oslob'],
+    ['wx-3','2026-12-06','loboc'],
+    ['wx-4','2026-12-07','panglao'],
+    ['wx-5','2026-12-08','panglao'],
+    ['wx-6','2026-12-09','cebu']
+  ];
+
+  function render(el, name, daily, date){
+    if(!daily || !daily.time){
+      el.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i>' + name + '：天氣暫時無法取得';
+      return;
+    }
+    var k = daily.time.indexOf(date);
+    if(k === -1){
+      el.innerHTML = '<i class="fa-regular fa-clock mr-1"></i>' + name + '：尚未進入預報範圍';
+      return;
+    }
+    var w  = WX[daily.weather_code[k]] || ['fa-cloud','—'];
+    var hi = Math.round(daily.temperature_2m_max[k]);
+    var lo = Math.round(daily.temperature_2m_min[k]);
+    var pp = (daily.precipitation_probability_max && daily.precipitation_probability_max[k] != null)
+           ? daily.precipitation_probability_max[k] : null;
+    el.innerHTML = '<span class="text-mist/60">' + name + '</span>&thinsp;'
+                 + '<i class="fa-solid ' + w[0] + ' mx-1 text-aqua"></i>' + w[1]
+                 + '&thinsp;<span class="t">' + hi + '°/' + lo + '°</span>'
+                 + (pp === null ? '' : '&thinsp;<i class="fa-solid fa-umbrella mx-0.5"></i><span class="t">' + pp + '%</span>');
+  }
+
+  function loadWeather(){
+    Object.keys(SPOTS).forEach(function(key){
+      var sp = SPOTS[key];
+      var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + sp[0] + '&longitude=' + sp[1]
+              + '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max'
+              + '&timezone=Asia%2FManila&forecast_days=16';
+      fetch(url).then(function(r){
+        if(!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(function(j){
+        DAYS.forEach(function(d){
+          if(d[2] !== key) return;
+          var el = $(d[0]); if(el) render(el, sp[2], j && j.daily, d[1]);
+        });
+      }).catch(function(){
+        DAYS.forEach(function(d){
+          if(d[2] !== key) return;
+          var el = $(d[0]);
+          if(el) el.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i>' + sp[2] + '：天氣暫時無法取得（請稍後重新整理）';
+        });
+      });
+    });
+  }
+  loadWeather();
+
+  /* ── 沙丁魚球 Canvas：魚群繞環游動 ── */
+  function startBaitball(canvas, opts){
+    opts = opts || {};
+    if(!canvas) return null;
+    if(reduce){ canvas.remove(); return null; }
+    var ctx = canvas.getContext('2d');
+    var W = 0, H = 0, alive = true, run = true, t0 = performance.now();
+    function resize(){
+      var host = canvas.parentElement; if(!host) return;
+      var r = host.getBoundingClientRect();
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    var N = opts.count || 320;
+    var fish = [];
+    for(var i = 0; i < N; i++){
+      fish.push({
+        a: Math.random() * Math.PI * 2,          /* 環上角度 */
+        r: 0.55 + Math.random() * 0.45,          /* 半徑比例 */
+        w: (0.10 + Math.random() * 0.16) * (Math.random() < .5 ? 1 : 1), /* 角速度 */
+        z: Math.random(),                         /* depth：影響大小與亮度 */
+        p: Math.random() * Math.PI * 2            /* 擺動相位 */
+      });
+    }
+    function frame(now){
+      if(!alive) return;
+      requestAnimationFrame(frame);
+      if(!run) return;
+      var t = (now - t0) / 1000;
+      ctx.clearRect(0, 0, W, H);
+      var cx = W * (opts.cx || 0.5), cy = H * (opts.cy || 0.5);
+      var R  = Math.min(W, H) * (opts.radius || 0.3);
+      for(var i = 0; i < N; i++){
+        var f = fish[i];
+        var a = f.a + t * f.w;
+        var wob = Math.sin(t * 0.8 + f.p) * 0.08;
+        var rr = R * (f.r + wob);
+        var x = cx + Math.cos(a) * rr * 1.25;
+        var y = cy + Math.sin(a) * rr * 0.72 + Math.sin(t * 0.5 + f.p) * 6;
+        var tang = a + Math.PI / 2;
+        var sz = 3 + f.z * 5;
+        var al = 0.25 + f.z * 0.55;
+        ctx.globalAlpha = al;
+        ctx.strokeStyle = 'rgba(226,244,248,' + (0.55 + f.z * 0.45) + ')';
+        ctx.lineWidth = 1 + f.z * 1.2;
+        ctx.beginPath();
+        ctx.moveTo(x - Math.cos(tang) * sz * 0.5, y - Math.sin(tang) * sz * 0.5);
+        ctx.lineTo(x + Math.cos(tang) * sz * 0.5, y + Math.sin(tang) * sz * 0.5);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+    function vis(){ run = !document.hidden; }
+    document.addEventListener('visibilitychange', vis);
+    requestAnimationFrame(frame);
+    return function stop(){
+      alive = false;
+      window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', vis);
+    };
+  }
+
+  startBaitball($('baitball'), { count: 360, radius: 0.40, cx: 0.80, cy: 0.76 });
+
+  /* ── 起動畫面 ── */
+  (function(){
+    var sp = $('splash'); if(!sp) return;
+    document.body.classList.add('splash-lock');
+    var stop = startBaitball($('splashFish'), { count: 420, radius: 0.34, cy: 0.5 });
+    var done = false;
+    function close(){
+      if(done) return; done = true;
+      sp.style.opacity = '0';
+      setTimeout(function(){
+        if(stop) stop();
+        if(sp.parentNode) sp.parentNode.removeChild(sp);
+        document.body.classList.remove('splash-lock');
+      }, 750);
+    }
+    sp.addEventListener('click', close);
+    setTimeout(close, reduce ? 900 : 3000);
+  })();
+
+  /* ── PWA：Service Worker ── */
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('./sw.js').catch(function(){});
+    });
+  }
+})();
+</script>
+</body>
+</html>
