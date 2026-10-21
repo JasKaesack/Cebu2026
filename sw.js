@@ -1,56 +1,88 @@
-/* Cebu × Bohol 2026 Service Worker
-   目的：開過一次後，在墨寶／薄荷島沒訊號時也能離線看行程。
-   - 頁面本體：網路優先，離線時才用快取
-   - 靜態資源（字型・CSS・圖示）：快取優先＋背景更新
-   - 天氣 API：永遠即時，不快取（避免顯示過期資料） */
+/* Cebu × Bohol 2026 — Service Worker
+   目的：一次開啟後，即使在船上、山路上沒有訊號，也看得到整份行程。
+   方針：
+   - 頁面本體（navigate）＝網路優先，離線時才用快取
+   - 字型等靜態資源＝快取優先＋背景更新
+   - 天氣 API 與匯率 API＝永不快取（寧可顯示「取不到」，也不給過期或猜測的數字）
+   - Google 地圖等外部連結＝不攔截，交給瀏覽器 */
 'use strict';
-var VERSION = 'cebu-bohol-2026-v1';
-var CORE = ['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
-var HOSTS = [self.location.hostname,'cdn.tailwindcss.com','cdnjs.cloudflare.com','fonts.googleapis.com','fonts.gstatic.com'];
+var VERSION = 'cebu-bohol-2026-v2';
+var CORE = [
+  './',
+  './index.html',
+  './manifest.webmanifest',
+  './icon-192.png',
+  './icon-512.png',
+  './apple-touch-icon.png'
+];
+var CACHE_HOSTS = [
+  self.location.hostname,
+  'fonts.googleapis.com',
+  'fonts.gstatic.com'
+];
+/* 這些一律放行、永不快取：必須是即時值 */
+var NEVER_CACHE = [
+  'api.open-meteo.com',
+  'open.er-api.com',
+  'latest.currency-api.pages.dev',
+  'cdn.jsdelivr.net'
+];
 
-self.addEventListener('install', function(e){
-  e.waitUntil(caches.open(VERSION).then(function(c){ return c.addAll(CORE); }).then(function(){ return self.skipWaiting(); }));
+self.addEventListener('install', function (e) {
+  e.waitUntil(
+    caches.open(VERSION)
+      .then(function (c) { return c.addAll(CORE); })
+      .then(function () { return self.skipWaiting(); })
+  );
 });
 
-self.addEventListener('activate', function(e){
-  e.waitUntil(caches.keys().then(function(ks){
-    return Promise.all(ks.filter(function(k){ return k !== VERSION; }).map(function(k){ return caches.delete(k); }));
-  }).then(function(){ return self.clients.claim(); }));
+self.addEventListener('activate', function (e) {
+  e.waitUntil(
+    caches.keys().then(function (keys) {
+      return Promise.all(keys.filter(function (k) { return k !== VERSION; })
+        .map(function (k) { return caches.delete(k); }));
+    }).then(function () { return self.clients.claim(); })
+  );
 });
 
-self.addEventListener('fetch', function(e){
+self.addEventListener('fetch', function (e) {
   var req = e.request;
-  if(req.method !== 'GET') return;
-  var url = new URL(req.url);
+  if (req.method !== 'GET') return;
 
-  /* 天氣永遠走網路 */
-  if(url.hostname === 'api.open-meteo.com') return;
+  var url;
+  try { url = new URL(req.url); } catch (err) { return; }
 
-  /* 頁面：網路優先 */
-  if(req.mode === 'navigate'){
-    if(url.origin !== self.location.origin) return;
+  /* 天氣與匯率永遠走網路 */
+  if (NEVER_CACHE.indexOf(url.hostname) !== -1) return;
+
+  /* 頁面本體：網路優先 → 離線時回快取 */
+  if (req.mode === 'navigate') {
+    if (url.origin !== self.location.origin) return;
     e.respondWith(
-      fetch(req).then(function(res){
+      fetch(req).then(function (res) {
         var copy = res.clone();
-        caches.open(VERSION).then(function(c){ c.put('./index.html', copy); });
+        caches.open(VERSION).then(function (c) { c.put('./index.html', copy); });
         return res;
-      }).catch(function(){ return caches.match('./index.html'); })
+      }).catch(function () {
+        return caches.match('./index.html');
+      })
     );
     return;
   }
 
-  if(HOSTS.indexOf(url.hostname) === -1) return;
+  /* 其他網域（Google 地圖等）不攔截 */
+  if (CACHE_HOSTS.indexOf(url.hostname) === -1) return;
 
   /* 靜態資源：快取優先＋背景更新 */
   e.respondWith(
-    caches.match(req).then(function(hit){
-      var net = fetch(req).then(function(res){
-        if(res && (res.status === 200 || res.type === 'opaque')){
+    caches.match(req).then(function (hit) {
+      var net = fetch(req).then(function (res) {
+        if (res && (res.status === 200 || res.type === 'opaque')) {
           var copy = res.clone();
-          caches.open(VERSION).then(function(c){ c.put(req, copy); });
+          caches.open(VERSION).then(function (c) { c.put(req, copy); });
         }
         return res;
-      }).catch(function(){ return hit; });
+      }).catch(function () { return hit; });
       return hit || net;
     })
   );
