@@ -56,7 +56,7 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:84px}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 body{
   margin:0; background:var(--abyss); color:var(--pearl);
@@ -173,50 +173,98 @@ section.tight{padding-block:var(--sect-s)}
 .pin:hover{color:var(--gold);border-color:rgba(212,175,55,.42);background:rgba(212,175,55,.06)}
 .pin:focus-visible{outline:2px solid var(--gold-soft);outline-offset:2px}
 
-/* ---------- Nav ---------- */
+/* ---------- Nav：桌機頂部分類＋下拉 ---------- */
 .nav{
   position:fixed;inset:0 0 auto 0;z-index:70;
   transition:background-color .5s ease,backdrop-filter .5s ease,border-color .5s ease;
   border-bottom:1px solid transparent;
 }
 .nav.on{background:rgba(11,19,29,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom-color:var(--hair)}
-.navin{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut);height:74px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{font-family:var(--f-disp);font-size:19px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--pearl);white-space:nowrap}
+.navin{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut);height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+@media (min-width:1020px){.navin{height:74px}}
+.brand{font-family:var(--f-disp);font-size:18px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--pearl);white-space:nowrap}
+@media (min-width:1020px){.brand{font-size:19px}}
 .brand em{font-style:normal;color:var(--gold);margin:0 .22em}
-.nlinks{display:none;gap:clamp(13px,1.7vw,26px);align-items:center}
-@media (min-width:1020px){.nlinks{display:flex}}
-.nlink{
-  font-family:var(--f-han);font-size:13.5px;font-weight:400;letter-spacing:.14em;
-  color:var(--platinum);padding:8px 0;position:relative;transition:color .35s ease;white-space:nowrap;
-}
-.nlink::after{content:"";position:absolute;left:0;bottom:2px;width:0;height:1px;background:var(--gold);transition:width .35s ease}
-.nlink:hover,.nlink.act{color:var(--gold-soft)}
-.nlink.act::after,.nlink:hover::after{width:100%}
-.burger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;align-items:flex-end;background:none;border:0;cursor:pointer;padding:0}
-@media (min-width:1020px){.burger{display:none}}
-.burger span{display:block;height:1px;background:var(--pearl);transition:transform .4s ease,width .4s ease,opacity .3s ease}
-.burger span:nth-child(1){width:26px}
-.burger span:nth-child(2){width:18px}
-.burger span:nth-child(3){width:26px}
-.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg);width:26px}
-.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
-.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg);width:26px}
 
-.drawer{
-  position:fixed;inset:0;z-index:69;background:rgba(11,19,29,.97);
-  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  display:flex;flex-direction:column;justify-content:center;
-  padding:96px var(--gut) calc(40px + env(safe-area-inset-bottom));
-  opacity:0;visibility:hidden;transition:opacity .45s ease,visibility .45s ease;
-  overflow-y:auto;
+.nlinks{display:none;gap:clamp(6px,1.2vw,20px);align-items:center}
+@media (min-width:1020px){.nlinks{display:flex}}
+.ngrp{position:relative}
+.nlink{
+  display:inline-flex;align-items:center;gap:5px;background:none;border:0;cursor:pointer;
+  font-family:var(--f-han);font-size:14px;font-weight:400;letter-spacing:.14em;
+  color:var(--platinum);padding:9px 8px;position:relative;transition:color .35s ease;white-space:nowrap;
 }
-.drawer.open{opacity:1;visibility:visible}
-.drawer a{
-  font-family:var(--f-han);font-size:clamp(18px,4.4vw,26px);font-weight:400;letter-spacing:.1em;
-  color:var(--pearl);padding:clamp(9px,1.5vw,14px) 0;border-bottom:1px solid var(--hair);
-  display:flex;align-items:baseline;gap:16px;
+.nlink .chev{width:13px;height:13px;fill:currentColor;opacity:.6;transition:transform .35s ease}
+.ngrp.single .nlink .chev{display:none}
+.nlink::after{content:"";position:absolute;left:8px;right:8px;bottom:3px;height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:center;transition:transform .35s ease}
+.ngrp:hover .nlink,.ngrp:focus-within .nlink,.nlink.act{color:var(--gold-soft)}
+.ngrp:hover .nlink::after,.nlink.act::after{transform:scaleX(1)}
+.ngrp:hover .nlink .chev{transform:rotate(180deg)}
+.dd{
+  position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(-6px);
+  min-width:190px;padding:9px;border:1px solid var(--hair);border-radius:2px;
+  background:rgba(11,19,29,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 26px 60px -28px rgba(0,0,0,.95);
+  opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease,transform .3s ease;
 }
-.drawer a span{font-family:var(--f-ui);font-size:10px;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;flex:none;width:76px}
+.ngrp.single .dd{display:none}
+.ngrp:hover .dd,.ngrp:focus-within .dd{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.dd::before{content:"";position:absolute;top:-10px;left:0;right:0;height:10px}
+.ddl{display:block;font-family:var(--f-han);font-size:13.5px;letter-spacing:.06em;color:var(--platinum);
+  padding:9px 13px;border-radius:2px;white-space:nowrap;transition:color .25s ease,background-color .25s ease}
+.ddl:hover,.ddl.act{color:var(--gold-soft);background:rgba(212,175,55,.08)}
+.ddl:focus-visible{outline:2px solid var(--gold-soft);outline-offset:-2px}
+
+/* ---------- Nav：手機固定底部橫排 ---------- */
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:80;display:block}
+@media (min-width:1020px){.bnav,.bveil{display:none !important}}
+.btabs{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  background:rgba(11,19,29,.93);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border-top:1px solid var(--hair);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.btab{
+  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  background:none;border:0;cursor:pointer;padding:10px 2px 11px;min-height:58px;
+  font-family:var(--f-han);font-size:12px;letter-spacing:.08em;color:var(--platinum);
+  transition:color .28s ease;-webkit-tap-highlight-color:transparent;
+}
+.btab svg{width:19px;height:19px;fill:currentColor;opacity:.78;transition:opacity .28s ease}
+.btab::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%) scaleX(0);
+  width:26px;height:2px;background:var(--gold);transition:transform .3s ease}
+.btab.act,.btab[aria-expanded="true"]{color:var(--gold-soft)}
+.btab.act svg,.btab[aria-expanded="true"] svg{opacity:1}
+.btab.act::before{transform:translateX(-50%) scaleX(1)}
+.btab:focus-visible{outline:2px solid var(--gold-soft);outline-offset:-3px}
+
+.bsheets{position:relative}
+.bsheet{
+  background:rgba(11,19,29,.97);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border-top:1px solid var(--hair);padding:18px var(--gut) 14px;
+}
+.bsheet[hidden]{display:none}
+.bsheet .tag-p{margin:0 0 12px}
+.bsheet a{
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--f-han);font-size:16px;letter-spacing:.06em;color:var(--pearl);
+  padding:13px 2px;border-bottom:1px solid var(--hair-2);
+}
+.bsheet a:last-child{border-bottom:0}
+.bsheet a::after{content:"";width:7px;height:7px;border-right:1px solid var(--gold);
+  border-bottom:1px solid var(--gold);transform:rotate(-45deg);opacity:.7}
+.bsheet a.act{color:var(--gold-soft)}
+.bveil{position:fixed;inset:0;z-index:79;background:rgba(4,8,13,.5);
+  opacity:0;transition:opacity .3s ease}
+.bveil.on{opacity:1}
+.bveil[hidden]{display:none}
+
+/* 內容不要被底部列蓋住 */
+@media (max-width:1019.98px){
+  body{padding-bottom:calc(58px + env(safe-area-inset-bottom))}
+  .scrollcue{bottom:calc(72px + env(safe-area-inset-bottom))}
+}
 
 /* ---------- Hero ---------- */
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden}
@@ -402,13 +450,15 @@ footer{border-top:1px solid var(--hair);padding-block:clamp(50px,6vw,90px) calc(
 <header class="nav" id="nav">
   <div class="navin">
     <a class="brand" href="#home">Cebu<em>&times;</em>Bohol</a>
-    <nav class="nlinks" aria-label="主要導覽"><a class="nlink" href="#overview" data-sp="overview">總覽</a><a class="nlink" href="#itinerary" data-sp="itinerary">每日行程</a><a class="nlink" href="#dive" data-sp="dive">12/4 作戰</a><a class="nlink" href="#water" data-sp="water">水中編組</a><a class="nlink" href="#stay" data-sp="stay">住宿</a><a class="nlink" href="#banca" data-sp="banca">螃蟹船</a><a class="nlink" href="#gear" data-sp="gear">裝備・現金</a><a class="nlink" href="#cost" data-sp="cost">費用</a><a class="nlink" href="#notes" data-sp="notes">風險</a></nav>
-    <button class="burger" id="burger" aria-label="開啟選單" aria-expanded="false" aria-controls="drawer">
-      <span></span><span></span><span></span>
-    </button>
+    <nav class="nlinks" aria-label="主要導覽"><div class="ngrp single"><button class="nlink" type="button" aria-haspopup="true" aria-expanded="false">認識<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button><div class="dd" role="menu"><a class="ddl" href="#about" data-sp="about">認識宿霧與薄荷島</a></div></div><div class="ngrp"><button class="nlink" type="button" aria-haspopup="true" aria-expanded="false">行程<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button><div class="dd" role="menu"><a class="ddl" href="#overview" data-sp="overview">總覽</a><a class="ddl" href="#flights" data-sp="flights">班機</a><a class="ddl" href="#itinerary" data-sp="itinerary">每日行程</a><a class="ddl" href="#dive" data-sp="dive">12/4 作戰計畫</a></div></div><div class="ngrp"><button class="nlink" type="button" aria-haspopup="true" aria-expanded="false">水中<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button><div class="dd" role="menu"><a class="ddl" href="#water" data-sp="water">水中編組</a><a class="ddl" href="#banca" data-sp="banca">螃蟹船</a></div></div><div class="ngrp"><button class="nlink" type="button" aria-haspopup="true" aria-expanded="false">實用<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button><div class="dd" role="menu"><a class="ddl" href="#prep" data-sp="prep">行前準備</a><a class="ddl" href="#stay" data-sp="stay">住宿</a><a class="ddl" href="#gear" data-sp="gear">裝備與現金</a><a class="ddl" href="#sim" data-sp="sim">SIM 卡與收訊</a><a class="ddl" href="#local" data-sp="local">當地交通與會話</a></div></div><div class="ngrp"><button class="nlink" type="button" aria-haspopup="true" aria-expanded="false">費用<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button><div class="dd" role="menu"><a class="ddl" href="#cost" data-sp="cost">費用粗估</a><a class="ddl" href="#notes" data-sp="notes">風險與待確認</a></div></div></nav>
   </div>
 </header>
-<nav class="drawer" id="drawer" aria-label="行動選單"><a href="#overview"><span>Overview</span>總覽</a><a href="#itinerary"><span>Itinerary</span>每日行程</a><a href="#dive"><span>The Dive</span>12/4 作戰</a><a href="#water"><span>In Water</span>水中編組</a><a href="#stay"><span>Stay</span>住宿</a><a href="#banca"><span>Banca</span>螃蟹船</a><a href="#gear"><span>Gear & Money</span>裝備・現金</a><a href="#cost"><span>Cost</span>費用</a><a href="#notes"><span>Notes</span>風險</a></nav>
+
+<nav class="bnav" id="bnav" aria-label="主要導覽">
+  <div class="bsheets" id="bsheets"><div class="bsheet" data-g="0" hidden><p class="tag-p">認識　About</p><a href="#about" data-sp="about">認識宿霧與薄荷島</a></div><div class="bsheet" data-g="1" hidden><p class="tag-p">行程　Itinerary</p><a href="#overview" data-sp="overview">總覽</a><a href="#flights" data-sp="flights">班機</a><a href="#itinerary" data-sp="itinerary">每日行程</a><a href="#dive" data-sp="dive">12/4 作戰計畫</a></div><div class="bsheet" data-g="2" hidden><p class="tag-p">水中　In Water</p><a href="#water" data-sp="water">水中編組</a><a href="#banca" data-sp="banca">螃蟹船</a></div><div class="bsheet" data-g="3" hidden><p class="tag-p">實用　Practical</p><a href="#prep" data-sp="prep">行前準備</a><a href="#stay" data-sp="stay">住宿</a><a href="#gear" data-sp="gear">裝備與現金</a><a href="#sim" data-sp="sim">SIM 卡與收訊</a><a href="#local" data-sp="local">當地交通與會話</a></div><div class="bsheet" data-g="4" hidden><p class="tag-p">費用　Cost</p><a href="#cost" data-sp="cost">費用粗估</a><a href="#notes" data-sp="notes">風險與待確認</a></div></div>
+  <div class="btabs"><button class="btab" type="button" data-g="0" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4.6a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6zM13.3 17h-2.6v-6.4h2.6V17z"/></svg><span>認識</span></button><button class="btab" type="button" data-g="1" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a2 2 0 0 1 2 2v16l-7-3.2L5 20V4a2 2 0 0 1 2-2zm1 5h8v2H8V7zm0 4h8v2H8v-2z"/></svg><span>行程</span></button><button class="btab" type="button" data-g="2" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 16c2.2 0 2.2-2 4.4-2s2.2 2 4.4 2 2.2-2 4.4-2 2.2 2 4.4 2v2.4c-2.2 0-2.2-2-4.4-2s-2.2 2-4.4 2-2.2-2-4.4-2-2.2 2-4.4 2V16zm0-6c2.2 0 2.2-2 4.4-2s2.2 2 4.4 2 2.2-2 4.4-2 2.2 2 4.4 2v2.4c-2.2 0-2.2-2-4.4-2s-2.2 2-4.4 2-2.2-2-4.4-2-2.2 2-4.4 2V10z"/></svg><span>水中</span></button><button class="btab" type="button" data-g="3" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 7.6 16.4 3l-1.8 1.8 1.5 1.5-2.2 2.2 1.8 1.8L17.9 8l1.3 1.3L21 7.6zM3.6 18.1 12 9.7l2.3 2.3-8.4 8.4H3.6v-2.3z"/></svg><span>實用</span></button><button class="btab" type="button" data-g="4" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm.9 15.2v1.4h-1.6v-1.4c-1.6-.2-2.8-1.1-3-2.7h1.9c.1.8.8 1.3 2 1.3 1.1 0 1.8-.5 1.8-1.2 0-.8-.6-1.1-2.2-1.5-2-.5-3.2-1.2-3.2-2.9 0-1.5 1.1-2.5 2.7-2.7V6.4h1.6v1.2c1.6.2 2.6 1.2 2.7 2.6h-1.9c-.1-.7-.7-1.2-1.7-1.2s-1.6.4-1.6 1.1c0 .7.6 1 2.1 1.4 2.1.5 3.3 1.2 3.3 3 0 1.6-1.1 2.5-2.9 2.7z"/></svg><span>費用</span></button></div>
+</nav>
+<div class="bveil" id="bveil" hidden></div>
 
 <section id="home" class="hero" style="padding-block:0">
   <div class="hero-bg" id="heroBg">
@@ -455,6 +505,57 @@ footer{border-top:1px solid var(--hair);padding-block:clamp(50px,6vw,90px) calc(
   <div class="scrollcue" aria-hidden="true"><span>往下看</span><i></i></div>
 </section>
 
+<section id="about">
+  <div class="wrap">
+    <div class="shead"><p class="tag rv">認識　About</p><h2 class="h2 rv d1" style="margin-bottom:14px">Two Islands</h2><p class="han2 rv d1">認識宿霧與薄荷島</p><p class="sec lede rv d2">宿霧(Cebu)和薄荷島(Bohol)都在菲律賓中部的維薩亞斯群島，相隔一道海峽。時區和台灣一樣，12 月是涼季。</p></div>
+    <div class="figs rv" style="margin-bottom:var(--sect-s);grid-template-columns:repeat(auto-fit,minmax(min(100%,268px),1fr))"><div class="fig">
+  <i>時區</i><b style="font-size:clamp(20px,2.6vw,28px);margin-top:10px">UTC+8</b>
+  <em><strong>和台灣完全一樣</strong>，不用調時差，也不用換算班機時刻。</em></div><div class="fig">
+  <i>語言</i><b style="font-size:clamp(20px,2.6vw,28px);margin-top:10px">宿霧語・英語</b>
+  <em>官方語言是菲律賓語與英語；當地人日常講<strong>宿霧語（Cebuano／Bisaya）</strong>。觀光區英語幾乎都通。</em></div><div class="fig">
+  <i>貨幣</i><b style="font-size:clamp(20px,2.6vw,28px);margin-top:10px">菲律賓披索 PHP</b>
+  <em>₱ 符號。換匯與現金注意事項見「裝備與現金」。</em></div><div class="fig">
+  <i>12 月天氣</i><b style="font-size:clamp(20px,2.6vw,28px);margin-top:10px">amihan 季</b>
+  <em>東北季風季節（約 10 月下旬～4 月），<strong>中維薩亞斯一帶涼爽、雨量少</strong>。Lance 團住的 Amihan Resort 就是這個字。</em></div><div class="fig">
+  <i>電壓插座</i><b style="font-size:clamp(20px,2.6vw,28px);margin-top:10px">220V</b>
+  <em>插座多為兩孔扁腳（A／B 型），台灣的插頭多半可直接用，但電壓是 220V，要確認電器支援。</em></div><div class="fig">
+  <i>宗教</i><b style="font-size:clamp(20px,2.6vw,28px);margin-top:10px">天主教為主</b>
+  <em>沿路會經過大量西班牙殖民時期教堂，奧斯陸(Oslob)與薄荷島(Bohol)都有。</em></div></div>
+
+    <div class="g12" style="margin-bottom:var(--sect-s)">
+      <div class="c4">
+        <div style="position:sticky;top:104px">
+          <p class="tag rv" style="margin:0 0 20px">歷史脈絡　Timeline</p>
+          <p class="h3 rv d1" style="margin-bottom:18px">四個改變這兩座島的年份</p>
+          <p class="sec rv d2" style="margin:0">
+            麥哲倫死在你們降落的那座島上；薄荷島打了菲律賓史上最長的一場起義；
+            而 2013 年的地震，是今天看到的教堂為什麼有些是重建的原因。
+          </p>
+        </div>
+      </div>
+      <div class="c7 offset1"><div class="tl"><div class="ev rv key">
+  <div class="evtop"><span class="evt num" style="min-width:76px">1521</span><span class="evn">麥哲倫抵達，死於麥克坦</span></div>
+  <div class="evd">3 月 16 日麥哲倫船隊抵達菲律賓。4 月 27 日麥克坦島(Mactan)一役，當地首領拉普拉普(Lapu-Lapu)擊殺麥哲倫。你們降落的機場就在麥克坦島上。</div></div><div class="ev rv ">
+  <div class="evtop"><span class="evt num" style="min-width:76px">1565</span><span class="evn">薄荷島的血盟（Sandugo）</span></div>
+  <div class="evd">3 月 16 日，西班牙人 Legazpi 與薄荷島首領 Datu Sikatuna 以割腕滴血入酒共飲立約。這被稱為菲律賓史上第一份國際和平條約，每年 7 月有 Sandugo 節慶。</div></div><div class="ev rv ">
+  <div class="evtop"><span class="evt num" style="min-width:76px">1744–1829</span><span class="evn">達戈霍起義：菲律賓史上最長的反抗</span></div>
+  <div class="evd">薄荷島人 Francisco Dagohoy 領導的起義持續 <strong>85 年</strong>，是菲律賓歷史上最長的一場。</div></div><div class="ev rv key">
+  <div class="evtop"><span class="evt num" style="min-width:76px">2013</span><span class="evn">規模 7.2 地震</span></div>
+  <div class="evd">10 月 15 日上午 8:12，震央在薄荷島 Sagbayan 南南西 6 公里、深 12 公里，南宿霧也受災。多座百年教堂在這次地震中損毀或全毀。<span class="plat">維基百科上的死亡人數有兩個版本：前言寫 222 死、374 傷，內文引 NDRRMC 的薄荷島數字是 57 死、104 傷。</span></div></div></div></div>
+    </div>
+
+    <p class="tag rv" style="margin:0 0 20px">三個問題　Context</p>
+    <p class="han2 rv d1" style="margin-bottom:26px">去之前值得知道的三件事</p>
+    <div class="g12">
+      <div class="c8"><details class="ac rv"><summary>為什麼墨寶(Moalboal)的沙丁魚整年都在？</summary>
+  <div class="acbody"><p style="margin:0 0 12px;color:var(--gold-soft);font-size:16px">沒有人真正知道。</p>這是本行程最值得知道的一件事：<strong>魚球常駐的原因至今沒有定論。</strong>海洋雜誌《Oceanographic》的報導直言這些只是「假說，對於沙丁魚為何來、為何留下所知極少」。一般的魚球是遇到威脅時臨時聚起來、威脅解除就散掉的，像墨寶這樣半永久存在的非常罕見；2000 年代初期這裡並沒有魚球的紀錄。<br><br>目前的兩個假說：鄰近海域的捕撈可能減少了掠食者，讓這裡變成避難所；加上墨寶實施了漁撈管制（限制漁獲尺寸、規定網目讓幼魚逃脫、設禁漁期）。<br><br><strong>實務上重要的兩點：</strong>① 2023 年 8 月的調查估計單一地點超過 <strong>400 萬尾</strong>，群聚在<strong>水深約 5 公尺</strong>——這個深度對浮潛組非常友善，不需要潛很深。② 同一份報導提到，調查團隊到訪的<strong>幾週前魚球曾經不見</strong>，所以牠在不在，沒有保證。</div></details><details class="ac rv"><summary>巧克力山(Chocolate Hills)是怎麼來的？</summary>
+  <div class="acbody"><p style="margin:0 0 12px;color:var(--gold-soft);font-size:16px">1,200 多座圓錐丘，是古珊瑚礁的遺骸。</p>卡門(Carmen)一帶有一千兩百座以上的圓錐形山丘，成分是石灰岩——冰河時期海平面較高、島嶼沉在水下時，珊瑚礁堆積留下來的。名字來自旱季時山上的草轉成褐色，遠看像一堆巧克力。</div></details><details class="ac rv"><summary>眼鏡猴是什麼？</summary>
+  <div class="acbody"><p style="margin:0 0 12px;color:var(--gold-soft);font-size:16px">世界上最小的靈長類之一，薄荷島特有。</p>當地叫 <strong>mamag</strong>。牠的<strong>眼睛和腦差不多大</strong>，靠巨大的眼睛在夜間獵食，IUCN 列為近危（near-threatened）。1996 年在 Corella 成立的菲律賓眼鏡猴基金會設有保育區。<span class="plat">12/6 下午才出發的行程會來不及去 Corella。</span></div></details></div>
+    </div>
+  </div>
+</section>
+<div class="wrap"><hr class="rule"></div>
+
 <section id="overview">
   <div class="wrap">
     <div class="shead"><p class="tag rv">總覽　Overview</p><h2 class="h2 rv d1" style="margin-bottom:14px">The Expedition</h2><p class="han2 rv d1">總覽</p><p class="sec lede rv d2">2026 年 12 月 3 日至 8 日，從桃園(Taoyuan)出發，宿霧(Cebu)進出。墨寶(Moalboal)的沙丁魚風暴與海龜、奧斯陸(Oslob)的鯨鯊、薄荷島(Bohol)的跳島與陸遊——水裡水上都有，一路從宿霧島南端走到薄荷島。</p></div>
@@ -487,80 +588,51 @@ footer{border-top:1px solid var(--hair);padding-block:clamp(50px,6vw,90px) calc(
       </div>
     </div>
 
-    <p class="tag rv" style="margin:0 0 28px">班機　Flights</p>
-    <div class="g12" style="margin-bottom:var(--sect-s)">
-      <div class="c6"><div class="card rv">
-  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap">
-    <div><span class="num" style="font-size:17px;font-weight:500;letter-spacing:.14em;color:var(--gold)">JX781</span>
-      <span class="tag-p" style="margin-left:11px">STARLUX 星宇</span></div>
+
   </div>
-  <div class="rule-soft" style="margin:18px 0"></div>
-  <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
-    <div><div class="num" style="font-size:26px;font-weight:300;color:var(--pearl)">06:55</div>
-      <div class="cap" style="margin-top:5px">台北(Taipei) TPE T2</div></div>
-    <div style="flex:1;min-width:34px;padding-bottom:13px"><div style="height:1px;background:var(--hair)"></div></div>
-    <div><div class="num" style="font-size:26px;font-weight:300;color:var(--pearl)">09:50</div>
-      <div class="cap" style="margin-top:5px">宿霧(Cebu) CEB T2</div></div>
-  </div>
-  <div class="rule-soft" style="margin:18px 0"></div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-    <span class="tag-p">12/03 四</span><span class="team all">大家</span>
-  </div>
-</div><div class="card rv">
-  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap">
-    <div><span class="num" style="font-size:17px;font-weight:500;letter-spacing:.14em;color:var(--gold)">BR281</span>
-      <span class="tag-p" style="margin-left:11px">EVA AIR 長榮</span></div>
-  </div>
-  <div class="rule-soft" style="margin:18px 0"></div>
-  <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
-    <div><div class="num" style="font-size:26px;font-weight:300;color:var(--pearl)">08:20</div>
-      <div class="cap" style="margin-top:5px">台北(Taipei) TPE</div></div>
-    <div style="flex:1;min-width:34px;padding-bottom:13px"><div style="height:1px;background:var(--hair)"></div></div>
-    <div><div class="num" style="font-size:26px;font-weight:300;color:var(--pearl)">11:15</div>
-      <div class="cap" style="margin-top:5px">宿霧(Cebu) CEB</div></div>
-  </div>
-  <div class="rule-soft" style="margin:18px 0"></div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-    <span class="tag-p">12/03 四</span><span class="team all">Jas</span>
-  </div><p class="cap" style="margin:16px 0 0;line-height:1.7">Jas 比大家晚 1 小時 25 分落地。大家出關約 10:45–11:15，Jas 約 12:00–12:30（入境＋行李時間為推估）。</p>
-</div></div>
-      <div class="c6"><div class="card rv">
-  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap">
-    <div><span class="num" style="font-size:17px;font-weight:500;letter-spacing:.14em;color:var(--gold)">JX784</span>
-      <span class="tag-p" style="margin-left:11px">STARLUX 星宇</span></div>
-  </div>
-  <div class="rule-soft" style="margin:18px 0"></div>
-  <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
-    <div><div class="num" style="font-size:26px;font-weight:300;color:var(--pearl)">19:35</div>
-      <div class="cap" style="margin-top:5px">宿霧(Cebu) CEB T2</div></div>
-    <div style="flex:1;min-width:34px;padding-bottom:13px"><div style="height:1px;background:var(--hair)"></div></div>
-    <div><div class="num" style="font-size:26px;font-weight:300;color:var(--pearl)">22:25</div>
-      <div class="cap" style="margin-top:5px">台北(Taipei) TPE T2</div></div>
-  </div>
-  <div class="rule-soft" style="margin:18px 0"></div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-    <span class="tag-p">12/08 二</span><span class="team all">Derek 團 ＋ Lance 團</span>
-  </div><p class="cap" style="margin:16px 0 0;line-height:1.7">兩隊 12/8 搭同一班回台。</p>
-</div><div class="card rv">
-  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap">
-    <div><span class="num" style="font-size:17px;font-weight:500;letter-spacing:.14em;color:var(--gold)">BR282</span>
-      <span class="tag-p" style="margin-left:11px">EVA AIR 長榮</span></div>
-  </div>
-  <div class="rule-soft" style="margin:18px 0"></div>
-  <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
-    <div><div class="num" style="font-size:26px;font-weight:300;color:var(--pearl)">12:30</div>
-      <div class="cap" style="margin-top:5px">宿霧(Cebu) CEB</div></div>
-    <div style="flex:1;min-width:34px;padding-bottom:13px"><div style="height:1px;background:var(--hair)"></div></div>
-    <div><div class="num" style="font-size:26px;font-weight:300;color:var(--pearl)">15:20</div>
-      <div class="cap" style="margin-top:5px">台北(Taipei) TPE</div></div>
-  </div>
-  <div class="rule-soft" style="margin:18px 0"></div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-    <span class="tag-p">12/09 三</span><span class="team all">Jas</span>
-  </div><p class="cap" style="margin:16px 0 0;line-height:1.7">與長榮 2026/10/25 起冬季班表一致。</p>
-</div></div>
+</section>
+<div class="wrap"><hr class="rule"></div>
+
+<section id="flights">
+  <div class="wrap">
+    <div class="shead"><p class="tag rv">班機　Flights</p><h2 class="h2 rv d1" style="margin-bottom:14px">Four Legs</h2><p class="han2 rv d1">班機</p><p class="sec lede rv d2">四段航班。時刻依你提供的訂位資料，飛行時間由時刻直接計算。</p></div>
+    <div style="overflow-x:auto" class="rv" style="margin-bottom:var(--sect-s)">
+      <table class="tbl" style="min-width:760px">
+        <thead><tr><th>航班</th><th>日期</th><th>起飛</th><th>抵達</th><th>飛行時間</th><th>對象</th></tr></thead>
+        <tbody><tr><td class="num" style="white-space:nowrap;color:var(--gold);font-size:15px;letter-spacing:.1em">JX781<span class="src">STARLUX 星宇</span></td><td class="cap" style="white-space:nowrap">12/03（四）</td><td><span class="num" style="color:var(--pearl);font-size:15px">06:55</span><span class="src">台北(Taipei) TPE 第二航廈</span></td><td><span class="num" style="color:var(--pearl);font-size:15px">09:50</span><span class="src">宿霧(Cebu) CEB 第二航廈</span></td><td class="num cap" style="white-space:nowrap;color:var(--gold-soft)">2 小時 55 分</td><td style="white-space:nowrap"><span class="team all">全員</span></td></tr><tr><td class="num" style="white-space:nowrap;color:var(--gold);font-size:15px;letter-spacing:.1em">BR281<span class="src">EVA AIR 長榮</span></td><td class="cap" style="white-space:nowrap">12/03（四）</td><td><span class="num" style="color:var(--pearl);font-size:15px">08:20</span><span class="src">台北(Taipei) TPE</span></td><td><span class="num" style="color:var(--pearl);font-size:15px">11:15</span><span class="src">宿霧(Cebu) CEB</span></td><td class="num cap" style="white-space:nowrap;color:var(--gold-soft)">2 小時 55 分</td><td style="white-space:nowrap"><span class="team l">Jas</span></td></tr><tr><td class="num" style="white-space:nowrap;color:var(--gold);font-size:15px;letter-spacing:.1em">JX784<span class="src">STARLUX 星宇</span></td><td class="cap" style="white-space:nowrap">12/08（二）</td><td><span class="num" style="color:var(--pearl);font-size:15px">19:35</span><span class="src">宿霧(Cebu) CEB 第二航廈</span></td><td><span class="num" style="color:var(--pearl);font-size:15px">22:25</span><span class="src">台北(Taipei) TPE 第二航廈</span></td><td class="num cap" style="white-space:nowrap;color:var(--gold-soft)">2 小時 50 分</td><td style="white-space:nowrap"><span class="team all">全員</span></td></tr><tr><td class="num" style="white-space:nowrap;color:var(--gold);font-size:15px;letter-spacing:.1em">BR282<span class="src">EVA AIR 長榮</span></td><td class="cap" style="white-space:nowrap">12/09（三）</td><td><span class="num" style="color:var(--pearl);font-size:15px">12:30</span><span class="src">宿霧(Cebu) CEB</span></td><td><span class="num" style="color:var(--pearl);font-size:15px">15:20</span><span class="src">台北(Taipei) TPE</span></td><td class="num cap" style="white-space:nowrap;color:var(--gold-soft)">2 小時 50 分</td><td style="white-space:nowrap"><span class="team l">Jas</span></td></tr></tbody>
+      </table>
     </div>
 
+    <div class="g12" style="margin-top:var(--sect-s)">
+      <div class="c6">
+        <div class="card rv" style="height:100%">
+          <p class="tag">航程　The Route</p>
+          <p class="h3" style="margin:14px 0 16px">台北到宿霧約 1,660 公里</p>
+          <ul class="ul">
+            <li><strong>去程 2 小時 55 分、回程 2 小時 50 分。</strong>這是直接用你的訂位時刻相減算的——
+                台灣和菲律賓同為 UTC+8，<strong>不需要換算時差</strong>。</li>
+            <li>直線距離約 1,660 公里，大致是台北飛河內的距離。</li>
+            <li><strong>Jas 比大家晚 1 小時 25 分落地。</strong>大家出關約 10:45–11:15，
+                Jas 約 12:00–12:30（入境＋行李時間是推估）。所以 12/3 採「大家先進市區、Jas 自己叫 Grab 到飯店會合」。</li>
+            <li>12/8 兩隊搭同一班 JX784 回台；Jas 12/9 才走。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="c6">
+        <div class="card rv d1" style="height:100%;border-color:rgba(201,162,39,.30)">
+          <span class="chip todo">機型：我查不到可靠的答案</span>
+          <p class="h3" style="margin:17px 0 16px">別把機型當定數</p>
+          <ul class="ul">
+            <li><strong>長榮 BR281</strong>：航班追蹤網站上查到一筆紀錄是 <strong>Airbus A330-300</strong>，
+                但那只是某一天的實際派機，<span class="plat">航空公司會換機型</span>。</li>
+            <li><strong>星宇 JX781／JX784</strong>：我<strong>查不到</strong>可靠的現役機型資料。
+                有一篇 2020 年的文章說這條線用 A321neo，但那篇寫的時刻表（下午 15:15 起飛）和你們的訂位完全對不上，
+                六年前的資料不能當現況用。</li>
+            <li><strong>要確認機型，直接登入航空公司的訂位頁看</strong>，出發前一週最準。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 <div class="wrap"><hr class="rule"></div>
@@ -583,7 +655,7 @@ footer{border-top:1px solid var(--hair);padding-block:clamp(50px,6vw,90px) calc(
     <span class="sec" style="font-size:14px">★ 墨寶(Moalboal)沙丁魚風暴</span>
     <span class="daymeta"><span class="wx" id="wx-D2">天氣載入中…</span></span>
   </div>
-  <div class="tl"><div class="ev rv"><div class="evtop"><span class="evt num">04:20</span><span class="evn">起床</span></div><div class="evd">Holiday Inn Cebu City。</div><div class="note ">前一晚就要：結完帳、行李打包好、泳具與相機單獨裝一個「下水包」。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">04:55</span><span class="evn">大廳集合、行李上車</span></div><div class="evd">兩台 premium van。行李整天留在車上，不用拖到海邊。</div></div><div class="ev key rv"><div class="evtop"><span class="evt num">05:00</span><span class="evn">出發</span></div><div class="evd">宿霧(Cebu)市區 → 墨寶(Moalboal) Panagsama Beach，約 89–100 公里。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=10.316972%2C123.909306&query_place_id=ChIJc7grKrWeqTMRpVenIVc_UmE" target="_blank" rel="noopener" title="在 Google 地圖開啟：Holiday Inn Cebu City by IHG"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Holiday Inn Cebu City by IHG</span></a></div></div><div class="ev rv"><div class="evtop"><span class="evt num">05:48</span><span class="evn">（日出）</span></div><div class="evd">約在卡爾卡(Carcar)一帶天亮。依當日太陽位置計算。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">06:15–06:35</span><span class="evn">卡爾卡(Carcar)休息站</span></div><div class="evd">上廁所、吃外帶早餐。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=10.1052687%2C123.6468596&query_place_id=ChIJ4ZgiZWd9qTMRgLQKC79nGxQ" target="_blank" rel="noopener" title="在 Google 地圖開啟：New Carcar City Public Market"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>New Carcar City Public Market</span></a></div><div class="note ">卡爾卡(Carcar)是南下公路的傳統休息點，以兩樣零食出名：<strong>chicharon</strong>（炸豬皮，鹹脆、沾醋吃），以及 <strong>ampao（也拼成 ampaw）</strong>——把煮熟的白飯曬乾約四小時後下油鍋炸到膨脹，再淋上黑糖或糖蜜熬的糖漿拌勻，冷卻後壓成方塊或搓成球，常加花生。<strong>口感和台灣的米香幾乎一樣</strong>，甜、酥、耐放，當車上零食或伴手禮都合適。</div></div><div class="ev key rv"><div class="evtop"><span class="evt num">約 08:00</span><span class="evn">抵達 Panagsama Beach</span></div><div class="evd">墨寶(Moalboal) Panagsama 海灘。岸入，不搭船。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.9464207%2C123.3685522&query_place_id=ChIJjdOKTMLoqzMR8s8ab7MnfKs" target="_blank" rel="noopener" title="在 Google 地圖開啟：Panagsama Beach, Moalboal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Panagsama Beach, Moalboal</span></a></div></div><div class="ev rv"><div class="evtop"><span class="evt num">08:00–08:30</span><span class="evn">租裝備、換裝、安全簡報、分組</span></div><div class="evd">浮潛 6 人與自潛 5 人分兩組，同時段、同一片海域下水。</div></div><div class="ev key rv"><div class="evtop"><span class="evt num">08:30–11:40</span><span class="evn">★ 三輪下水：沙丁魚風暴與海龜</span><span class="chip g">全天主角</span></div><div class="evd">這天的三輪下水合計約 2 小時 25 分，全程落在當日水下光線最好的時段。逐段見下方「12/4 作戰計畫」。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">11:40–12:00</span><span class="evn">上岸、沖洗、換乾衣、還裝備</span></div><div class="evd">相機與裝備要用淡水沖，鹽分會咬壞 O 形環。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">12:00–12:30</span><span class="evn">午餐</span></div><div class="evd">只有 30 分鐘，一定要提前點好。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.9464207%2C123.3685522&query_place_id=ChIJjdOKTMLoqzMR8s8ab7MnfKs" target="_blank" rel="noopener" title="在 Google 地圖開啟：Panagsama Beach, Moalboal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Panagsama Beach, Moalboal</span></a></div><div class="note warn"><strong>11 個人現場才點餐，30 分鐘絕對吃不完。</strong>請在 10:40 那次水面休息時，就派一個人或請司機先去把菜點掉，講明「12:00 要上桌、11 位」。<br><br><strong>首選：Tan-aw Restaurant</strong>（Panagsama 海邊，Google 4.3★／525 則，電話 +63 915 170 6292）。關鍵理由是<span class="soft">早上 7:30 就開門</span>——10:40 去點菜時人家已經在營業；附近評價更高的幾家中午 12:00 才開，根本沒有提前點餐的空間。評論常提到吞拿魚腹與 kinilaw。<br><br><strong>備案：Kugita Seafood &amp; Charcoal Grill</strong>（4.4★／422 則，週五 11:00–14:00，電話 +63 32 474 0037）。優點是<span class="soft">有停車空間</span>——兩台 van 在 Panagsama 一帶很難停。<br><br><strong>怎麼點菜：</strong>宿霧海鮮店多半採 <strong>paluto</strong>（「幫你煮」）——先挑食材，再選作法。常見三種作法合稱 <strong>SuTuKil</strong>：<span class="soft">Su＝sugba</span>（炭烤）、<span class="soft">Tu＝tuwa</span>（魚湯）、<span class="soft">Kil＝kilaw</span>（醋醃生魚，類似 ceviche）；多數店家也能炸、糖醋或蒜辣。點之前<strong>先問怎麼算錢</strong>（秤重還是算條），各店不一樣。11 人直接點大份合菜＋白飯、講明人數請店家配菜最快；時間不夠就全部打包（take out）上車吃。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">12:30</span><span class="evn">出發往卡瓦森瀑布(Kawasan Falls)</span></div><div class="evd">Panagsama → Badian Matutinao，約 18 公里。從 Panagsama 開回大馬路本身就要約 10 分鐘。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">約 13:10</span><span class="evn">抵達 Matutinao 入口</span></div><div class="evd">地標：Sto. Tomas de Villanueva 教堂。跟司機說「Matutinao 教堂」比說「卡瓦森瀑布」好找。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.8035027%2C123.3743311&query_place_id=ChIJzaFdmHHAqzMRzyRjfu-ZeDU" target="_blank" rel="noopener" title="在 Google 地圖開啟：Kawasan Falls, Badian"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Kawasan Falls, Badian</span></a></div></div><div class="ev rv"><div class="evtop"><span class="evt num">13:30–約 15:00</span><span class="evn">卡瓦森瀑布(Kawasan Falls) Level 1</span><span class="chip p">參考時間</span></div><div class="evd">玩水、拍照。門票 ₱200／人在入口付，只收現金。竹筏 ₱300／艘、置物櫃 ₱100。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.8035027%2C123.3743311&query_place_id=ChIJzaFdmHHAqzMRzyRjfu-ZeDU" target="_blank" rel="noopener" title="在 Google 地圖開啟：Kawasan Falls, Badian"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Kawasan Falls, Badian</span></a></div><div class="note good"><strong>這裡不設硬線，玩得開心最重要。</strong>只提供參考：約 14:45 起身 → 約 17:20 到奧斯陸(Oslob)；約 15:15 起身 → 約 17:50 到，天已經黑了（日落 17:24，最後一段是海岸彎路）。要玩久一點完全可以，知道代價就好。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">約 15:10</span><span class="evn">走出步道、上車</span></div><div class="evd">步道 1.5 公里平緩鋪面，走出約 20 分鐘。可搭 habal-habal 載一段 ₱20–30。</div></div><div class="ev key rv"><div class="evtop"><span class="evt num">約 17:30</span><span class="evn">抵達 W Golf Resort、入住 Check in</span></div><div class="evd">奧斯陸(Oslob) Lagunde Beach 旁。1 筆訂單、3 間房；入住 14:00、退房 12:00。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5326647%2C123.4405197&query_place_id=ChIJdzmV2hKhqzMR8bUpBnU3QFY" target="_blank" rel="noopener" title="在 Google 地圖開啟：W Golf Resort, Oslob"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>W Golf Resort, Oslob</span></a></div><div class="note ">路線：巴迪安(Badian) → 阿萊格里亞(Alegria) → 馬拉布約克(Malabuyoc) → 吉納蒂蘭(Ginatilan) → 桑博安(Samboan) → 桑坦德(Santander) → 奧斯陸(Oslob)，約 85–95 公里海岸彎路，2–2.5 小時。<br><br>兩點說明：① 這些鄉鎮沒有通行的中文譯名，括號前的中文是我依發音寫的，<strong>跟司機講中文他聽不懂</strong>，要講英文或直接指地圖。② 2–2.5 小時是依距離與路況推估的，不是官方數字；塞車、修路、下雨都會更久。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">18:30</span><span class="evn">奧斯陸(Oslob)晚餐</span><span class="chip p">自由</span></div><div class="evd">建議走出飯店到鎮上吃。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5326647%2C123.4405197&query_place_id=ChIJdzmV2hKhqzMR8bUpBnU3QFY" target="_blank" rel="noopener" title="在 Google 地圖開啟：W Golf Resort, Oslob"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>W Golf Resort, Oslob</span></a></div><div class="note "><strong>首選：Lami-an Restaurant at Oslob New Village</strong>（Google 4.6★／182 則，每天 07:00–22:00，電話 +63 923 530 1371）。距 W Golf 約 1.7 公里，嘟嘟車五分鐘。三個理由：座位多（11 人不用拆桌）、營業到 22:00、店員英文流利。評論常提到鹹蛋蝦、吞拿魚腹、kinilaw。<br><br><strong>備案：Nhinz Larangan</strong>（4.4★／91 則，07:00–20:00，<span class="soft">週三公休</span>——12/4 是週五，沒問題）。距離約 1.4 公里，更便宜，但份量偏小，要多點幾道分著吃。<br><br><strong>關於飯店餐廳：</strong>W Golf 自己有餐廳與池畔酒吧，走路零距離。但 Google 上有住客抱怨餐點品質與缺貨——<span class="plat">這是旅客評論，不是查證過的事實</span>。既然鎮上五分鐘車程就有 4.6★ 的選擇，至少第一晚值得走出去。<br><br><strong>怎麼點菜：</strong>菲律賓餐廳上菜慢，11 人建議<strong>一坐下就一次點完</strong>，直接點合菜分食（烤魚、烤雞、炒麵、白飯），不要一人一份慢慢點。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">21:00</span><span class="evn">早點休息</span></div><div class="evd">隔天 05:00 又要出發看鯨鯊。</div></div></div>
+  <div class="tl"><div class="ev rv"><div class="evtop"><span class="evt num">04:20</span><span class="evn">起床</span></div><div class="evd">Holiday Inn Cebu City。</div><div class="note ">前一晚就要：結完帳、行李打包好、泳具與相機單獨裝一個「下水包」。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">04:55</span><span class="evn">大廳集合、行李上車</span></div><div class="evd">兩台 premium van。行李整天留在車上，不用拖到海邊。</div></div><div class="ev key rv"><div class="evtop"><span class="evt num">05:00</span><span class="evn">出發</span></div><div class="evd">宿霧(Cebu)市區 → 墨寶(Moalboal) Panagsama Beach，約 89–100 公里。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=10.316972%2C123.909306&query_place_id=ChIJc7grKrWeqTMRpVenIVc_UmE" target="_blank" rel="noopener" title="在 Google 地圖開啟：Holiday Inn Cebu City by IHG"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Holiday Inn Cebu City by IHG</span></a></div></div><div class="ev rv"><div class="evtop"><span class="evt num">05:48</span><span class="evn">（日出）</span></div><div class="evd">約在卡爾卡(Carcar)一帶天亮。依當日太陽位置計算。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">06:15–06:35</span><span class="evn">卡爾卡(Carcar)休息站</span></div><div class="evd">上廁所、吃外帶早餐。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=10.1052687%2C123.6468596&query_place_id=ChIJ4ZgiZWd9qTMRgLQKC79nGxQ" target="_blank" rel="noopener" title="在 Google 地圖開啟：New Carcar City Public Market"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>New Carcar City Public Market</span></a></div><div class="note ">卡爾卡(Carcar)是南下公路的傳統休息點，以兩樣零食出名：<strong>chicharon</strong>（炸豬皮，鹹脆、沾醋吃），以及 <strong>ampao（也拼成 ampaw）</strong>——把煮熟的白飯曬乾約四小時後下油鍋炸到膨脹，再淋上黑糖或糖蜜熬的糖漿拌勻，冷卻後壓成方塊或搓成球，常加花生。<strong>口感和台灣的米香幾乎一樣</strong>，甜、酥、耐放，當車上零食或伴手禮都合適。</div></div><div class="ev key rv"><div class="evtop"><span class="evt num">約 08:00</span><span class="evn">抵達 Panagsama Beach</span></div><div class="evd">墨寶(Moalboal) Panagsama 海灘。岸入，不搭船。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.9464207%2C123.3685522&query_place_id=ChIJjdOKTMLoqzMR8s8ab7MnfKs" target="_blank" rel="noopener" title="在 Google 地圖開啟：Panagsama Beach, Moalboal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Panagsama Beach, Moalboal</span></a></div></div><div class="ev rv"><div class="evtop"><span class="evt num">08:00–08:30</span><span class="evn">租裝備、換裝、安全簡報、分組</span></div><div class="evd">浮潛 6 人與自潛 5 人分兩組，同時段、同一片海域下水。</div></div><div class="ev key rv"><div class="evtop"><span class="evt num">08:30–11:40</span><span class="evn">★ 三輪下水：沙丁魚風暴與海龜</span><span class="chip g">全天主角</span></div><div class="evd">這天的三輪下水合計約 2 小時 25 分，全程落在當日水下光線最好的時段。逐段見下方「12/4 作戰計畫」。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">11:40–12:00</span><span class="evn">上岸、沖洗、換乾衣、還裝備</span></div><div class="evd">相機與裝備要用淡水沖，鹽分會咬壞 O 形環。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">12:00–12:30</span><span class="evn">午餐</span></div><div class="evd">只有 30 分鐘，一定要提前點好。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.9464207%2C123.3685522&query_place_id=ChIJjdOKTMLoqzMR8s8ab7MnfKs" target="_blank" rel="noopener" title="在 Google 地圖開啟：Panagsama Beach, Moalboal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Panagsama Beach, Moalboal</span></a></div><div class="note warn"><strong>11 個人現場才點餐，30 分鐘絕對吃不完。</strong>請在 10:40 那次水面休息時，就派一個人或請司機先去把菜點掉，講明「12:00 要上桌、11 位」。<br><br><strong>首選：Tan-aw Restaurant</strong><a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.9486243%2C123.3659279&query_place_id=ChIJq6qqqmPoqzMR6-OF-z9Guc4" target="_blank" rel="noopener" title="在 Google 地圖開啟：Tan-aw Restaurant"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>地圖</span></a>（Panagsama 海邊，Google 4.3★／525 則，電話 +63 915 170 6292）。關鍵理由是<span class="soft">早上 7:30 就開門</span>——10:40 去點菜時人家已經在營業；附近評價更高的幾家中午 12:00 才開，根本沒有提前點餐的空間。評論常提到吞拿魚腹與 kinilaw。<br><br><strong>備案：Kugita Seafood &amp; Charcoal Grill</strong><a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.9467986%2C123.3737976&query_place_id=ChIJoceNFxrpqzMRn2vQ9dqI6jA" target="_blank" rel="noopener" title="在 Google 地圖開啟：Kugita Seafood & Charcoal Grill"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>地圖</span></a>（4.4★／422 則，週五 11:00–14:00，電話 +63 32 474 0037）。優點是<span class="soft">有停車空間</span>——兩台 van 在 Panagsama 一帶很難停。<br><br><strong>怎麼點菜：</strong>宿霧海鮮店多半採 <strong>paluto</strong>（「幫你煮」）——先挑食材，再選作法。常見三種作法合稱 <strong>SuTuKil</strong>：<span class="soft">Su＝sugba</span>（炭烤）、<span class="soft">Tu＝tuwa</span>（魚湯）、<span class="soft">Kil＝kilaw</span>（醋醃生魚，類似 ceviche）；多數店家也能炸、糖醋或蒜辣。點之前<strong>先問怎麼算錢</strong>（秤重還是算條），各店不一樣。11 人直接點大份合菜＋白飯、講明人數請店家配菜最快；時間不夠就全部打包（take out）上車吃。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">12:30</span><span class="evn">出發往卡瓦森瀑布(Kawasan Falls)</span></div><div class="evd">Panagsama → Badian Matutinao，約 18 公里。從 Panagsama 開回大馬路本身就要約 10 分鐘。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">約 13:10</span><span class="evn">抵達 Matutinao 入口</span></div><div class="evd">地標：Sto. Tomas de Villanueva 教堂。跟司機說「Matutinao 教堂」比說「卡瓦森瀑布」好找。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.8035027%2C123.3743311&query_place_id=ChIJzaFdmHHAqzMRzyRjfu-ZeDU" target="_blank" rel="noopener" title="在 Google 地圖開啟：Kawasan Falls, Badian"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Kawasan Falls, Badian</span></a></div></div><div class="ev rv"><div class="evtop"><span class="evt num">13:30–約 15:00</span><span class="evn">卡瓦森瀑布(Kawasan Falls) Level 1</span><span class="chip p">參考時間</span></div><div class="evd">玩水、拍照。門票 ₱200／人在入口付，只收現金。竹筏 ₱300／艘、置物櫃 ₱100。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.8035027%2C123.3743311&query_place_id=ChIJzaFdmHHAqzMRzyRjfu-ZeDU" target="_blank" rel="noopener" title="在 Google 地圖開啟：Kawasan Falls, Badian"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Kawasan Falls, Badian</span></a></div><div class="note good"><strong>這裡不設硬線，玩得開心最重要。</strong>只提供參考：約 14:45 起身 → 約 17:20 到奧斯陸(Oslob)；約 15:15 起身 → 約 17:50 到，天已經黑了（日落 17:24，最後一段是海岸彎路）。要玩久一點完全可以，知道代價就好。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">約 15:10</span><span class="evn">走出步道、上車</span></div><div class="evd">步道 1.5 公里平緩鋪面，走出約 20 分鐘。可搭 habal-habal 載一段 ₱20–30。</div></div><div class="ev key rv"><div class="evtop"><span class="evt num">約 17:30</span><span class="evn">抵達 W Golf Resort、入住 Check in</span></div><div class="evd">奧斯陸(Oslob) Lagunde Beach 旁。1 筆訂單、3 間房；入住 14:00、退房 12:00。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5326647%2C123.4405197&query_place_id=ChIJdzmV2hKhqzMR8bUpBnU3QFY" target="_blank" rel="noopener" title="在 Google 地圖開啟：W Golf Resort, Oslob"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>W Golf Resort, Oslob</span></a></div><div class="note ">路線：巴迪安(Badian) → 阿萊格里亞(Alegria) → 馬拉布約克(Malabuyoc) → 吉納蒂蘭(Ginatilan) → 桑博安(Samboan) → 桑坦德(Santander) → 奧斯陸(Oslob)，約 85–95 公里海岸彎路，2–2.5 小時。<br><br>2–2.5 小時是依距離與路況推估的，不是官方數字；塞車、修路、下雨都會更久。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">18:30</span><span class="evn">奧斯陸(Oslob)晚餐</span><span class="chip p">自由</span></div><div class="evd">建議走出飯店到鎮上吃。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5326647%2C123.4405197&query_place_id=ChIJdzmV2hKhqzMR8bUpBnU3QFY" target="_blank" rel="noopener" title="在 Google 地圖開啟：W Golf Resort, Oslob"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>W Golf Resort, Oslob</span></a></div><div class="note "><strong>首選：Lami-an Restaurant at Oslob New Village</strong><a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5198106%2C123.4314134&query_place_id=ChIJNUOs_HGfqzMRvFN0Pglg6s0" target="_blank" rel="noopener" title="在 Google 地圖開啟：Lami-an Restaurant at Oslob New Village"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>地圖</span></a>（Google 4.6★／182 則，每天 07:00–22:00，電話 +63 923 530 1371）。距 W Golf 約 1.7 公里，嘟嘟車五分鐘。三個理由：座位多（11 人不用拆桌）、營業到 22:00、店員英文流利。評論常提到鹹蛋蝦、吞拿魚腹、kinilaw。<br><br><strong>備案：Nhinz Larangan</strong><a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5224953%2C123.4332231&query_place_id=ChIJxcV3KSCfqzMRSN4yTZoOiZ8" target="_blank" rel="noopener" title="在 Google 地圖開啟：Nhinz Larangan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>地圖</span></a>（4.4★／91 則，07:00–20:00，<span class="soft">週三公休</span>——12/4 是週五，沒問題）。距離約 1.4 公里，更便宜，但份量偏小，要多點幾道分著吃。<br><br><strong>關於飯店餐廳：</strong>W Golf 自己有餐廳與池畔酒吧，走路零距離。但 Google 上有住客抱怨餐點品質與缺貨——<span class="plat">這是旅客評論，不是查證過的事實</span>。既然鎮上五分鐘車程就有 4.6★ 的選擇，至少第一晚值得走出去。<br><br><strong>怎麼點菜：</strong>菲律賓餐廳上菜慢，11 人建議<strong>一坐下就一次點完</strong>，直接點合菜分食（烤魚、烤雞、炒麵、白飯），不要一人一份慢慢點。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">21:00</span><span class="evn">早點休息</span></div><div class="evd">隔天 05:00 又要出發看鯨鯊。</div></div></div>
 </article><article class="day">
   <div class="dayhead rv">
     <span class="dayno">D3</span>
@@ -607,7 +679,7 @@ footer{border-top:1px solid var(--hair);padding-block:clamp(50px,6vw,90px) calc(
     <span class="sec" style="font-size:14px">跳島．兩隊各走各的</span>
     <span class="daymeta"><span class="wx" id="wx-D5">天氣載入中…</span></span>
   </div>
-  <div class="tl"><div class="ev key rv"><div class="evtop"><span class="evt num">上午</span><span class="evn">Derek 團：跳島（不看海豚）</span><span class="team d">Derek 團</span></div><div class="evd">巴里卡薩島(Balicasag)浮潛 → 處女島(Virgin Island)。已取消海豚，可以晚一點起床。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5161073%2C123.6833008&query_place_id=ChIJNc3x1QqpqzMRc2ZmceWAGIo" target="_blank" rel="noopener" title="在 Google 地圖開啟：Balicasag Island"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Balicasag Island</span></a></div><div class="note good"><strong>幾點起床，決定今天能做什麼：</strong><br><br>要看<strong>海豚</strong>　→　<span class="soft">05:15 起床</span>（<span class="plat">已取消，不採用</span>）<br>要去 <strong>巴里卡薩島(Balicasag)浮潛 ＋ 處女島(Virgin Island)</strong>　→　<span class="soft">07:30–08:00 起床</span>（<span class="gold">採用這個</span>）<br>也可以<strong>下午再出門</strong>　→　但下午就只剩希納格達南洞(Hinagdanan Cave)（約 16:00 關門）、Bohol Bee Farm、Alona Beach 散步與別墅泳池，跳島整條放掉<br><br><strong>一件要先問船家：</strong>Balicasag 有每日入島人數管制，07:30–08:00 出發是否還進得去、下午收不收，我沒有查到明確說法，請先確認再決定幾點起床。</div></div><div class="ev rv"><div class="evtop"><span class="evt num" aria-hidden="true">&middot;</span><span class="evn">處女島(Virgin Island・Pungtod)</span><span class="team d">Derek 團</span></div><div class="evd">退潮時出現的白沙洲。環境費 ₱100／人（2023 年旅客實付紀錄，需重新確認）。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5593746%2C123.7212789&query_place_id=ChIJJ3SHKACtqzMRbi7UARuzk_8" target="_blank" rel="noopener" title="在 Google 地圖開啟：Virgin Island (Pungtod)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Virgin Island (Pungtod)</span></a></div></div><div class="ev rv"><div class="evtop"><span class="evt num">中午</span><span class="evn">Lance 團：Amihan 退房</span><span class="team l">Lance 團</span></div><div class="evd">退房 12:00。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5498434%2C123.7683701&query_place_id=ChIJq3d_4JusqzMRnHuYm_WCQGo" target="_blank" rel="noopener" title="在 Google 地圖開啟：Amihan Resort Panglao"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Amihan Resort Panglao</span></a></div></div><div class="ev key rv"><div class="evtop"><span class="evt num">下午</span><span class="evn">Lance 團：搭船回宿霧(Cebu)</span><span class="team l">Lance 團</span></div><div class="evd">塔比拉蘭(Tagbilaran) → 宿霧一號碼頭(Cebu Pier 1)，OceanJet 約 2 小時。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.649125%2C123.847322&query_place_id=ChIJI2PdpKxNqjMRVZJV512i7oE" target="_blank" rel="noopener" title="在 Google 地圖開啟：OceanJet Tagbilaran Port"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>OceanJet Tagbilaran Port</span></a></div><div class="note ">航程約 2 小時。當晚住宿建議挑 Mactan／Lapu-Lapu 機場側，隔天傍晚去機場方便。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">下午</span><span class="evn">Derek 團：補眠、別墅泳池</span><span class="team d">Derek 團</span><span class="chip p">自由</span></div><div class="evd">（選配）希納格達南洞(Hinagdanan Cave) 約 16:00 關門、Bohol Bee Farm。12/6 陸遊沒去成的邦勞島(Panglao)景點可以補在這裡。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.6254774%2C123.8009449&query_place_id=ChIJNev-FVJNqjMRpk4oja6EHi4" target="_blank" rel="noopener" title="在 Google 地圖開啟：Hinagdanan Cave, Dauis"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Hinagdanan Cave, Dauis</span></a></div></div></div>
+  <div class="tl"><div class="ev key rv"><div class="evtop"><span class="evt num">上午</span><span class="evn">Derek 團：跳島</span><span class="team d">Derek 團</span></div><div class="evd">三個選項，看你們想幾點起床。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5161073%2C123.6833008&query_place_id=ChIJNc3x1QqpqzMRc2ZmceWAGIo" target="_blank" rel="noopener" title="在 Google 地圖開啟：Balicasag Island"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Balicasag Island</span></a></div><div class="note good"><strong>這天有三個選項，看你們想幾點起床，沒有一定要選哪一個：</strong><div style="margin:16px 0 4px;display:grid;gap:12px"><div style="padding:13px 16px;border-left:1px solid var(--hair);background:rgba(19,34,53,.5)"><span class="tag-p">選項 A</span><br><strong class="soft">05:15 起床</strong>　→　海豚 ＋ 巴里卡薩島(Balicasag)浮潛 ＋ 處女島(Virgin Island)</div><div style="padding:13px 16px;border-left:1px solid var(--hair);background:rgba(19,34,53,.5)"><span class="tag-p">選項 B</span><br><strong class="soft">07:30–08:00 起床</strong>　→　巴里卡薩島(Balicasag)浮潛 ＋ 處女島(Virgin Island)，不看海豚</div><div style="padding:13px 16px;border-left:1px solid var(--hair);background:rgba(19,34,53,.5)"><span class="tag-p">選項 C</span><br><strong class="soft">睡到中午再出門</strong>　→　跳島整條放掉，改走希納格達南洞(Hinagdanan Cave)（約 16:00 關門）、Bohol Bee Farm、Alona Beach 散步與別墅泳池</div></div><strong>選 A 或 B 前要先問船家一件事：</strong>巴里卡薩島(Balicasag)有每日入島人數管制，07:30–08:00 出發是否還進得去、下午收不收，我沒有查到明確說法。</div></div><div class="ev rv"><div class="evtop"><span class="evt num" aria-hidden="true">&middot;</span><span class="evn">處女島(Virgin Island・Pungtod)</span><span class="team d">Derek 團</span></div><div class="evd">退潮時出現的白沙洲。環境費 ₱100／人（2023 年旅客實付紀錄，需重新確認）。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5593746%2C123.7212789&query_place_id=ChIJJ3SHKACtqzMRbi7UARuzk_8" target="_blank" rel="noopener" title="在 Google 地圖開啟：Virgin Island (Pungtod)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Virgin Island (Pungtod)</span></a></div></div><div class="ev rv"><div class="evtop"><span class="evt num">中午</span><span class="evn">Lance 團：Amihan 退房</span><span class="team l">Lance 團</span></div><div class="evd">退房 12:00。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5498434%2C123.7683701&query_place_id=ChIJq3d_4JusqzMRnHuYm_WCQGo" target="_blank" rel="noopener" title="在 Google 地圖開啟：Amihan Resort Panglao"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Amihan Resort Panglao</span></a></div></div><div class="ev key rv"><div class="evtop"><span class="evt num">下午</span><span class="evn">Lance 團：搭船回宿霧(Cebu)</span><span class="team l">Lance 團</span></div><div class="evd">塔比拉蘭(Tagbilaran) → 宿霧一號碼頭(Cebu Pier 1)，OceanJet 約 2 小時。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.649125%2C123.847322&query_place_id=ChIJI2PdpKxNqjMRVZJV512i7oE" target="_blank" rel="noopener" title="在 Google 地圖開啟：OceanJet Tagbilaran Port"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>OceanJet Tagbilaran Port</span></a></div><div class="note ">航程約 2 小時。當晚住宿建議挑 Mactan／Lapu-Lapu 機場側，隔天傍晚去機場方便。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">下午</span><span class="evn">Derek 團：補眠、別墅泳池</span><span class="team d">Derek 團</span><span class="chip p">自由</span></div><div class="evd">（選配）希納格達南洞(Hinagdanan Cave) 約 16:00 關門、Bohol Bee Farm。12/6 陸遊沒去成的邦勞島(Panglao)景點可以補在這裡。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.6254774%2C123.8009449&query_place_id=ChIJNev-FVJNqjMRpk4oja6EHi4" target="_blank" rel="noopener" title="在 Google 地圖開啟：Hinagdanan Cave, Dauis"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Hinagdanan Cave, Dauis</span></a></div></div></div>
 </article><article class="day">
   <div class="dayhead rv">
     <span class="dayno">D6</span>
@@ -923,6 +995,69 @@ footer{border-top:1px solid var(--hair);padding-block:clamp(50px,6vw,90px) calc(
 </section>
 <div class="wrap"><hr class="rule"></div>
 
+<section id="prep">
+  <div class="wrap">
+    <div class="shead"><p class="tag rv">行前準備　Before You Go</p><h2 class="h2 rv d1" style="margin-bottom:14px">Visa, eTravel, Customs</h2><p class="han2 rv d1">行前準備</p><p class="sec lede rv d2">台灣護照免簽 14 天，但 eTravel 一定要填，而且有一條罰 20 萬披索的禁令很容易踩到。</p></div>
+
+    <div class="g12" style="margin-bottom:var(--sect-s)">
+      <div class="c6">
+        <div class="card rv" style="height:100%">
+          <p class="tag">簽證　Visa</p>
+          <p class="h3" style="margin:14px 0 16px">台灣護照免簽 14 天</p>
+          <ul class="ul">
+            <li>持中華民國普通護照<strong>免簽停留最長 14 天</strong>，<strong class="soft">不可延期</strong>。
+                你們六天（Jas 七天）完全在範圍內。</li>
+            <li>這是有期限的政策：現行適用期間為 <strong>2025/7/1 至 2027/6/30</strong>。</li>
+            <li>護照效期須在<strong>入境日起算 6 個月以上</strong>。</li>
+            <li>要備<strong>回程機票</strong>（或 14 天內飛往第三國的機票），並建議帶訂房確認單，海關可能查驗。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="c6">
+        <div class="card rv d1" style="height:100%">
+          <p class="tag">eTravel 電子入境登記</p>
+          <p class="h3" style="margin:14px 0 16px">入境前 72 小時內，每人都要填</p>
+          <ul class="ul">
+            <li><strong>免費</strong>，官網 <span class="num">etravel.gov.ph</span>。
+                <strong class="soft">網路上有假網站會收代辦費</strong>，認明官網。</li>
+            <li>只能在<strong>入境前 72 小時內</strong>送出，太早送系統不收。</li>
+            <li>姓名、生日、國籍要和護照一致；還要填護照號碼與效期、航班、抵達日期、
+                <strong>英文住宿地址</strong>、入境目的與健康聲明。</li>
+            <li><strong>送出後不能修改</strong>，填錯只能重填。</li>
+            <li>每位旅客（含嬰兒）各自產生獨立 QR Code。<strong>建議截圖並寄到信箱</strong>，入境時不一定有網路。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card rv" style="border-color:rgba(200,112,95,.34);margin-bottom:var(--sect-s)">
+      <span class="chip no">罰 ₱200,000 的那一條</span>
+      <p class="h3" style="margin:17px 0 14px">不要帶任何肉類製品進菲律賓</p>
+      <p class="sec" style="margin:0 0 18px;font-size:15px">
+        菲律賓禁止攜帶肉類製品入境，違者罰款 <strong class="soft">PHP 200,000</strong>（約新台幣 11 萬元）。
+        這一條台灣旅客特別容易踩到，因為它<strong>包括肉乾、肉鬆、香腸，以及含肉類調味包的泡麵</strong>。
+      </p>
+      <ul class="ul">
+        <li><strong>其他禁帶：</strong>毒品、武器彈藥、瀕危動植物及其製品、假幣、新鮮蔬果、植物種子。</li>
+        <li><strong>現金申報：</strong>外幣現金超過 <span class="num">USD 10,000</span> 須申報；
+            披索進出境上限 <span class="num">PHP 50,000</span>。</li>
+        <li><strong>免稅額度：</strong>個人物品總值 <span class="num">PHP 10,000</span> 以內、酒 1 公升、香菸 200 支。</li>
+      </ul>
+    </div>
+
+    <p class="tag rv" style="margin:0 0 20px">確認清單　Checklist</p>
+    <p class="han2 rv d1" style="margin-bottom:26px">出發前要做完的事</p>
+    <p class="cap rv d1" style="margin:0 0 28px;max-width:52ch">
+      勾選狀態只存在你自己這支手機的瀏覽器裡，不會同步給其他人。
+    </p>
+    <div class="g12">
+      <div class="c6"><div class="card rv" style="margin-bottom:18px"><p class="tag">01</p><p class="h3" style="margin:14px 0 16px">出發前 1 個月</p><div class="rule-soft" style="margin-bottom:6px"></div><label class="ck"><input type="checkbox"><span>確認護照效期<small>入境日起算還有 6 個月以上</small></span></label><label class="ck"><input type="checkbox"><span>確認第 11 位的去回程機票<small>目前我手上沒有這筆資料</small></span></label><label class="ck"><input type="checkbox"><span>向業者確認 12/4 包車的 12 小時怎麼算<small>從接到人還是出車庫？超時不足一小時怎麼進位？</small></span></label><label class="ck"><input type="checkbox"><span>向業者確認沙丁魚 ₱500 含不含自潛長蛙</span></label><label class="ck"><input type="checkbox"><span>重新詢價 12/7 跳島（不含海豚、6 人）</span></label><label class="ck"><input type="checkbox"><span>訂 Lance 團 12/7 宿霧住宿、Jas 12/8 宿霧住宿</span></label><label class="ck"><input type="checkbox"><span>確認 Bathala 訂的是 1 棟還是 3 棟</span></label><label class="ck"><input type="checkbox"><span>問奧斯陸業者最近幾週鯨鯊的出現率<small>見風險區第一條</small></span></label></div><div class="card rv" style="margin-bottom:18px"><p class="tag">02</p><p class="h3" style="margin:14px 0 16px">出發前 1 週</p><div class="rule-soft" style="margin-bottom:6px"></div><label class="ck"><input type="checkbox"><span>在航空公司訂位頁確認機型與航廈</span></label><label class="ck"><input type="checkbox"><span>下載離線地圖<small>宿霧島南部＋薄荷島，Google 地圖離線區域</small></span></label><label class="ck"><input type="checkbox"><span>把兩台 van 司機的電話存進每個人手機</span></label><label class="ck"><input type="checkbox"><span>查 Tan-aw Restaurant 電話並存好<small>+63 915 170 6292，12/4 午餐要提前點</small></span></label><label class="ck"><input type="checkbox"><span>檢查美金鈔票有無撕裂或書寫<small>有瑕疵的鈔票換匯店會退回</small></span></label><label class="ck"><input type="checkbox"><span>相機防水殼換 O 形環、測試防霧</span></label></div></div>
+      <div class="c6"><div class="card rv" style="margin-bottom:18px"><p class="tag">03</p><p class="h3" style="margin:14px 0 16px">出發前 72 小時內</p><div class="rule-soft" style="margin-bottom:6px"></div><label class="ck"><input type="checkbox"><span>全員填 eTravel<small>etravel.gov.ph，免費，每人各自一組 QR Code</small></span></label><label class="ck"><input type="checkbox"><span>截圖 eTravel QR Code 並寄到自己信箱<small>現場可能沒網路</small></span></label><label class="ck"><input type="checkbox"><span>把訂房確認信、機票存成離線檔</span></label></div><div class="card rv" style="margin-bottom:18px"><p class="tag">04</p><p class="h3" style="margin:14px 0 16px">出發前一晚 ／ 12/3 當晚</p><div class="rule-soft" style="margin-bottom:6px"></div><label class="ck"><input type="checkbox"><span>行李打包：泳具與相機單獨裝一個下水包</span></label><label class="ck"><input type="checkbox"><span>12/3 晚上在宿霧市區領足現金<small>卡瓦森瀑布只收現金</small></span></label><label class="ck"><input type="checkbox"><span>12/3 晚上先把 Holiday Inn 的帳結掉<small>隔天 05:00 就走</small></span></label><label class="ck"><input type="checkbox"><span>請飯店準備 12/4 的外帶早餐</span></label></div></div>
+    </div>
+  </div>
+</section>
+<div class="wrap"><hr class="rule"></div>
+
 <section id="gear">
   <div class="wrap">
     <div class="shead"><p class="tag rv">裝備與現金　Packing</p><h2 class="h2 rv d1" style="margin-bottom:14px">What to Bring</h2><p class="han2 rv d1">裝備與現金</p><p class="sec lede rv d2">勾選狀態只存在你自己這支手機的瀏覽器裡，不會同步給其他人。</p></div>
@@ -1006,6 +1141,205 @@ footer{border-top:1px solid var(--hair);padding-block:clamp(50px,6vw,90px) calc(
 </section>
 <div class="wrap"><hr class="rule"></div>
 
+<section id="sim">
+  <div class="wrap">
+    <div class="shead"><p class="tag rv">通訊　Connectivity</p><h2 class="h2 rv d1" style="margin-bottom:14px">Staying Connected</h2><p class="han2 rv d1">SIM 卡與收訊</p><p class="sec lede rv d2">菲律賓的 SIM 卡強制實名登記，觀光客要帶護照。而這趟行程有不少路段會斷訊——宿霧南部公路、兩段跨海、薄荷島內陸都是。</p></div>
+
+    <div class="g12" style="margin-bottom:var(--sect-s)">
+      <div class="c5"><div class="card rv" style="margin-bottom:18px">
+  <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+    <span class="h3" style="margin:0">Globe</span><span class="chip g">首選</span>
+  </div>
+  <p class="sec" style="margin:0;font-size:14.5px">全國覆蓋最廣，<strong>薄荷島(Bohol)鄉下地區明顯比較穩</strong>。本行程有兩個點（比拉爾人造林、希納格達南洞）在 NTC 的登記上只有 Globe。只買一張就買這家。</p>
+</div><div class="card rv" style="margin-bottom:18px">
+  <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+    <span class="h3" style="margin:0">Smart</span><span class="chip p">可加一支</span>
+  </div>
+  <p class="sec" style="margin:0;font-size:14.5px">宿霧(Cebu)市區 5G 速度佔優，阿羅娜(Alona)一帶訊號也強，是很接近的第二名。團裡有人要在市區連線工作的話值得多一支。</p>
+</div><div class="card rv" style="margin-bottom:18px">
+  <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+    <span class="h3" style="margin:0">DITO</span><span class="chip p">備援而已</span>
+  </div>
+  <p class="sec" style="margin:0;font-size:14.5px">最便宜、速度不差，但<strong>覆蓋較薄</strong>，不要當唯一一張。</p>
+</div></div>
+      <div class="c6 offset1">
+        <div class="card rv" style="margin-bottom:18px">
+          <p class="tag">在哪買　Where</p>
+          <p class="h3" style="margin:14px 0 16px">機場買方便，市區買便宜</p>
+          <ul class="ul">
+            <li><strong>麥克坦-宿霧機場</strong>：入境大廳有電信櫃檯，當場幫你完成實名登記，最省事，但觀光包的單價比市區貴。</li>
+            <li><strong>市區官方門市／商場</strong>：可以三家比價、有店員幫忙登記，同樣的流量通常便宜一截。</li>
+            <li><strong>超商</strong>：最便宜，但<strong>要自己完成登記手續</strong>，不熟的人會卡住。</li>
+            <li><strong>eSIM</strong>：出發前在台灣就能裝好、一落地就有網路。但旅遊 eSIM <strong>通常不給菲律賓門號</strong>——叫 Grab 的簡訊驗證、打給司機船家餐廳都會不方便。</li>
+          </ul>
+        </div>
+        <div class="card rv d1">
+          <p class="tag">實名登記　Registration</p>
+          <p class="h3" style="margin:14px 0 16px">菲律賓的 SIM 卡一律要實名</p>
+          <ul class="ul">
+            <li>外國觀光客要帶：<strong>護照</strong>（照片頁＋入境章）、<strong>住宿證明</strong>（訂房確認信即可）、<strong>回程機票</strong>。</li>
+            <li>觀光身分登記的 SIM，<strong>登記後 30 天自動停用</strong>（除非出示核准的延簽）。你們六天的行程完全夠用。</li>
+            <li>機場櫃檯會直接用護照幫你辦完，這是它最大的價值。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="g12" style="margin-bottom:var(--sect-s)">
+      <div class="c4">
+        <p class="tag rv" style="margin:0 0 20px">11 人怎麼辦　For a Group</p>
+        <p class="h3 rv d1" style="margin-bottom:18px">不要 11 個人排隊各辦一張</p>
+        <p class="sec rv d2" style="margin:0 0 22px">
+          11 個人在機場櫃檯一個一個登記會耗掉很久，而你們 12/3 落地後還要進市區寄行李、吃午餐、等 Jas。
+        </p>
+      </div>
+      <div class="c7 offset1">
+        <ul class="ul rv d1">
+          <li><strong>至少要有兩支有菲律賓門號的實體 SIM。</strong>司機、船家、餐廳、飯店全部用電話聯絡，
+              Grab 註冊也要簡訊驗證。這兩支建議由行程聯絡人拿，並且<strong>分在兩隊各一支</strong>。</li>
+          <li><strong>其餘的人用熱點分享或 eSIM。</strong>兩三支主力 SIM 買大流量包開熱點，比 11 張各買一張便宜也快得多。</li>
+          <li><strong>12/4 當天特別重要。</strong>要打電話去 Tan-aw Restaurant 訂 12:00 的午餐、要跟兩台 van 的司機聯絡、
+              卡瓦森瀑布可能沒訊號——<strong>出發前就把司機電話存進每個人手機裡</strong>。</li>
+          <li><strong>所有地圖離線下載。</strong>宿霧南部公路、薄荷島內陸、兩段跨海都會斷訊，
+              Google 地圖的離線區域先載好宿霧島南部與薄荷島。</li>
+          <li><strong>約定集合點，不要靠即時訊息。</strong>卡瓦森瀑布與跳島這兩個行程請先講好集合地點與時間。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="g12" style="margin-bottom:var(--sect-s)">
+      <div class="c4">
+        <p class="tag rv" style="margin:0 0 20px">價格參考　Prices</p>
+        <p class="h3 rv d1" style="margin-bottom:18px">大概要花多少</p>
+        <p class="sec rv d2" style="margin:0">
+          以下價格是 2026 年 9 月下旬查自電信業者官網的整理，<strong class="soft">電信促銷變動很快</strong>，
+          到現場請以櫃檯當下的方案為準。這些數字我沒有列進費用表，因為它會變。
+        </p>
+      </div>
+      <div class="c7 offset1">
+        <table class="tbl rv d1">
+          <thead><tr><th>方案</th><th>流量／天數</th><th class="r">價格</th></tr></thead>
+          <tbody>
+            <tr><td>空卡本身</td><td class="sec" style="font-size:13.5px">—</td><td class="num r" style="color:var(--gold-soft)">₱40–300</td></tr>
+            <tr><td>Globe 機場觀光包（入門）</td><td class="sec" style="font-size:13.5px">20GB／15 天</td><td class="num r" style="color:var(--gold-soft)">₱500 起</td></tr>
+            <tr><td>Globe 機場觀光包（30 天）</td><td class="sec" style="font-size:13.5px">80GB ～ 169GB／30 天</td><td class="num r" style="color:var(--gold-soft)">₱1,500–3,000</td></tr>
+            <tr><td>Globe 一般促銷</td><td class="sec" style="font-size:13.5px">7 天／15 天</td><td class="num r" style="color:var(--gold-soft)">₱99／₱179</td></tr>
+            <tr><td>Smart 觀光 eSIM</td><td class="sec" style="font-size:13.5px">24GB／30 天</td><td class="num r" style="color:var(--gold-soft)">₱599</td></tr>
+            <tr><td>Smart 觀光 eSIM（無限）</td><td class="sec" style="font-size:13.5px">無限／30 天</td><td class="num r" style="color:var(--gold-soft)">₱1,599</td></tr>
+          </tbody>
+        </table>
+        <p class="cap rv d2" style="margin:16px 0 0">
+          以你們六天的用量來看，<strong class="soft">Globe ₱500 的 20GB／15 天</strong>這一檔對主力門號通常就夠，
+          要開熱點給多人共用再往上跳一檔。
+        </p>
+      </div>
+    </div>
+
+    <hr class="rule" style="margin-bottom:var(--sect-s)">
+
+    <p class="tag rv" style="margin:0 0 20px">逐段收訊　Coverage</p>
+    <p class="han2 rv d1" style="margin-bottom:20px">每個停留點與拉車路段的收訊</p>
+    <div class="g12" style="margin-bottom:clamp(26px,3.4vw,48px)">
+      <div class="c7">
+        <p class="sec rv d2" style="margin:0">
+          下表的強度是我依查到的資料歸納的概略分級，<strong class="soft">不是實測</strong>。
+          每一列右邊標了來源，「查不到」就是我真的找不到可引用的資料，<strong>請直接當作沒訊號來準備</strong>。
+        </p>
+      </div>
+      <div class="c4 offset1">
+        <div class="cap rv d1" style="display:flex;flex-direction:column;gap:9px">
+          <span><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span>　穩定，正常使用沒問題</span>
+          <span><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span>　堪用，可能偶爾慢</span>
+          <span><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:#C9A227;margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span>　不穩或會中斷</span>
+          <span><span class="cap" style="color:var(--platinum);letter-spacing:.14em">？</span>　查不到資料，請當作沒訊號</span>
+        </div>
+      </div>
+    </div>
+    <div style="overflow-x:auto" class="rv">
+      <table class="tbl" style="min-width:680px"><tbody><tr><td style="white-space:nowrap;padding-right:18px">麥克坦-宿霧機場(Mactan-Cebu Airport)<span class="src">driftasia</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">4G 訊號強。抵達大廳就能用。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">宿霧(Cebu)市區<span class="src">driftasia</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">市中心 4G 強；IT Park 與 Business Park 有 5G（Smart 的 5G 速度較佔優勢）。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">宿霧 → 墨寶　公路（經卡爾卡 Carcar）<span class="src">driftasia</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">沿途城鎮都有訊號，<strong>鄉間路段有斷點</strong>。出發前先把地圖下載離線。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">墨寶(Moalboal) Panagsama<span class="src">journeyera</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">Globe LTE 表現良好。再往南走覆蓋就變稀疏。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">卡瓦森瀑布(Kawasan Falls)<span class="src">查不到</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span class="cap" style="color:var(--platinum);letter-spacing:.14em">？</span></td><td class="sec" style="font-size:13.5px"><strong>我查不到任何可引用的資料。</strong>峽谷地形通常不利收訊，請當作沒訊號來準備——約好集合點與時間，不要靠手機找人。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">墨寶 → 奧斯陸　海岸彎路<span class="src">driftasia</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">這段 85–95 公里經過七個鄉鎮，<strong>鄉間與跨山路段會斷</strong>。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">奧斯陸(Oslob)鎮上<span class="src">driftasia</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">Globe 4G 足夠日常使用。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">奧斯陸　鯨鯊船上<span class="src">driftasia</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">近岸的觀鯊船上仍收得到訊號，拍照上傳沒問題。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">奧斯陸 → 薄荷島　跨海 2 小時<span class="src">driftasia</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:#C9A227;margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px"><strong>海峽中段會斷。</strong>這是螃蟹船、航程較長，建議先把要看的東西載好。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">邦勞島(Panglao)／阿羅娜(Alona)／住宿<span class="src">driftasia</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:var(--gold);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">Globe 在海灘一帶與島上道路覆蓋良好。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">洛博克河(Loboc)遊船<span class="src">driftasia</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">河口與折返點有訊號，<strong>叢林覆蓋的河段斷斷續續</strong>。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">比拉爾(Bilar)人造林<span class="src">NTC 登記</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:#C9A227;margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">NTC 的業者登記<strong>只有 Globe，沒有 Smart</strong>。帶 Smart 的人在這裡可能完全沒訊號。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">巧克力山(Chocolate Hills)卡門觀景台<span class="src">driftasia</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:var(--gold-soft);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">Globe 4G 足夠拍照上傳。<strong>通往卡門的山路依山谷而異</strong>，有些路段會斷。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">巴里卡薩島(Balicasag)／處女島　跳島<span class="src">查不到</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span class="cap" style="color:var(--platinum);letter-spacing:.14em">？</span></td><td class="sec" style="font-size:13.5px"><strong>我查不到可引用的資料。</strong>離岸小島與船上請預期不穩，當天的集合與回程時間一定要先講好。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">希納格達南洞(Hinagdanan Cave)・Dauis<span class="src">NTC 登記</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:#C9A227;margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">NTC 的業者登記<strong>只有 Globe，沒有 Smart</strong>。</td></tr><tr><td style="white-space:nowrap;padding-right:18px">塔比拉蘭 → 宿霧　快船 2 小時<span class="src">driftasia</span></td><td style="width:1%;white-space:nowrap;padding-right:18px"><span style="display:inline-block;width:4px;height:6px;border-radius:1px;background:#C9A227;margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:10px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span><span style="display:inline-block;width:4px;height:14px;border-radius:1px;background:rgba(140,150,163,.22);margin-right:2px;vertical-align:baseline"></span></td><td class="sec" style="font-size:13.5px">兩端港口訊號都好，但<strong>海峽中段約 40–60 分鐘會完全沒訊號</strong>。</td></tr></tbody></table>
+    </div>
+
+    <div class="card rv" style="margin-top:var(--sect-s);border-color:rgba(201,162,39,.30)">
+      <span class="chip todo">這一節的資料可靠度</span>
+      <p class="h3" style="margin:17px 0 14px">收訊這種東西，沒有人會給你保證</p>
+      <ul class="ul">
+        <li><strong>NTC 登記</strong>＝菲律賓國家電信委員會第七區公布的「哪幾家電信獲准在該行政區營運」，
+            <span class="plat">那是執照清單，不是訊號強度地圖</span>，而且該頁面最後修改日期是 2024-01-05。</li>
+        <li><strong>driftasia</strong> 是賣 eSIM 的商家內容，描述很具體但立場不中立；
+            <strong>journeyera</strong> 是個人旅遊部落格。兩者我都沒有辦法交叉驗證。</li>
+        <li><strong>卡瓦森瀑布與巴里卡薩島我完全查不到資料</strong>，表上標「？」就是真的不知道，不是訊號差的意思。</li>
+        <li>收訊會因為電信商、手機型號、天氣、當下人潮而差很多。<strong>上面任何一列都不要當成保證。</strong></li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div class="wrap"><hr class="rule"></div>
+
+<section id="local">
+  <div class="wrap">
+    <div class="shead"><p class="tag rv">當地交通與會話　Getting Around</p><h2 class="h2 rv d1" style="margin-bottom:14px">Rides & Words</h2><p class="han2 rv d1">當地交通與會話</p><p class="sec lede rv d2">最重要的一件事先講：<strong>薄荷島的 Grab 不可靠</strong>，不要把接駁押在它身上。</p></div>
+    <div class="g12" style="margin-bottom:var(--sect-s)">
+      <div class="c6"><div class="card rv" style="margin-bottom:18px">
+  <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+    <span class="h3" style="margin:0">Grab</span><span class="chip g">宿霧可靠，薄荷島不可靠</span>
+  </div>
+  <p class="sec" style="margin:0;font-size:14.5px">宿霧市區用 Grab 叫車方便、價格透明。但<strong>薄荷島與邦勞島(Panglao)的 Grab 覆蓋不穩定</strong>，尖峰時段或離開邦勞、塔比拉蘭(Tagbilaran)之後常常叫不到。<strong>不要把薄荷島的接駁押在 Grab 上</strong>——請飯店或潛店幫忙叫熟識的司機比較實在。註冊要簡訊驗證，所以至少要有一支菲律賓門號。</p>
+</div><div class="card rv" style="margin-bottom:18px">
+  <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+    <span class="h3" style="margin:0">計程車</span><span class="chip p">有錶就用錶</span>
+  </div>
+  <p class="sec" style="margin:0;font-size:14.5px">塔比拉蘭、機場、邦勞一帶才比較找得到，其他地方很少。行李多時比三輪車舒服。邦勞機場到塔比拉蘭約 <span class="num">₱400–600</span>，看議價。</p>
+</div><div class="card rv" style="margin-bottom:18px">
+  <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+    <span class="h3" style="margin:0">三輪車（tricycle）</span><span class="chip p">短程主力</span>
+  </div>
+  <p class="sec" style="margin:0;font-size:14.5px">機車加邊車，短程與包半天都靠它，邦勞與塔比拉蘭到處都是。鎮內短程約 <span class="num">₱20–40／人</span>；塔比拉蘭到邦勞整趟可到 <span class="num">₱200–300</span>。<strong>上車前先講好價錢。</strong></p>
+</div></div>
+      <div class="c6"><div class="card rv" style="margin-bottom:18px">
+  <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+    <span class="h3" style="margin:0">吉普尼（jeepney）</span><span class="chip p">最便宜</span>
+  </div>
+  <p class="sec" style="margin:0;font-size:14.5px">固定路線，主要跑塔比拉蘭、邦勞與周邊城鎮。短程約 <span class="num">₱15–20</span>，距離越遠越貴。要下車時喊一聲「<strong>Lugar lang!</strong>」。</p>
+</div><div class="card rv" style="margin-bottom:18px">
+  <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+    <span class="h3" style="margin:0">habal-habal</span><span class="chip p">山路與步道口</span>
+  </div>
+  <p class="sec" style="margin:0;font-size:14.5px">載客機車。卡瓦森瀑布(Kawasan Falls)那段 1.5 公里步道不想走的話可以搭，約 <span class="num">₱20–30</span>。</p>
+</div><div class="card rv" style="margin-bottom:18px">
+  <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+    <span class="h3" style="margin:0">包車</span><span class="chip g">11 人的正解</span>
+  </div>
+  <p class="sec" style="margin:0;font-size:14.5px">12/4 與 12/6 本來就是包車。其餘零星移動若全團一起走，請飯店或潛店安排廂型車，比湊一堆三輪車快也安全。<strong>先問清楚等候時間、繞路、夜間加成含不含。</strong></p>
+</div></div>
+    </div>
+
+    <hr class="rule" style="margin-bottom:var(--sect-s)">
+
+    <p class="tag rv" style="margin:0 0 20px">實用會話　Cebuano</p>
+    <p class="han2 rv d1" style="margin-bottom:20px">幾句宿霧語，氣氛差很多</p>
+    <div class="g12">
+      <div class="c4">
+        <p class="sec rv d2" style="margin:0 0 22px">
+          觀光區英語幾乎都通，所以這些不是「必須」，而是<strong class="soft">態度</strong>——
+          講一句 Salamat，攤販和司機的反應會完全不一樣。<br><br>
+          宿霧語（Cebuano，當地人自己叫 Bisaya）在宿霧和薄荷島都通用。
+          拼法與發音依 TheSmartLocal 的整理；<span class="plat">實際腔調各地略有差異</span>。
+        </p>
+        <div class="card rv d2">
+          <p class="tag" style="margin:0 0 14px">數字　Numbers</p>
+          <table class="tbl"><tbody><tr><td class="num" style="font-size:13.5px;color:var(--pearl)">1 usa</td><td class="num" style="font-size:13.5px;color:var(--pearl)">2 duha</td><td class="num" style="font-size:13.5px;color:var(--pearl)">3 tulo</td><td class="num" style="font-size:13.5px;color:var(--pearl)">4 upat</td></tr><tr><td class="num" style="font-size:13.5px;color:var(--pearl)">5 lima</td><td class="num" style="font-size:13.5px;color:var(--pearl)">6 unom</td><td class="num" style="font-size:13.5px;color:var(--pearl)">7 pito</td><td class="num" style="font-size:13.5px;color:var(--pearl)">8 walo</td></tr><tr><td class="num" style="font-size:13.5px;color:var(--pearl)">9 siyam</td><td class="num" style="font-size:13.5px;color:var(--pearl)">10 napulo</td><td class="num" style="font-size:13.5px;color:var(--pearl)">20 baynti</td><td class="num" style="font-size:13.5px;color:var(--pearl)">₱1 piso</td></tr></tbody></table>
+          <p class="cap" style="margin:14px 0 0">談錢時多半用西班牙語系的講法（baynti＝20），
+          但 1–10 的本地講法還是會聽到。</p>
+        </div>
+      </div>
+      <div class="c7 offset1">
+        <table class="tbl rv d1"><tbody><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Maayong buntag</span><span class="src">mah-ah-yong boon-tahg</span></td><td class="sec" style="font-size:14px">早安</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Maayong hapon</span><span class="src">mah-ah-yong hah-pon</span></td><td class="sec" style="font-size:14px">午安</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Maayong gabii</span><span class="src">mah-ah-yong gah-bee-ee</span></td><td class="sec" style="font-size:14px">晚安</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Ayo</span><span class="src">ah-yoh</span></td><td class="sec" style="font-size:14px">嗨（隨時都能用的招呼）</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Salamat</span><span class="src">sah-lah-mat</span></td><td class="sec" style="font-size:14px">謝謝</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Daghang salamat</span><span class="src">dag-hang sah-lah-mat</span></td><td class="sec" style="font-size:14px">非常感謝</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Oo</span><span class="src">哦～（拉長音）</span></td><td class="sec" style="font-size:14px">是</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Dili</span><span class="src">dee-lee</span></td><td class="sec" style="font-size:14px">不是／不要</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Tagpila ni?</span><span class="src">tag-pee-lah nee</span></td><td class="sec" style="font-size:14px">這個多少錢？（指著東西問）</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Pahangyua ko</span><span class="src">pah-hang-yoo-ah koh</span></td><td class="sec" style="font-size:14px">可以算便宜一點嗎？</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Pasayloa ko</span><span class="src">pah-say-loh-ah koh</span></td><td class="sec" style="font-size:14px">對不起（正式；口語多半直接講 sorry）</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Pwede mangutana?</span><span class="src">pweh-deh mang-oo-tah-nah</span></td><td class="sec" style="font-size:14px">可以請問一下嗎？</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Padulong ni sa ___?</span><span class="src">pah-doo-long nee sah</span></td><td class="sec" style="font-size:14px">這台（車／船）是往 ___ 嗎？</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Lugar lang!</span><span class="src">loo-gar lang</span></td><td class="sec" style="font-size:14px">我要在這裡下車！</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Wala ko kabalo</span><span class="src">wah-lah koh kah-bah-loh</span></td><td class="sec" style="font-size:14px">我不知道</td></tr><tr><td style="white-space:nowrap"><span style="color:var(--gold-soft);font-size:15px">Naay tawo?</span><span class="src">nah-ai tah-wo</span></td><td class="sec" style="font-size:14px">有人在嗎？</td></tr></tbody></table>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="wrap"><hr class="rule"></div>
+
 <section id="cost">
   <div class="wrap">
     <div class="shead"><p class="tag rv">費用粗估　Investment</p><h2 class="h2 rv d1" style="margin-bottom:14px">Verified Items Only</h2><p class="han2 rv d1">費用粗估</p><p class="sec lede rv d2">幣別為菲律賓披索(PHP)。每個金額旁的新台幣是開啟頁面當下即時抓的匯率換算，所以你每天打開看到的台幣金額都會不一樣。</p></div>
@@ -1030,35 +1364,22 @@ footer{border-top:1px solid var(--hair);padding-block:clamp(50px,6vw,90px) calc(
       </ul>
     </div>
 
-    <div class="g12 rv" style="margin-bottom:var(--sect-s)">
-      <div class="c4">
-        <p class="tag" style="margin:0 0 20px">每人粗估　Per Person</p>
-        <p class="h3" style="margin:0 0 16px">一個人大概要準備多少</p>
-        <p class="sec" style="margin:0;font-size:14.5px">
-          下表已查證項目依對象分攤：共同項目除以 11 人，12/7–12/8 兩隊各自的項目再除以各隊人數。
-          <strong class="soft">這不是全團總預算</strong>——包車超時費、12/7 跳島、鯨鯊、薄荷島包車、
-          餐費與住宿都還沒算進去。
-        </p>
-      </div>
-      <div class="c7 offset1">
-        <div class="figs">
-          <div class="fig">
-            <b>₱3,577</b><i>共同分攤　Shared</i>
-            <em class="num" style="color:var(--gold-soft)" data-php="3577"><span class="twd" data-php="3577"></span></em>
-            <em>12/3–12/6 全員同行的項目 &divide; 11 人</em>
-          </div>
-          <div class="fig">
-            <b>₱4,977</b><i>Derek 團每人</i>
-            <em class="num" style="color:var(--gold-soft)" data-php="4977"><span class="twd" data-php="4977"></span></em>
-            <em>共同分攤 ＋ 12/7 跳島環境費 ＋ 12/8 船票</em>
-          </div>
-          <div class="fig">
-            <b>₱4,502</b><i>Lance 團每人</i>
-            <em class="num" style="color:var(--gold-soft)" data-php="4502"><span class="twd" data-php="4502"></span></em>
-            <em>共同分攤 ＋ 12/7 提前回宿霧的船票</em>
-          </div>
-        </div>
-      </div>
+    <div class="card rv" style="margin-bottom:var(--sect-s);padding:clamp(28px,3.6vw,52px)">
+      <p class="tag" style="margin:0 0 22px">每人粗估　Per Person</p>
+      <p class="h1" style="font-size:clamp(26px,4.4vw,44px);letter-spacing:.04em;margin:0 0 8px;color:var(--gold-soft)">
+        一個人大約 <span class="num" style="font-weight:400">₱4,502～₱4,977</span>
+      </p>
+      <p class="h2" style="font-size:clamp(19px,2.6vw,27px);letter-spacing:.04em;margin:0 0 24px;color:var(--pearl)">
+        相當於新台幣 <span class="num twdrange" data-lo="4502" data-hi="4977" style="font-weight:400">載入匯率中…</span>
+      </p>
+      <div class="rule-soft" style="margin-bottom:20px"></div>
+      <p class="sec" style="margin:0;font-size:14.5px;max-width:70ch">
+        區間下緣是 Lance 團（₱4,502／人），上緣是 Derek 團（₱4,977／人）。
+        兩隊 12/3–12/6 的項目一樣，差別在 12/7–12/8：Derek 團多了跳島環境費與 12/8 船票，
+        Lance 團則是 12/7 提前回宿霧(Cebu)的船票。<br><br>
+        <strong class="soft">這不是全團總預算。</strong>包車超時費、12/7 跳島、鯨鯊、薄荷島(Bohol)包車、
+        餐費與住宿都還沒算進去——沒有可引用數字的項目我一律留白，列在下方「未納入」。
+      </p>
     </div>
 
     <div class="ratebar rv" style="margin-bottom:22px">
@@ -1098,14 +1419,13 @@ footer{border-top:1px solid var(--hair);padding-block:clamp(50px,6vw,90px) calc(
           <div class="rule" style="margin-bottom:24px"></div>
           <p style="margin:0 0 14px"><span class="sev h"></span><span class="cap" style="color:var(--pearl)">要先處理才能往下走</span></p>
           <p style="margin:0 0 14px"><span class="sev m"></span><span class="cap" style="color:var(--pearl)">出發前要確認</span></p>
-          <p style="margin:0 0 24px"><span class="sev l"></span><span class="cap" style="color:var(--pearl)">知道就好</span></p>
-          <div class="rule"></div>
+          <div class="rule" style="margin-top:24px"></div>
           <p class="cap" style="margin:24px 0 0;line-height:1.8">
             這一節刻意寫得不客氣。行程表上看起來順的地方，通常是因為還沒有人去踩。
           </p>
         </div>
       </div>
-      <div class="c7 offset1"><details class="ac"><summary><span class="sev h"></span>12/4 包車幾乎確定超過 12 小時上限</summary><div class="acbody">05:00 上車、約 17:30 抵達奧斯陸(Oslob)＝12 小時 30 分。超時每台每小時 ₱400，兩台就是 ₱800 起跳。要先問業者：12 小時從接到人還是出車庫起算？不足一小時怎麼進位？</div></details><details class="ac"><summary><span class="sev h"></span>12/8 14:00 是全程唯一的硬線</summary><div class="acbody">Derek 團 12/8 必須搭上最晚 14:00 從 Tagbilaran 開往宿霧(Cebu)的 OceanJet，否則趕不上 19:35 的 JX784。不能「傍晚搭船」。</div></details><details class="ac"><summary><span class="sev m"></span>Balicasag 有每日入島人數管制，晚出發不保證進得去</summary><div class="acbody">取消海豚之後出發時間可以從 05:15 延後到約 07:30–08:00，但 Balicasag 近年實施入島與浮潛人數管制，去晚了可能要在船上等，甚至當天額滿。下午收不收我也沒有查到明確說法。<strong>務必先跟船家確認「這個出發時間還進得去嗎」</strong>再決定幾點起床。</div></details><details class="ac"><summary><span class="sev m"></span>Bathala 訂單到底是 1 棟還是 3 棟</summary><div class="acbody">你提供的是訂房頁截圖不是確認信，截圖底部「房數」顯示 3。別墅每棟上限 9 位大人，Derek 團 6 人訂 1 棟就夠；若實際訂了 3 棟，費用差很多。請打開訂單確認。</div></details><details class="ac"><summary><span class="sev m"></span>停車費不含在車資內，而且只給了下限</summary><div class="acbody">每台車<strong>至少</strong> ₱100–200，兩台車就是 ₱200–400 起跳，要另外準備現金。注意業者給的是「至少」不是定價——12/4 這天在墨寶(Moalboal)和卡瓦森瀑布(Kawasan Falls)都要停車，實際金額可能高於這個範圍。建議多帶一些零鈔，不要剛好帶 ₱400。</div></details><details class="ac"><summary><span class="sev m"></span>₱500 的「snorkel gears」不一定包含自潛長蛙</summary><div class="acbody">自潛用的長蛙和一般浮潛蛙鞋是兩種東西，租金也不同（公開參考價：一般 ₱100、長蛙 ₱200／天）。自潛組 5 人請先問業者含不含，不含就要另外算。</div></details><details class="ac"><summary><span class="sev m"></span>卡瓦森瀑布(Kawasan Falls) 只收現金</summary><div class="acbody">門票 ₱200／人在入口現場付，竹筏 ₱300／艘、置物櫃 ₱100 也是現金。12/3 晚上在宿霧(Cebu)市區就要領足，當地不是處處有提款機。</div></details><details class="ac"><summary><span class="sev m"></span>奧斯陸(Oslob)那段 2–2.5 小時是推估，不是官方數字</summary><div class="acbody">Badian → Alegria → Malabuyoc → Ginatilan → Samboan → Santander → Oslob 約 85–95 公里海岸彎路。我是依距離與路況推估的。塞車、修路、雨天都會讓它變長。</div></details><details class="ac"><summary><span class="sev m"></span>三段螃蟹船都會濕身</summary><div class="acbody">12/5 奧斯陸(Oslob)→薄荷島(Bohol)、12/7 Derek 團跳島、以及任何沙灘接駁。多數沙灘點沒有碼頭，水深常及膝到及腰，行李也可能濕。詳見「螃蟹船」一節。</div></details><details class="ac"><summary><span class="sev l"></span>自潛安全：淺水昏迷沒有預兆</summary><div class="acbody">淺水昏迷（shallow water blackout）通常發生在上升的最後幾公尺，而且<strong>事前毫無徵兆</strong>。請嚴格執行一上一下（one up one down）：水面那位全程盯著下潛的人，直到對方上來、呼吸恢復正常為止。拍照時特別容易忘記自己在憋氣，不要比深度、不要憋到極限。</div></details><details class="ac"><summary><span class="sev l"></span>浮潛組不必游到深水區</summary><div class="acbody">Panagsama 的礁壁離岸只有 20–30 公尺，沙丁魚球常常就在那一線。已經請業者安排私人嚮導、沿岸與礁壁邊緣走、每人救生衣、外加一個救生圈。不想游遠的人完全可以貼著岸邊看完全部。</div></details><details class="ac"><summary><span class="sev l"></span>鯨鯊共游有動物倫理上的爭議</summary><div class="acbody">奧斯陸(Oslob)的鯨鯊是靠人工餵食（蝦毛）聚集的。支持方認為這取代了過去的捕撈、提供在地就業；反對方認為餵食改變了鯨鯊的洄游與覓食行為、近距離接觸也增加碰撞風險。兩種說法都有人提，你們已經訂了，就當作是知道一下背景；現場規定（不觸碰、不防曬油、保持 4 公尺）請確實遵守。</div></details><details class="ac"><summary><span class="sev l"></span>天氣要等到 11 月中以後才看得到</summary><div class="acbody">頁面上的天氣用 Open-Meteo 即時抓取，但它只提供約 16 天內的預報。現在距離出發還有一個多月，所以你會看到「尚未進入預報範圍」——這是正常的，不是壞掉。</div></details><details class="ac"><summary><span class="sev l"></span>台幣金額每天都不一樣</summary><div class="acbody">費用表裡披索旁的新台幣是開啟頁面當下即時抓取匯率換算的，所以每天打開數字都會變。抓不到匯率時會直接留白，<strong>不會顯示過期或猜測的數字</strong>。</div></details></div>
+      <div class="c7 offset1"><details class="ac"><summary><span class="sev h"></span>奧斯陸(Oslob)鯨鯊：2026 年 5 月曾連續四天沒出現</summary><div class="acbody">2026 年 5 月下旬菲律賓媒體報導，奧斯陸主要觀鯊點 Barangay Tan-awan <strong>連續四天清晨沒有鯨鯊出現</strong>，網路上一度流傳「鯨鯊消失、行程永久停辦」。奧斯陸觀光辦公室否認永久停辦，說鯨鯊是季節性移動到鄰近的 Barangay Hagdan 一帶覓食浮游生物；5/25 當天上午 8:00 因為找不到鯨鯊而暫停入場，9:00 有兩隻進來後恢復。<br><br><strong>對你們的三個意義：</strong><br>① 這個行程是<strong>「有魚才開放入場」</strong>——營業時間每天 06:00–10:00，但看不看得到不保證。<br>② 你們 12/5 排 05:00 出發、05:00–07:30 共游，剛好落在營業時間前段；萬一當天清晨沒魚，可能要在現場等。<br>③ <strong>我手上的資料只到 2026 年 5 月底，6 月以後的狀況我完全不知道</strong>，12 月更無從判斷。出發前請直接問你訂的業者「最近幾週的出現率如何」，並問清楚沒看到魚怎麼算。<br><br><span class="plat">附帶一提：同一則報導提到當時入場費為本地人 ₱500、外國人 ₱1,000（未註明是船上觀看還是浮潛的級距）。你說鯨鯊已經訂了，所以這個數字我沒有放進費用表。</span></div></details><details class="ac"><summary><span class="sev h"></span>12/4 包車幾乎確定超過 12 小時上限</summary><div class="acbody">05:00 上車、約 17:30 抵達奧斯陸(Oslob)＝12 小時 30 分。超時每台每小時 ₱400，兩台就是 ₱800 起跳。要先問業者：12 小時從接到人還是出車庫起算？不足一小時怎麼進位？</div></details><details class="ac"><summary><span class="sev h"></span>12/8 14:00 是全程唯一的硬線</summary><div class="acbody">Derek 團 12/8 必須搭上最晚 14:00 從 Tagbilaran 開往宿霧(Cebu)的 OceanJet，否則趕不上 19:35 的 JX784。不能「傍晚搭船」。</div></details><details class="ac"><summary><span class="sev m"></span>Balicasag 有每日入島人數管制，晚出發不保證進得去</summary><div class="acbody">取消海豚之後出發時間可以從 05:15 延後到約 07:30–08:00，但 Balicasag 近年實施入島與浮潛人數管制，去晚了可能要在船上等，甚至當天額滿。下午收不收我也沒有查到明確說法。<strong>務必先跟船家確認「這個出發時間還進得去嗎」</strong>再決定幾點起床。</div></details><details class="ac"><summary><span class="sev m"></span>Bathala 訂單到底是 1 棟還是 3 棟</summary><div class="acbody">你提供的是訂房頁截圖不是確認信，截圖底部「房數」顯示 3。別墅每棟上限 9 位大人，Derek 團 6 人訂 1 棟就夠；若實際訂了 3 棟，費用差很多。請打開訂單確認。</div></details><details class="ac"><summary><span class="sev m"></span>停車費不含在車資內，而且只給了下限</summary><div class="acbody">每台車<strong>至少</strong> ₱100–200，兩台車就是 ₱200–400 起跳，要另外準備現金。注意業者給的是「至少」不是定價——12/4 這天在墨寶(Moalboal)和卡瓦森瀑布(Kawasan Falls)都要停車，實際金額可能高於這個範圍。建議多帶一些零鈔，不要剛好帶 ₱400。</div></details><details class="ac"><summary><span class="sev m"></span>₱500 的「snorkel gears」不一定包含自潛長蛙</summary><div class="acbody">自潛用的長蛙和一般浮潛蛙鞋是兩種東西，租金也不同（公開參考價：一般 ₱100、長蛙 ₱200／天）。自潛組 5 人請先問業者含不含，不含就要另外算。</div></details><details class="ac"><summary><span class="sev m"></span>卡瓦森瀑布(Kawasan Falls) 只收現金</summary><div class="acbody">門票 ₱200／人在入口現場付，竹筏 ₱300／艘、置物櫃 ₱100 也是現金。12/3 晚上在宿霧(Cebu)市區就要領足，當地不是處處有提款機。</div></details><details class="ac"><summary><span class="sev m"></span>奧斯陸(Oslob)那段 2–2.5 小時是推估，不是官方數字</summary><div class="acbody">Badian → Alegria → Malabuyoc → Ginatilan → Samboan → Santander → Oslob 約 85–95 公里海岸彎路。我是依距離與路況推估的。塞車、修路、雨天都會讓它變長。</div></details><details class="ac"><summary><span class="sev m"></span>三段螃蟹船都會濕身</summary><div class="acbody">12/5 奧斯陸(Oslob)→薄荷島(Bohol)、12/7 Derek 團跳島、以及任何沙灘接駁。多數沙灘點沒有碼頭，水深常及膝到及腰，行李也可能濕。詳見「螃蟹船」一節。</div></details></div>
     </div>
   </div>
 </section>
@@ -1161,31 +1481,71 @@ var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: re
 
 /* ───────── Nav ───────── */
 (function(){
-  var nav = $('nav'), burger = $('burger'), drawer = $('drawer');
+  var nav = $('nav');
   var onScroll = function(){ nav.classList.toggle('on', window.scrollY > 40); };
   onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
 
-  if(burger && drawer){
-    var set = function(open){
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      burger.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
-      drawer.classList.toggle('open', open);
-      document.body.style.overflow = open ? 'hidden' : '';
-    };
-    burger.addEventListener('click', function(){ set(drawer.classList.contains('open') === false); });
-    $$('a', drawer).forEach(function(a){ a.addEventListener('click', function(){ set(false); }); });
-    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && drawer.classList.contains('open')) set(false); });
+  /* 手機底部橫排：點主分類 → 上彈子選單 */
+  var bnav = $('bnav'), veil = $('bveil');
+  if(bnav){
+    var tabs   = $$('.btab', bnav);
+    var sheets = $$('.bsheet', bnav);
+    var openG  = -1;
+
+    function close(){
+      openG = -1;
+      sheets.forEach(function(s){ s.hidden = true; });
+      tabs.forEach(function(t){ t.setAttribute('aria-expanded','false'); });
+      if(veil){ veil.classList.remove('on'); setTimeout(function(){ if(openG === -1) veil.hidden = true; }, 300); }
+    }
+    function open(g){
+      openG = g;
+      sheets.forEach(function(s){ s.hidden = (s.getAttribute('data-g') !== String(g)); });
+      tabs.forEach(function(t){ t.setAttribute('aria-expanded', t.getAttribute('data-g') === String(g) ? 'true' : 'false'); });
+      if(veil){ veil.hidden = false; requestAnimationFrame(function(){ veil.classList.add('on'); }); }
+    }
+
+    tabs.forEach(function(t){
+      t.addEventListener('click', function(){
+        var g = parseInt(t.getAttribute('data-g'), 10);
+        var sheet = sheets.filter(function(s){ return s.getAttribute('data-g') === String(g); })[0];
+        var links = sheet ? $$('a', sheet) : [];
+        /* 只有一個子項目就直接跳過去，不用再點一次 */
+        if(links.length === 1){ close(); links[0].click(); return; }
+        if(openG === g) close(); else open(g);
+      });
+    });
+    $$('.bsheet a', bnav).forEach(function(a){ a.addEventListener('click', close); });
+    if(veil) veil.addEventListener('click', close);
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && openG !== -1) close(); });
+    window.addEventListener('scroll', function(){ if(openG !== -1) close(); }, {passive:true});
   }
 
-  /* scrollspy */
-  var links = $$('.nlink[data-sp]');
-  var secs  = links.map(function(l){ return $(l.getAttribute('data-sp')); }).filter(Boolean);
+  /* scrollspy：同時標示桌機下拉項、所屬主分類，與手機底部分類 */
+  var ddls = $$('.ddl[data-sp]');
+  var bls  = $$('.bsheet a[data-sp]');
+  var ids  = [];
+  ddls.concat(bls).forEach(function(a){
+    var id = a.getAttribute('data-sp');
+    if(ids.indexOf(id) === -1) ids.push(id);
+  });
+  var secs = ids.map(function(i){ return document.getElementById(i); }).filter(Boolean);
   if(secs.length && 'IntersectionObserver' in window){
-    var spy = new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if(!e.isIntersecting) return;
-        links.forEach(function(l){ l.classList.toggle('act', l.getAttribute('data-sp') === e.target.id); });
+    var mark = function(id){
+      ddls.forEach(function(a){ a.classList.toggle('act', a.getAttribute('data-sp') === id); });
+      bls.forEach(function(a){ a.classList.toggle('act', a.getAttribute('data-sp') === id); });
+      $$('.ngrp').forEach(function(g){
+        var hit = $$('.ddl', g).some(function(a){ return a.getAttribute('data-sp') === id; });
+        var btn = g.querySelector('.nlink'); if(btn) btn.classList.toggle('act', hit);
       });
+      $$('.bsheet').forEach(function(sh){
+        var hit = $$('a', sh).some(function(a){ return a.getAttribute('data-sp') === id; });
+        var tab = document.querySelector('.btab[data-g="' + sh.getAttribute('data-g') + '"]');
+        if(tab) tab.classList.toggle('act', hit);
+      });
+    };
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) mark(e.target.id); });
     }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
     secs.forEach(function(s){ spy.observe(s); });
   }
@@ -1380,6 +1740,7 @@ var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: re
 (function(){
   var out = $('rateTxt');
   var cells = $$('.twd[data-php]');
+  var ranges = $$('.twdrange[data-lo][data-hi]');
   var ENDPOINTS = [
     { u:'https://open.er-api.com/v6/latest/PHP',
       g:function(j){ return j && j.rates && j.rates.TWD; },
@@ -1394,6 +1755,7 @@ var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: re
   function fail(){
     if(out) out.textContent = '匯率暫時無法取得，僅顯示披索';
     cells.forEach(function(c){ c.textContent = ''; });
+    ranges.forEach(function(c){ c.textContent = '匯率暫時無法取得'; });
   }
   function apply(rate, when){
     if(!(rate > 0)){ fail(); return; }
@@ -1403,6 +1765,12 @@ var REDUCE = window.matchMedia && window.matchMedia('(prefers-reduced-motion: re
       var p = parseFloat(c.getAttribute('data-php'));
       if(!(p > 0)) return;
       c.textContent = '≈ NT$' + Math.round(p * rate).toLocaleString('en-US');
+    });
+    ranges.forEach(function(c){
+      var lo = parseFloat(c.getAttribute('data-lo')), hi = parseFloat(c.getAttribute('data-hi'));
+      if(!(lo > 0 && hi > 0)) return;
+      c.textContent = Math.round(lo * rate).toLocaleString('en-US') + '～'
+                    + Math.round(hi * rate).toLocaleString('en-US') + ' 元';
     });
   }
   function tryAt(i){
