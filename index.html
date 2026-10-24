@@ -339,6 +339,14 @@ body.reading-wide #home{display:none}
 .bveil.on{opacity:1}
 .bveil[hidden]{display:none}
 
+/* one-off hint (e.g. phone is on silent) */
+.toast{position:fixed;z-index:110;left:50%;transform:translate(-50%,10px);bottom:calc(var(--bnav-h) + 18px + env(safe-area-inset-bottom));
+  width:min(420px,calc(100vw - 32px));background:var(--ink);color:#fff;border-radius:14px;padding:11px 15px;
+  font-size:13.5px;line-height:1.6;box-shadow:var(--shadow);opacity:0;transition:opacity .3s ease,transform .3s ease}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast[hidden]{display:none}
+@media (min-width:1020px){.toast{bottom:22px;left:calc((100vw - var(--rw)) / 2)}}
+
 /* dialogs */
 .dlg{position:fixed;z-index:120;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(40,30,20,.28)}
 .dlg[hidden]{display:none}
@@ -605,6 +613,8 @@ footer.is-page{padding:22px 0 34px}
   <div class="btabs"><button class="btab" type="button" data-g="0" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4.6a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6zM13.3 17h-2.6v-6.4h2.6V17z"/></svg><span>認識</span></button><button class="btab" type="button" data-g="1" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a2 2 0 0 1 2 2v16l-7-3.2L5 20V4a2 2 0 0 1 2-2zm1 5h8v2H8V7zm0 4h8v2H8v-2z"/></svg><span>行程</span></button><button class="btab" type="button" data-g="2" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 16c2.2 0 2.2-2 4.4-2s2.2 2 4.4 2 2.2-2 4.4-2 2.2 2 4.4 2v2.4c-2.2 0-2.2-2-4.4-2s-2.2 2-4.4 2-2.2-2-4.4-2-2.2 2-4.4 2V16zm0-6c2.2 0 2.2-2 4.4-2s2.2 2 4.4 2 2.2-2 4.4-2 2.2 2 4.4 2v2.4c-2.2 0-2.2-2-4.4-2s-2.2 2-4.4 2-2.2-2-4.4-2-2.2 2-4.4 2V10z"/></svg><span>水中</span></button><button class="btab" type="button" data-g="3" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm1 4v2h6V8H5zm0 4v2h6v-2H5zm9-4v6h5V8h-5z"/></svg><span>eTravel</span></button><button class="btab" type="button" data-g="4" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 7.6 16.4 3l-1.8 1.8 1.5 1.5-2.2 2.2 1.8 1.8L17.9 8l1.3 1.3L21 7.6zM3.6 18.1 12 9.7l2.3 2.3-8.4 8.4H3.6v-2.3z"/></svg><span>實用</span></button><button class="btab" type="button" data-g="5" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm.9 15.2v1.4h-1.6v-1.4c-1.6-.2-2.8-1.1-3-2.7h1.9c.1.8.8 1.3 2 1.3 1.1 0 1.8-.5 1.8-1.2 0-.8-.6-1.1-2.2-1.5-2-.5-3.2-1.2-3.2-2.9 0-1.5 1.1-2.5 2.7-2.7V6.4h1.6v1.2c1.6.2 2.6 1.2 2.7 2.6h-1.9c-.1-.7-.7-1.2-1.7-1.2s-1.6.4-1.6 1.1c0 .7.6 1 2.1 1.4 2.1.5 3.3 1.2 3.3 3 0 1.6-1.1 2.5-2.9 2.7z"/></svg><span>費用</span></button></div>
 </nav>
 <div class="bveil" id="bveil" hidden></div>
+
+<div class="toast" id="toast" role="status" hidden></div>
 
 <div class="dlg" id="peopleDlg" role="dialog" aria-modal="true" aria-labelledby="peopleTitle" hidden>
   <div class="box">
@@ -1721,7 +1731,7 @@ footer.is-page{padding:22px 0 34px}
       <li><strong>路線虛線</strong>是示意走法，不是導航路線。</li>
       <li><strong>海洋生物、潛水員與 16 位人物</strong>全是程式隨機產生的示意動畫，<span class="soft">不代表真實人物，也不代表野生動物的實際出沒位置</span>。</li>
       <li><strong>場景光線</strong>依宿霧時間（Asia/Manila，菲律賓標準時間）切換：清晨 05:00–07:59、白天 08:00–16:59、黃昏 17:00–18:59、夜晚 19:00–04:59，與你手機的時區設定無關。</li>
-      <li><strong>背景音樂</strong>是網頁用 Web Audio 即時合成的原創旋律（烏克麗麗刷弦、木琴、貝斯、沙鈴），沒有使用任何錄音或他人作品。瀏覽器規定要等你第一次點擊或按鍵後才能出聲；右上角的「音樂」按鈕可以隨時暫停，暫停後下次開網頁也會保持關閉。</li>
+      <li><strong>背景音樂</strong>是網頁用 Web Audio 即時合成的原創旋律（烏克麗麗刷弦、木琴、貝斯、沙鈴），沒有使用任何錄音或他人作品。瀏覽器規定要等你第一次點擊或按鍵後才能出聲；右上角的「音樂」按鈕可以隨時暫停，暫停後下次開網頁也會保持關閉。在 iPhone／iPad 上，網頁合成的聲音預設會被「靜音模式」消音，所以這一頁播放時會向系統宣告為媒體播放（Audio Session API，Safari 17／iOS 17 起支援），靜音模式下也聽得到；暫停時會把宣告收回，不會一直占住音訊通道。若手機系統版本較舊，仍需關閉靜音模式才有聲音。</li>
       <li>3D 繪圖使用開源函式庫 <a href="https://threejs.org/" target="_blank" rel="noopener" style="text-decoration:underline">three.js</a>（MIT 授權，版本 0.169.0，檔案隨網站一起放在 vendor 資料夾）。</li>
     </ul>
   </div>
@@ -2279,19 +2289,40 @@ if(RM.addEventListener) RM.addEventListener('change', function(){ if(island){ pa
     });
   }
   function save(v){ pref = v; try { localStorage.setItem(KEY, v); } catch(e){} }
+
+  /* 按了播放卻還是沒聲音時（最常見：手機在靜音模式，或媒體音量為 0）給一次提示 */
+  var hinted = false;
+  function hintIfSilent(){
+    if(hinted) return;
+    setTimeout(function(){
+      if(hinted || pref === 'off' || !M.playing || M.audible) return;
+      hinted = true;
+      var t = $('toast'); if(!t) return;
+      t.textContent = '音樂已開啟，但手機沒有輸出聲音。請確認不是「靜音模式」，並把音量調大。';
+      t.hidden = false; t.classList.add('on');
+      setTimeout(function(){ t.classList.remove('on'); setTimeout(function(){ t.hidden = true; }, 400); }, 7000);
+    }, 1400);
+  }
+
   btns.forEach(function(b){
     b.addEventListener('click', function(){
-      if(M.playing){ M.stop(); save('off'); } else { M.start(); save('on'); }
+      if(M.playing){ M.stop(); save('off'); } else { M.start(); save('on'); hintIfSilent(); }
       ui();
     });
   });
-  /* 瀏覽器規定：要等使用者第一次點擊或按鍵後才能出聲，所以第一次互動時自動開始（除非你上次按了暫停） */
-  function first(e){
+
+  /* 瀏覽器規定：要等使用者第一次點擊或按鍵後才能出聲，所以第一次互動時自動開始（除非你上次按了暫停）。
+     iOS 有時第一次還叫不醒音訊，所以每次互動都再試一次，直到真的在跑為止。 */
+  var EVT = ['pointerdown', 'touchend', 'click', 'keydown'];
+  function detach(){ EVT.forEach(function(n){ document.removeEventListener(n, kick, true); }); }
+  function kick(e){
     if(e.target && e.target.closest && e.target.closest('.music-btn')) return;
-    document.removeEventListener('pointerdown', first, true); document.removeEventListener('keydown', first, true);
-    if(pref !== 'off' && !M.playing){ M.start(); ui(); }
+    if(pref === 'off'){ detach(); return; }
+    M.start(); ui(); hintIfSilent();
+    setTimeout(function(){ if(M.audible) detach(); }, 300);
   }
-  document.addEventListener('pointerdown', first, true); document.addEventListener('keydown', first, true);
+  EVT.forEach(function(n){ document.addEventListener(n, kick, true); });
+
   /* 切到別的分頁就停，回來再接著播 */
   var wasOn = false;
   document.addEventListener('visibilitychange', function(){
@@ -2300,6 +2331,7 @@ if(RM.addEventListener) RM.addEventListener('change', function(){ if(island){ pa
     ui();
   });
   ui();
+  window.__music = M;
 })();
 
 /* 全域 Esc：關閉閱讀面板＝返回全景 */

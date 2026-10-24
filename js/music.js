@@ -25,6 +25,14 @@
   var seed = 7;
   function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
 
+  /* iPhone／iPad：Web Audio 預設走「ambient」音訊通道，會被「靜音模式」整個消音
+     （<audio>／<video> 走的是 playback 通道，所以才不受影響）。
+     宣告 playback 之後就改走媒體通道，靜音模式不再消音。Safari 17／iOS 17 起支援。
+     音樂停掉時改回 auto，才不會一直霸占音訊通道、打斷使用者原本在聽的音樂。 */
+  function claimSession(on) {
+    try { if ('audioSession' in navigator) navigator.audioSession.type = on ? 'playback' : 'auto'; } catch (e) {}
+  }
+
   function build(c) {
     ctx = c || new AC();
     master = ctx.createGain(); master.gain.value = 0;
@@ -146,7 +154,9 @@
 
   function start() {
     if (!ctx) build();
-    if (ctx.state === 'suspended') ctx.resume();
+    claimSession(true);
+    // 每次呼叫都重新 resume：iOS 可能在切換 App、低耗電模式之後把 context 暫停掉
+    if (ctx.state !== 'running' && ctx.resume) { try { ctx.resume(); } catch (e) {} }
     if (playing) return true;
     playing = true;
     nextTime = ctx.currentTime + 0.08; step = 0; bar = 0;
@@ -163,7 +173,7 @@
     master.gain.cancelScheduledValues(t);
     master.gain.setValueAtTime(master.gain.value, t);
     master.gain.linearRampToValueAtTime(0.0001, t + 0.6);
-    setTimeout(function () { if (!playing) { clearInterval(timer); ctx.suspend && ctx.suspend(); } }, 700);
+    setTimeout(function () { if (!playing) { clearInterval(timer); claimSession(false); ctx.suspend && ctx.suspend(); } }, 700);
     return false;
   }
   // render the music offline (used only for testing / previewing; not called by the page)
@@ -180,6 +190,9 @@
     start: start, stop: stop,
     toggle: function () { return playing ? stop() : start(); },
     get playing() { return playing; },
-    get state() { return ctx ? ctx.state : 'none'; }
+    get state() { return ctx ? ctx.state : 'none'; },
+    /* 真的有在出聲（而不是只是「按了播放」）才算 true，用來判斷要不要提示使用者檢查靜音模式 */
+    get audible() { return !!(playing && ctx && ctx.state === 'running'); },
+    get sessionType() { try { return ('audioSession' in navigator) ? navigator.audioSession.type : 'unsupported'; } catch (e) { return 'error'; } }
   };
 })();
