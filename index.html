@@ -145,6 +145,19 @@ body.reading .mk:not([aria-pressed="true"]) .pill{opacity:.82}
 
 /* phase (time of day) control */
 .phase{position:relative}
+/* background-music toggle: always visible, coral when playing */
+.music-btn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:12px;border:1px solid var(--line);
+  background:#fff;cursor:pointer;font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap;margin-right:8px}
+.music-btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.music-btn .eq{display:inline-flex;align-items:flex-end;gap:2px;height:14px;width:14px}
+.music-btn .eq i{display:block;width:3px;height:5px;border-radius:2px;background:currentColor}
+.music-btn .eq i:nth-child(2){height:10px}.music-btn .eq i:nth-child(3){height:7px}
+.music-btn[aria-pressed="true"] .eq i{animation:eq .9s ease-in-out infinite}
+.music-btn[aria-pressed="true"] .eq i:nth-child(2){animation-delay:-.3s}.music-btn[aria-pressed="true"] .eq i:nth-child(3){animation-delay:-.6s}
+@keyframes eq{0%,100%{height:4px}50%{height:14px}}
+.music-btn[hidden]{display:none}
+.music-btn .mnote{font-size:16px;line-height:1;margin-right:-3px}
+.music-btn .mshort{display:none}
 .phase-btn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;border-radius:12px;border:1px solid var(--line);
   background:#fff;cursor:pointer;font-size:13px;color:var(--ink-2);white-space:nowrap}
 .phase-btn b{font-weight:700;color:var(--ink)}
@@ -265,6 +278,9 @@ body.reading-wide #home{display:none}
   #home.mini .cdn{display:none}
   #home.mini .hc-toggle{top:6px;right:6px}
   .phase-btn{min-height:46px;padding:0 10px;font-size:12px;gap:6px;box-shadow:var(--shadow);border:0}
+  .music-btn{min-height:46px;min-width:46px;padding:0 12px;margin-right:0;box-shadow:var(--shadow);border:0;justify-content:center}
+  .music-btn .mlabel{display:none}
+  .music-btn .mshort{display:inline;font-size:12.5px}
   .mk .pill{padding:3px 9px 3px 3px;gap:4px}
   .mk .d{font-size:13px;padding:3px 6px 2px}
   .mk .z{font-size:11.5px}
@@ -280,6 +296,9 @@ body.reading-wide #home{display:none}
   .tools .t-desk{display:none}
 }
 @media (max-width:359px){.dbtn{min-width:46px}.dbtn .dd2{font-size:9.5px}}
+@media (max-width:430px){.phase-btn .ptime{display:none}}
+@media (max-width:359px){.music-btn .mshort{display:none}#home.mini .h1{font-size:16px}#home.mini{padding:9px 38px 9px 12px}.music-btn{padding:0 9px}}
+@media (max-width:374px){.phase-btn .pname{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.phase-btn{min-width:46px;justify-content:center}}
 
 /* mobile bottom nav */
 .bnav{position:fixed;left:0;right:0;bottom:0;z-index:80}
@@ -501,6 +520,8 @@ footer.is-page{padding:22px 0 34px}
   <a class="brand" href="#home" aria-label="Cebu × Bohol 回到全景">Cebu<em>&times;</em>Bohol</a>
   <nav class="nlinks" aria-label="主要導覽"><div class="ngrp single"><button class="nlink" type="button" data-href="#about" aria-haspopup="false">認識<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button><div class="dd" role="menu"><a class="ddl" href="#about" data-sp="about">認識宿霧與薄荷島</a></div></div><div class="ngrp"><button class="nlink" type="button" aria-haspopup="true">行程<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button><div class="dd" role="menu"><a class="ddl" href="#overview" data-sp="overview">總覽</a><a class="ddl" href="#flights" data-sp="flights">班機</a><a class="ddl" href="#itinerary" data-sp="itinerary">每日行程</a><a class="ddl" href="#dive" data-sp="dive">12/4 作戰計畫</a></div></div><div class="ngrp"><button class="nlink" type="button" aria-haspopup="true">水中<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button><div class="dd" role="menu"><a class="ddl" href="#water" data-sp="water">水中編組</a><a class="ddl" href="#banca" data-sp="banca">螃蟹船</a></div></div><div class="ngrp single"><button class="nlink" type="button" data-href="#etravel" aria-haspopup="false">eTravel<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button><div class="dd" role="menu"><a class="ddl" href="#etravel" data-sp="etravel">eTravel 電子入境登記</a></div></div><div class="ngrp"><button class="nlink" type="button" aria-haspopup="true">實用<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button><div class="dd" role="menu"><a class="ddl" href="#prep" data-sp="prep">行前準備</a><a class="ddl" href="#stay" data-sp="stay">住宿</a><a class="ddl" href="#gear" data-sp="gear">裝備與現金</a><a class="ddl" href="#sim" data-sp="sim">SIM 卡與收訊</a><a class="ddl" href="#local" data-sp="local">當地交通與會話</a></div></div><div class="ngrp"><button class="nlink" type="button" aria-haspopup="true">費用<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg></button><div class="dd" role="menu"><a class="ddl" href="#cost" data-sp="cost">費用粗估</a><a class="ddl" href="#notes" data-sp="notes">風險與待確認</a></div></div></nav>
   <span class="spacer"></span>
+  <button class="music-btn" type="button" aria-pressed="false" aria-label="背景音樂：已暫停，按一下播放" title="背景音樂">
+    <span class="mnote" aria-hidden="true">♪</span><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="mlabel">音樂：關</span><span class="mshort" aria-hidden="true">音樂</span></button>
   <div class="phase">
   <button class="phase-btn" type="button" id="phaseBtn" aria-haspopup="true" aria-expanded="false" aria-controls="phaseMenu">
     <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span class="ptime">台灣 --:--</span><b class="pname">—</b></button>
@@ -516,6 +537,8 @@ footer.is-page{padding:22px 0 34px}
 </header>
 
 <div class="mtop" id="mtop">
+  <button class="music-btn" type="button" aria-pressed="false" aria-label="背景音樂：已暫停，按一下播放" title="背景音樂">
+    <span class="mnote" aria-hidden="true">♪</span><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="mlabel">音樂：關</span><span class="mshort" aria-hidden="true">音樂</span></button>
   <div class="phase">
   <button class="phase-btn" type="button" id="phaseBtnM" aria-haspopup="true" aria-expanded="false" aria-controls="phaseMenuM">
     <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span class="ptime">台灣 --:--</span><b class="pname">—</b></button>
@@ -552,7 +575,7 @@ footer.is-page{padding:22px 0 34px}
     <div class="bh"><h2 id="peopleTitle">島上人物</h2><button class="ibtn" type="button" data-close aria-label="關閉"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
     <div class="bb">
       <div class="pcount" id="peopleCount"></div>
-      <p class="note2">陸地上固定 16 位人物：11 位旅伴、5 位宿霧在地人，每位外型與服裝都不同，切換日期或開關面板都不會重新產生。
+      <p class="note2">陸地上固定 16 位人物：11位同性戀、5 位宿霧在地人，每位外型與服裝都不同，切換日期或開關面板都不會重新產生。
         他們與海裡的鯨鯊、沙丁魚群、海龜、潛水員都是示意動畫，<strong>不代表真實人物，也不代表野生動物的實際位置</strong>。</p>
       <ul class="plist" id="peopleList"><li>3D 小島載入後會列出名單。</li></ul>
     </div>
@@ -748,11 +771,11 @@ footer.is-page{padding:22px 0 34px}
 
 <section id="flights">
   <div class="wrap">
-    <div class="shead"><p class="tag rv">班機　Flights</p><h2 class="h2 rv d1" style="margin-bottom:14px">Two Legs</h2><p class="han2 rv d1">班機</p><p class="sec lede rv d2">兩段航班。時刻依你提供的訂位資料，飛行時間由時刻直接計算。</p></div>
+    <div class="shead"><p class="tag rv">班機　Flights</p><p class="han2 rv d1">班機</p></div>
     <div style="overflow-x:auto;margin-bottom:var(--sect-s)" class="rv">
       <table class="tbl" style="min-width:760px">
         <thead><tr><th>航班</th><th>日期</th><th>起飛</th><th>抵達</th><th>飛行時間</th><th>對象</th></tr></thead>
-        <tbody><tr><td class="num" style="white-space:nowrap;color:var(--gold);font-size:15px;letter-spacing:.1em">JX781<span class="src">STARLUX 星宇</span></td><td class="cap" style="white-space:nowrap">12/03（四）</td><td><span class="num" style="color:var(--pearl);font-size:15px">06:55</span><span class="src">台北(Taipei) TPE 第二航廈</span></td><td><span class="num" style="color:var(--pearl);font-size:15px">09:50</span><span class="src">宿霧(Cebu) CEB 第二航廈</span></td><td class="num cap" style="white-space:nowrap;color:var(--gold-soft)">2 小時 55 分</td><td style="white-space:nowrap"><span class="team all">全員</span></td></tr><tr><td class="num" style="white-space:nowrap;color:var(--gold);font-size:15px;letter-spacing:.1em">JX784<span class="src">STARLUX 星宇</span></td><td class="cap" style="white-space:nowrap">12/08（二）</td><td><span class="num" style="color:var(--pearl);font-size:15px">19:35</span><span class="src">宿霧(Cebu) CEB 第二航廈</span></td><td><span class="num" style="color:var(--pearl);font-size:15px">22:25</span><span class="src">台北(Taipei) TPE 第二航廈</span></td><td class="num cap" style="white-space:nowrap;color:var(--gold-soft)">2 小時 50 分</td><td style="white-space:nowrap"><span class="team all">Derek ＋ Lance</span></td></tr></tbody>
+        <tbody><tr><td class="num" style="white-space:nowrap;color:var(--gold);font-size:15px;letter-spacing:.1em">JX781<span class="src">STARLUX 星宇</span></td><td class="cap" style="white-space:nowrap">12/03（四）</td><td><span class="num" style="color:var(--pearl);font-size:15px">06:55</span><span class="src">台北(Taipei) TPE 第二航廈</span></td><td><span class="num" style="color:var(--pearl);font-size:15px">09:50</span><span class="src">宿霧(Cebu) CEB 第二航廈</span></td><td class="num cap" style="white-space:nowrap;color:var(--gold-soft)">2 小時 55 分</td><td style="white-space:nowrap"><span class="team all">全員</span></td></tr><tr><td class="num" style="white-space:nowrap;color:var(--gold);font-size:15px;letter-spacing:.1em">JX784<span class="src">STARLUX 星宇</span></td><td class="cap" style="white-space:nowrap">12/08（二）</td><td><span class="num" style="color:var(--pearl);font-size:15px">19:35</span><span class="src">宿霧(Cebu) CEB 第二航廈</span></td><td><span class="num" style="color:var(--pearl);font-size:15px">22:25</span><span class="src">台北(Taipei) TPE 第二航廈</span></td><td class="num cap" style="white-space:nowrap;color:var(--gold-soft)">2 小時 50 分</td><td style="white-space:nowrap"><span class="team all">全員</span></td></tr></tbody>
       </table>
     </div>
 
@@ -764,7 +787,6 @@ footer.is-page{padding:22px 0 34px}
             台灣和菲律賓同為 UTC+8，<strong>不需要換算時差</strong>。</li>
         <li>直線距離約 1,660 公里，大致是台北飛河內的距離。</li>
         <li><strong>去回程都是星宇，進出同一個航廈</strong>（桃園 T2 ↔ 宿霧 T2）。</li>
-        <li>12/8 兩隊搭同一班 JX784 回台。</li>
       </ul>
     </div>
   </div>
@@ -1663,6 +1685,7 @@ footer.is-page{padding:22px 0 34px}
       <li><strong>路線虛線</strong>是示意走法，不是導航路線。</li>
       <li><strong>海洋生物、潛水員與 16 位人物</strong>全是程式隨機產生的示意動畫，<span class="soft">不代表真實人物，也不代表野生動物的實際出沒位置</span>。</li>
       <li><strong>場景光線</strong>依台灣時間（Asia/Taipei）切換：清晨 05:00–07:59、白天 08:00–16:59、黃昏 17:00–18:59、夜晚 19:00–04:59，與你手機的時區設定無關。</li>
+      <li><strong>背景音樂</strong>是網頁用 Web Audio 即時合成的原創旋律（烏克麗麗刷弦、木琴、貝斯、沙鈴），沒有使用任何錄音或他人作品。瀏覽器規定要等你第一次點擊或按鍵後才能出聲；右上角的「音樂」按鈕可以隨時暫停，暫停後下次開網頁也會保持關閉。</li>
       <li>3D 繪圖使用開源函式庫 <a href="https://threejs.org/" target="_blank" rel="noopener" style="text-decoration:underline">three.js</a>（MIT 授權，版本 0.169.0，檔案隨網站一起放在 vendor 資料夾）。</li>
     </ul>
   </div>
@@ -1674,6 +1697,7 @@ footer.is-page{padding:22px 0 34px}
     <a class="chip-btn" id="rTop" href="#" role="button">回到頂端</a></div>
 </aside>
 
+<script src="./js/music.js"></script>
 <script>
 (function(){
 'use strict';
@@ -2185,6 +2209,44 @@ if(RM.addEventListener) RM.addEventListener('change', function(){ if(island){ pa
     });
     $('peopleCount').innerHTML = '<span>旅伴 ' + comp + ' 位</span><span>宿霧在地人 ' + loc + ' 位</span><span>共 ' + (comp + loc) + ' 位</span>';
   };
+})();
+
+/* ---------- 背景音樂（原創，Web Audio 即時合成）：預設開，有明顯按鈕可暫停 ---------- */
+(function(){
+  var M = window.TripMusic, btns = $$('.music-btn'), KEY = 'cebu2026.music';
+  if(!M){ btns.forEach(function(b){ b.hidden = true; }); return; }
+  var pref = 'on'; try { pref = localStorage.getItem(KEY) || 'on'; } catch(e){}
+  function ui(){
+    var on = M.playing;
+    btns.forEach(function(b){
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.setAttribute('aria-label', on ? '背景音樂：播放中，按一下暫停' : '背景音樂：已暫停，按一下播放');
+      b.title = on ? '暫停背景音樂' : '播放背景音樂';
+      var l = b.querySelector('.mlabel'); if(l) l.textContent = on ? '音樂：開' : '音樂：關';
+    });
+  }
+  function save(v){ pref = v; try { localStorage.setItem(KEY, v); } catch(e){} }
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      if(M.playing){ M.stop(); save('off'); } else { M.start(); save('on'); }
+      ui();
+    });
+  });
+  /* 瀏覽器規定：要等使用者第一次點擊或按鍵後才能出聲，所以第一次互動時自動開始（除非你上次按了暫停） */
+  function first(e){
+    if(e.target && e.target.closest && e.target.closest('.music-btn')) return;
+    document.removeEventListener('pointerdown', first, true); document.removeEventListener('keydown', first, true);
+    if(pref !== 'off' && !M.playing){ M.start(); ui(); }
+  }
+  document.addEventListener('pointerdown', first, true); document.addEventListener('keydown', first, true);
+  /* 切到別的分頁就停，回來再接著播 */
+  var wasOn = false;
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ wasOn = M.playing; if(wasOn) M.stop(); }
+    else if(wasOn && pref !== 'off'){ M.start(); }
+    ui();
+  });
+  ui();
 })();
 
 /* 全域 Esc：關閉閱讀面板＝返回全景 */

@@ -181,17 +181,38 @@ export async function init(opts) {
       }
       const mat = new THREE.MeshBasicMaterial({ color: '#FFFFFF', transparent: true, opacity: 0.0, depthWrite: false });
       const m = new THREE.InstancedMesh(dashGeo, mat, pts.length);
-      const d = new THREE.Object3D();
-      pts.forEach((p, i) => { d.position.set(p.x, p.y, p.z); d.rotation.set(0, p.a, 0); d.updateMatrix(); m.setMatrixAt(i, d.matrix); });
       m.renderOrder = 4; m.frustumCulled = false; scene.add(m);
-      routes[day] = { mesh: m, mat, pts, target: 0.38 };
+      routes[day] = { mesh: m, mat, pts, target: 0.9 };
     }
+  }
+  // dashes grow with camera distance (and thin out) so routes stay visible from the overview
+  let viewK = 0;
+  const dd = new THREE.Object3D();
+  function layoutRoutes(k) {
+    const stride = Math.max(1, Math.round(k * 0.75));
+    const len = Math.min(k, stride * 0.5 * 0.62 / 0.24);
+    for (const day in routes) {
+      const R = routes[day];
+      R.pts.forEach((p, i) => {
+        dd.position.set(p.x, p.y + (k - 1) * 0.02, p.z); dd.rotation.set(0, p.a, 0);
+        if (i % stride) dd.scale.set(0.0001, 0.0001, 0.0001); else dd.scale.set(k * 1.8, Math.max(1, k * 0.6), len);
+        dd.updateMatrix(); R.mesh.setMatrixAt(i, dd.matrix);
+      });
+      R.mesh.instanceMatrix.needsUpdate = true;
+    }
+  }
+  function updateZoomScale() {
+    const dist = camera.position.distanceTo(controls.target);
+    const k = Math.min(5.5, Math.max(1, Math.pow(dist / 24, 0.9)));
+    if (Math.abs(k - viewK) / Math.max(viewK, 1e-3) < 0.03) return false;
+    viewK = k; layoutRoutes(k); props.setScale(k);
+    return true;
   }
   let selectedDay = null;
   function setSelected(day) {
     selectedDay = day;
     for (const k in routes) {
-      routes[k].target = !day ? 0.38 : (k === day ? 1 : 0.12);
+      routes[k].target = !day ? 0.9 : (k === day ? 1 : 0.35);
       routes[k].mat.color.set(k === day ? '#E8673A' : '#FFFFFF');
     }
     need = true;
@@ -409,6 +430,7 @@ export async function init(opts) {
       frames++; slow += dt;
       if (frames === 150) { perf.fps = 150 / slow; if (perf.fps < 26 && !degraded) degrade(); frames = 0; slow = 0; }
     }
+    if (updateZoomScale()) moving = true;
     if (moving || need) {
       placeSun();
       renderer.render(scene, camera);

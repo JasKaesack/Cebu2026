@@ -58,6 +58,8 @@ export function buildProps(ctx) {
   const matBulb = new THREE.MeshStandardMaterial({ color: '#F4EEDF', emissive: new THREE.Color('#FFD58A'), emissiveIntensity: 0, roughness: 0.5 });
   const matHill = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95, flatShading: true });
 
+  let vk = 1, lastT = 0;                       // vehicle zoom scale (1 = close-up), set by island.js
+  const scalables = [];                         // {obj, base, cap}
   const out = { updaters: [], nightMats: { win: matWin, bulb: matBulb }, lampSpots: [], bancas: [], reserved: ctx.reserved || [] };
 
   // keep walk zones free of buildings
@@ -448,17 +450,18 @@ export function buildProps(ctx) {
       list.forEach((b, i) => {
         dummy.position.set(b.x, 0.02 + Math.sin(t * 1.3 + b.ph) * 0.025, b.z);
         dummy.rotation.set(Math.sin(t * 0.9 + b.ph) * 0.03, b.rot, Math.sin(t * 1.1 + b.ph * 2) * 0.05);
-        dummy.scale.setScalar(b.s); dummy.updateMatrix(); m.setMatrixAt(i, dummy.matrix);
+        dummy.scale.setScalar(b.s * Math.min(vk, 1.8)); dummy.updateMatrix(); m.setMatrixAt(i, dummy.matrix);
       });
       m.instanceMatrix.needsUpdate = true;
     };
     place(ma, A, 0); place(mb, Bf, 0);
-    out.updaters.push((dt, t) => { place(ma, A, t); place(mb, Bf, t); });
+    out.updaters.push((dt, t) => { lastT = t; place(ma, A, t); place(mb, Bf, t); });
+    out.placeFleet = () => { place(ma, A, lastT); place(mb, Bf, lastT); };
     out.bancas = fleet;
     // docked ferries
     const fg = K.ferry();
     for (const pr of [p1, ptag]) {
-      const m = new THREE.Mesh(fg, matV); m.scale.setScalar(0.5);
+      const m = new THREE.Mesh(fg, matV); m.scale.setScalar(0.5); scalables.push({ obj: m, base: 0.5, cap: 3 });
       m.position.set(pr.x + Math.cos(pr.a) * 0.45, 0.02, pr.z - Math.sin(pr.a) * 0.45); m.rotation.y = pr.a; m.castShadow = castShadow; scene.add(m);
     }
     // moving boats on the trip's sea routes
@@ -467,6 +470,7 @@ export function buildProps(ctx) {
       const curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal');
       const len = curve.getLength();
       const m = new THREE.Mesh(geom, matV); m.scale.setScalar(scale); m.castShadow = castShadow; scene.add(m);
+      scalables.push({ obj: m, base: scale, cap: 99 });
       let u = rnd(), dir = 1, wait = 0;
       out.updaters.push((dt, t) => {
         if (wait > 0) { wait -= dt; } else {
@@ -481,7 +485,7 @@ export function buildProps(ctx) {
     }
     const sea = (day, idx) => geo.routes[day].filter(r => r.mode === 'sea')[idx].pts;
     mover(fg, 0.42, sea('d1208', 0), 1.1);
-    mover(fg, 0.34, sea('d1205', 0), 1.3);
+    mover(geoB, 0.46, sea('d1205', 0), 1.0);      // 12/5 crossing is a bangka (per itinerary)
     mover(geoA, 0.42, sea('d1207', 0), 0.7);
   }
 
@@ -495,6 +499,7 @@ export function buildProps(ctx) {
       const curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal');
       const len = curve.getLength();
       const m = new THREE.Mesh(vg, matV); m.scale.setScalar(0.85); m.castShadow = castShadow; scene.add(m);
+      scalables.push({ obj: m, base: 0.85, cap: 99 });
       let u = phase, dir = 1;
       out.updaters.push((dt) => {
         u += dir * dt * speed / len; if (u > 1) { u = 1; dir = -1; } if (u < 0) { u = 0; dir = 1; }
@@ -505,8 +510,16 @@ export function buildProps(ctx) {
     car('d1204', 0.9, 0.1); car('d1204', 0.9, 0.13);   // two premium vans
     car('d1206', 0.8, 0.4);
     car('d1203', 0.6, 0.5);
+    car('d1205', 0.6, 0.2);
+    car('d1208', 0.7, 0.6);
   }
 
   out.update = (dt, t) => { for (const f of out.updaters) f(dt, t); };
+  // keep boats / ferries / vans readable from the overview: grow with camera distance
+  out.setScale = (k) => {
+    vk = k;
+    for (const o of scalables) o.obj.scale.setScalar(o.base * Math.min(k, o.cap));
+    if (out.placeFleet) out.placeFleet();
+  };
   return out;
 }
