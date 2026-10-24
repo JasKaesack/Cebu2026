@@ -20,7 +20,7 @@ function detectTier() {
   return 'high';
 }
 
-// Lighting presets for the four time-of-day phases (Asia/Taipei clock decided by the page)
+// Lighting presets for the four time-of-day phases (Cebu / Asia/Manila clock decided by the page)
 const LOOK = {
   dawn:  { skyTop: '#F0B9B0', skyHor: '#FFE4CF', fog: '#F8DCCB', sea: '#6CB9C4', seaOp: 0.58, hemiSky: '#FFE6DA', hemiGnd: '#86AEBB', hemi: 1.95, sun: '#FFC29A', sunI: 2.2, glow: 0.5, sunDir: [0.85, 0.42, 0.3], shadow: 0.6, win: 0.5, bulb: 0.8, stars: 0.05, floor: 1.0 },
   day:   { skyTop: '#A9D9E6', skyHor: '#F1F4EA', fog: '#EEF2E8', sea: '#3FB2B6', seaOp: 0.56, hemiSky: '#FFFFFF', hemiGnd: '#8FAF95', hemi: 1.25, sun: '#FFF4E2', sunI: 2.5, glow: 0.3, sunDir: [0.42, 1.0, 0.62], shadow: 0.85, win: 0.0, bulb: 0.0, stars: 0.0, floor: 1.0 },
@@ -30,6 +30,7 @@ const LOOK = {
 
 export async function init(opts) {
   const { canvas, markers = [], onReady, onFrameMarkers, reducedMotion } = opts;
+  const safeTop = opts.safeTop || (() => 0);   // labels never slide under the page header
   const tier = detectTier();
   const t0 = performance.now();
 
@@ -365,7 +366,7 @@ export async function init(opts) {
   const mk = GEO.markers.map(m => ({ ...m, el: markers.find(e => e.dataset.marker === m.id), v: new THREE.Vector3(m.x, Math.max(0.3, field.h(m.x, m.z)) + 1.0, m.z) }));
   const tmp = new THREE.Vector3();
   function placeMarkers() {
-    const vis = [];
+    const vis = [], top = safeTop();
     for (const m of mk) {
       if (!m.el) continue;
       tmp.copy(m.v).project(camera);
@@ -382,6 +383,7 @@ export async function init(opts) {
     }
     for (const m of mk) {
       if (!m.el) continue;
+      if (!m.off && m.sy - m.hh - 6 < top) m.off = true;
       m.el.style.transform = `translate3d(${m.sx.toFixed(1)}px, ${m.sy.toFixed(1)}px, 0)`;
       m.el.classList.toggle('off', m.off);
     }
