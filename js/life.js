@@ -88,6 +88,36 @@ function buildTurtle(rnd, mat) {
   return { root, flips };
 }
 
+/* Bottlenose-ish dolphin: streamlined body, rostrum, dorsal fin, pectoral fins
+   and HORIZONTAL tail flukes that beat up and down (not a fish's side-to-side). */
+function buildDolphin(rnd, mat) {
+  const root = new THREE.Group(), tail = new THREE.Group();
+  root.add(tail);
+  const f = [];
+  const body = K.part(K.G.sph(12, 9), '#fff', K.M(0, 0, 0.06, 0, 0, 0, 0.30, 0.29, 0.96));
+  shadeByHeight(body, '#445C6B', '#DCE6EA', -0.13, 0.11); f.push(body);
+  const mel = K.part(K.G.sph(10, 8), '#fff', K.M(0, 0.015, 0.46, 0, 0, 0, 0.21, 0.19, 0.27));
+  shadeByHeight(mel, '#4B6373', '#D5E1E7', -0.08, 0.09); f.push(mel);
+  f.push(K.part(K.G.cone(6), '#5A7281', K.M(0, -0.03, 0.60, Math.PI / 2, 0, 0, 0.085, 0.20, 0.065)));
+  for (const s of [-1, 1]) f.push(K.part(K.G.ico(0), '#12171B', K.M(s * 0.095, 0.02, 0.39, 0, 0, 0, 0.026, 0.026, 0.026)));
+  f.push(K.part(finShape([[0, 0], [0.30, 0], [0.07, 0.27]], 0.03), '#3C5261', K.M(0, 0.13, 0.03, 0, -Math.PI / 2, 0)));
+  for (const s of [-1, 1]) {
+    const pec = finShape([[0, 0], [0.30, -0.06], [0.07, 0.15]], 0.022);
+    f.push(K.part(pec, '#42596A', K.M(s * 0.17, -0.07, 0.21, Math.PI / 2, s > 0 ? Math.PI : 0, s * 0.42)));
+  }
+  root.add(new THREE.Mesh(K.bake(f), mat));
+  const tf = [];
+  const stock = K.part(K.G.sph(10, 7), '#fff', K.M(0, 0, -0.26, 0, 0, 0, 0.145, 0.135, 0.44));
+  shadeByHeight(stock, '#445C6B', '#CFDBE1', -0.06, 0.06); tf.push(stock);
+  // one V-shaped fluke laid flat: shape y is forward, so the lobes use negative y
+  const fl = finShape([[0, 0.05], [0.34, -0.13], [0.40, -0.28], [0, -0.11], [-0.40, -0.28], [-0.34, -0.13]], 0.022);
+  tf.push(K.part(fl, '#3C5261', K.M(0, 0, -0.44, Math.PI / 2, 0, 0)));
+  const tm = new THREE.Mesh(K.bake(tf), mat);
+  tail.add(tm); tail.position.set(0, 0, -0.18); tm.position.z = 0.18;
+  root.traverse(o => { if (o.isMesh) o.castShadow = false; });
+  return { root, tail };
+}
+
 function buildDiver(kind, opts, mat) {
   // oriented +z forward (head), y up (back)
   const root = new THREE.Group();
@@ -424,6 +454,49 @@ export function buildLife(ctx) {
     } });
   });
 
+  // dolphins: a pod in the open water off southern Panglao, between the island
+  // and Balicasag — the stretch the morning dolphin-watching boats work.
+  {
+    const [hx, hz] = field.ll(9.497, 123.733);
+    const home = { x: hx, z: hz, r: 5.4 };
+    const lead = new Swimmer({ field, rnd, seed: 40, home, x: hx, z: hz, speed: 0.5, turn: 0.3,
+      depth: [-0.5, -0.2], clear: 0.5, sepR: 2.4, look: 3.4, pauseP: 0.06, margin: 1.8 });
+    const N = 7, pod = [];
+    for (let i = 0; i < N; i++) {
+      const d = buildDolphin(rnd, mat);
+      d.root.scale.setScalar(0.62 + rnd() * 0.3);
+      scene.add(d.root);
+      pod.push({ d, ox: (rnd() - 0.5) * 2.8, oz: (rnd() - 0.5) * 3.4, sx: 1, ph: rnd() * TAU,
+                 kick: 2.4 + rnd() * 1.1, bob: 0.09 + rnd() * 0.07, wait: 5 + rnd() * 24, bt: -1 });
+    }
+    out.swimmers.push({ a: lead, kind: 'dolphin', obj: null, anim: (t, a, dt) => {
+      const ch = Math.cos(a.yaw), sh = Math.sin(a.yaw);
+      for (const p of pod) {
+        const ox = p.ox * p.sx, oz = p.oz * p.sx;
+        const wx = a.pos.x + ch * ox + sh * oz, wz = a.pos.z - sh * ox + ch * oz;
+        // keep every dolphin in open water: if one drifts toward a coast it
+        // closes up on the leader instead of swimming over the island
+        if (field.sd(wx, wz) > -0.7) p.sx = Math.max(0.12, p.sx - dt * 1.4);
+        else if (p.sx < 1) p.sx = Math.min(1, p.sx + dt * 0.25);
+        let y = a.pos.y + Math.sin(t * 1.05 + p.ph) * p.bob;
+        let pitch = Math.cos(t * 1.05 + p.ph) * 0.17;
+        p.wait -= dt;
+        if (p.wait <= 0 && p.bt < 0) p.bt = 0;
+        if (p.bt >= 0) {
+          p.bt += dt;
+          const k = p.bt / 1.6;
+          if (k >= 1) { p.bt = -1; p.wait = 9 + rnd() * 26; }
+          else { y += Math.sin(k * Math.PI) * 0.8; pitch = Math.cos(k * Math.PI) * 0.8; }
+        }
+        p.d.root.position.set(wx, y, wz);
+        p.d.root.rotation.set(-pitch, a.yaw, Math.sin(t * 0.7 + p.ph) * 0.06, 'YXZ');
+        p.d.tail.rotation.x = Math.sin(t * p.kick + p.ph) * 0.45;
+      }
+    } });
+    out.dolphinCount = N;
+    out.pod = pod;
+  }
+
   // divers
   const divers = [
     { kind: 'free', home: homeNear('panagsama', -2.2, 3.4), o: { suit: '#1F2A33', accent: '#2FA3D6', skin: SKIN.med, fin: '#1C2228' } },
@@ -598,6 +671,7 @@ export function buildLife(ctx) {
     turtles: out.swimmers.filter(s => s.kind === 'turtle').length,
     freedivers: out.swimmers.filter(s => s.kind === 'freediver').length,
     scuba: out.swimmers.filter(s => s.kind === 'scuba').length,
+    dolphins: out.dolphinCount || 0,
     companions: out.people.filter(p => p.c.group === 'companion').length,
     locals: out.people.filter(p => p.c.group === 'local').length,
   });

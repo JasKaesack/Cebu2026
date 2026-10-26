@@ -152,8 +152,8 @@ export function hillDome() {   // Chocolate Hills: rounded haystack mound
     pts.push(new THREE.Vector2(Math.cos(t * Math.PI / 2) * 0.5, Math.sin(t * Math.PI / 2) * 1.0));
   }
   pts[0].x = 0.56;
-  const g = new THREE.LatheGeometry(pts, 9);
-  return bake([part(g, '#86A04A', null)]);
+  const g = new THREE.LatheGeometry(pts, 10);
+  return bake([part(g, '#FFFFFF', null)]);   // tinted per instance (brown .. green)
 }
 
 // ---- boats ----
@@ -203,5 +203,162 @@ export function van() {
   p.push(part(G.box(), '#3A4652', M(0, 0.24, 0.05, 0, 0, 0, 0.35, 0.08, 0.6)));
   for (const [x, z] of [[-0.17, 0.24], [0.17, 0.24], [-0.17, -0.24], [0.17, -0.24]])
     p.push(part(G.cylc(6), '#222', M(x, 0.06, z, 0, 0, Math.PI / 2, 0.11, 0.05, 0.11)));
+  return bake(p);
+}
+
+// ---- vertex shading helper: colour a baked part by its local height ----
+export function shadeBands(g, bands) {
+  // bands: [[yMin, '#hex'], ...] evaluated top-down; first match wins
+  const pos = g.attributes.position, col = g.attributes.color, c = new THREE.Color();
+  for (let i = 0; i < pos.count; i++) {
+    const y = pos.getY(i);
+    let hex = bands[bands.length - 1][1];
+    for (const [ym, h] of bands) { if (y >= ym) { hex = h; break; } }
+    c.set(hex); col.setXYZ(i, c.r, c.g, c.b);
+  }
+  return g;
+}
+
+// flat aerofoil: shape points are (x, distanceBackFromOrigin); extruded thin in Y
+function flatFoil(pts, thick) {
+  const s = new THREE.Shape();
+  s.moveTo(pts[0][0], pts[0][1]);
+  for (let i = 1; i < pts.length; i++) s.lineTo(pts[i][0], pts[i][1]);
+  s.closePath();
+  const g = new THREE.ExtrudeGeometry(s, { depth: thick, bevelEnabled: false });
+  g.rotateX(-Math.PI / 2);            // (x,y,z) -> (x, z, -y): shape y becomes backward z
+  g.translate(0, -thick / 2, 0);
+  return g;
+}
+// vertical fin: shape points are (distanceBack, up); extruded thin in X
+function flatFin(pts, thick) {
+  const s = new THREE.Shape();
+  s.moveTo(pts[0][0], pts[0][1]);
+  for (let i = 1; i < pts.length; i++) s.lineTo(pts[i][0], pts[i][1]);
+  s.closePath();
+  const g = new THREE.ExtrudeGeometry(s, { depth: thick, bevelEnabled: false });
+  g.rotateY(Math.PI / 2);             // (x,y,z) -> (z, y, -x): shape x becomes backward z
+  g.translate(-thick / 2, 0, 0);
+  return g;
+}
+
+/* STARLUX widebody (A350-like). Livery checked against official fleet photos on
+   Wikimedia Commons, 2026-10-26: white upper fuselage and white tail, dark navy
+   belly, a bronze/gold waistline sweeping up to the tail root, bronze
+   parallelograms plus a dark star on the fin, dark navy engine nacelles and
+   dark navy STARLUX titles on the forward upper fuselage.
+   Nose points +z; the model is about 2.0 long and 1.9 across at scale 1. */
+const SL = { white: '#F6F7F9', obsidian: '#3C434B', gold: '#C79A74', dark: '#23282D', glass: '#1A2430' };  // checked 2026-10-26: white fuselage, 'Obsidian Grey' fin, rose-gold accents
+
+export function starluxPlane() {
+  const p = [];
+  const bands = [[-0.030, SL.white], [-0.046, SL.gold], [-99, SL.white]];   // white body, one rose-gold pinstripe
+
+  // fuselage
+  const body = new THREE.CylinderGeometry(0.105, 0.098, 1.46, 14).rotateX(Math.PI / 2);
+  p.push(part(shadeBands(colored(body), bands), null, M(0, 0, 0.04)));
+  // nose
+  const nose = new THREE.SphereGeometry(0.105, 14, 10, 0, Math.PI * 2, 0, Math.PI / 2).rotateX(Math.PI / 2);
+  p.push(part(shadeBands(colored(nose), bands), null, M(0, 0, 0.77, 0, 0, 0, 1, 1, 1.9)));
+  // tail cone, lifted slightly like a real upswept tail
+  const tail = new THREE.CylinderGeometry(0.098, 0.022, 0.62, 12).rotateX(Math.PI / 2);
+  p.push(part(shadeBands(colored(tail), bands), null, M(0, 0.035, -0.98, -0.1, 0, 0)));
+
+  // cockpit glass + cabin window line + STARLUX titles
+  p.push(part(G.boxc(), SL.glass, M(0, 0.045, 0.84, 0, 0, 0, 0.13, 0.035, 0.1)));
+  for (const s of [-1, 1]) {
+    p.push(part(G.boxc(), SL.dark, M(s * 0.102, 0.03, 0.05, 0, 0, 0, 0.012, 0.022, 1.25)));
+    p.push(part(G.boxc(), SL.obsidian, M(s * 0.104, 0.062, 0.33, 0, 0, 0, 0.012, 0.042, 0.44)));
+  }
+  // bronze waistline sweeping up to the tail root
+  for (const s of [-1, 1]) p.push(part(G.boxc(), SL.gold, M(s * 0.103, -0.012, -0.62, 0.22, 0, 0, 0.012, 0.055, 0.5)));
+
+  // main wings
+  const wing = [[0.085, 0.00], [0.88, 0.50], [0.94, 0.66], [0.085, 0.40]];
+  for (const s of [-1, 1]) {
+    const g = flatFoil(wing.map(([x, b]) => [x * s, b]), 0.028);
+    p.push(part(g, SL.white, M(0, -0.028, 0.16)));
+    // wingtip
+    p.push(part(G.boxc(), SL.obsidian, M(s * 0.93, -0.012, -0.42, 0, s * 0.5, 0, 0.02, 0.07, 0.14)));
+  }
+  // engines
+  for (const s of [-1, 1]) {
+    p.push(part(new THREE.CylinderGeometry(0.082, 0.072, 0.30, 12).rotateX(Math.PI / 2), SL.obsidian, M(s * 0.40, -0.115, 0.14)));
+    p.push(part(new THREE.CylinderGeometry(0.084, 0.084, 0.03, 12).rotateX(Math.PI / 2), SL.dark, M(s * 0.40, -0.115, 0.29)));
+    p.push(part(G.boxc(), SL.white, M(s * 0.40, -0.055, 0.18, 0, 0, 0, 0.03, 0.08, 0.12)));
+  }
+  // horizontal stabiliser
+  const hs = [[0.05, 0.00], [0.40, 0.21], [0.43, 0.31], [0.05, 0.17]];
+  for (const s of [-1, 1]) p.push(part(flatFoil(hs.map(([x, b]) => [x * s, b]), 0.02), SL.white, M(0, 0.055, -1.12)));
+  // vertical fin, white with bronze marks and a dark star
+  p.push(part(flatFin([[0, 0], [0.36, 0.60], [0.50, 0.60], [0.27, 0]], 0.024), SL.obsidian, M(0, 0.06, -0.96)));
+  p.push(part(G.boxc(), SL.gold, M(0, 0.36, -1.20, 0, 0, -0.62, 0.028, 0.17, 0.055)));
+  p.push(part(G.boxc(), SL.gold, M(0, 0.225, -1.12, 0, 0, -0.62, 0.028, 0.17, 0.055)));
+  p.push(part(G.ico(0), SL.white, M(0, 0.50, -1.30, 0, 0, 0.8, 0.030, 0.055, 0.055)));
+  // fin root fairing in bronze
+  p.push(part(flatFin([[0, 0], [0.30, 0.09], [0.46, 0.09], [0.46, 0]], 0.024), SL.gold, M(0, 0.055, -0.96)));
+
+  return bake(p);
+}
+// nav lights are a separate mesh so the phase system can light them on their own
+export function planeLights() {
+  return {
+    red:   bake([part(G.ico(0), '#ffffff', M(-0.95, -0.015, -0.46, 0, 0, 0, 0.05, 0.05, 0.05))]),
+    green: bake([part(G.ico(0), '#ffffff', M(0.95, -0.015, -0.46, 0, 0, 0, 0.05, 0.05, 0.05))]),
+    tail:  bake([part(G.ico(0), '#ffffff', M(0, 0.10, -1.30, 0, 0, 0, 0.045, 0.045, 0.045)),
+                 part(G.ico(0), '#ffffff', M(0, -0.10, 0.20, 0, 0, 0, 0.045, 0.045, 0.045))]),
+  };
+}
+function colored(g) {
+  const n = g.attributes.position.count;
+  g.setAttribute('color', new THREE.BufferAttribute(new Float32Array(n * 3).fill(1), 3));
+  return g;
+}
+
+/* A chocolate bar: thickness, moulded squares, a few highlights and a torn wrapper. */
+export function chocolateBar() {
+  const p = [];
+  const BAR = '#4A2C17', TOP = '#5E3A1E', EDGE = '#3A2110', FOIL = '#C9CDD2', WRAP = '#8C3B2A';
+  p.push(part(G.boxc(), BAR, M(0, 0, 0, 0, 0, 0, 1.0, 0.16, 0.62)));
+  // moulded squares on top
+  for (let i = 0; i < 4; i++) for (let j = 0; j < 2; j++) {
+    p.push(part(G.boxc(), TOP, M(-0.375 + i * 0.25, 0.085, -0.15 + j * 0.30, 0, 0, 0, 0.205, 0.035, 0.245)));
+  }
+  // grooves
+  for (let i = 1; i < 4; i++) p.push(part(G.boxc(), EDGE, M(-0.5 + i * 0.25, 0.088, 0, 0, 0, 0, 0.022, 0.03, 0.62)));
+  p.push(part(G.boxc(), EDGE, M(0, 0.088, 0, 0, 0, 0, 1.0, 0.03, 0.022)));
+  // torn wrapper at one end: foil inside, coloured paper outside
+  p.push(part(G.boxc(), FOIL, M(-0.56, 0.0, 0, 0, 0.12, 0, 0.22, 0.2, 0.68)));
+  p.push(part(G.boxc(), WRAP, M(-0.62, 0.0, 0, 0, 0.12, 0, 0.14, 0.23, 0.72)));
+  p.push(part(G.boxc(), FOIL, M(-0.44, 0.115, 0.1, -0.5, 0.4, 0.2, 0.2, 0.012, 0.3)));
+  return bake(p);
+}
+
+/* Loboc river cruise: a wide bamboo pontoon with a canopy, railings and tables.
+   Deliberately unlike the sea ferry — flat, open and roofed. Bow points +z. */
+export function cruiseBoat() {
+  const p = [];
+  const DECK = '#C9A86B', POST = '#7A5B3A', ROOF = '#C2452F', RAIL = '#E6D9BC', TABLE = '#F2EADA';
+  // twin bamboo pontoons
+  for (const s of [-1, 1]) p.push(part(new THREE.CylinderGeometry(0.07, 0.07, 1.5, 8).rotateX(Math.PI / 2), '#A88450', M(s * 0.22, -0.03, 0)));
+  // deck
+  p.push(part(G.boxc(), DECK, M(0, 0.05, 0, 0, 0, 0, 0.62, 0.05, 1.5)));
+  p.push(part(G.boxc(), '#B08E55', M(0, 0.03, 0, 0, 0, 0, 0.66, 0.02, 1.54)));
+  // bow taper
+  p.push(part(G.cone(4), DECK, M(0, 0.03, 0.78, Math.PI / 2, Math.PI / 4, 0, 0.62, 0.22, 0.05)));
+  // railings
+  for (const s of [-1, 1]) {
+    p.push(part(G.boxc(), RAIL, M(s * 0.30, 0.17, 0, 0, 0, 0, 0.02, 0.025, 1.46)));
+    for (let z = -0.65; z <= 0.66; z += 0.26) p.push(part(G.boxc(), RAIL, M(s * 0.30, 0.11, z, 0, 0, 0, 0.018, 0.14, 0.018)));
+  }
+  // canopy posts + roof
+  for (const s of [-1, 1]) for (const z of [-0.6, -0.1, 0.45]) p.push(part(G.cyl(5), POST, M(s * 0.27, 0.07, z, 0, 0, 0, 0.035, 0.34, 0.035)));
+  p.push(part(G.boxc(), ROOF, M(0, 0.425, -0.05, 0, 0, 0, 0.70, 0.04, 1.42)));
+  p.push(part(G.boxc(), '#9E3524', M(0, 0.455, -0.05, 0, 0, 0, 0.30, 0.03, 1.44)));
+  // tables and benches
+  for (const z of [-0.5, 0.0, 0.5]) {
+    p.push(part(G.boxc(), TABLE, M(0, 0.20, z, 0, 0, 0, 0.26, 0.03, 0.22)));
+    for (const s of [-1, 1]) p.push(part(G.boxc(), '#D8C49A', M(s * 0.20, 0.145, z, 0, 0, 0, 0.1, 0.025, 0.24)));
+  }
   return bake(p);
 }

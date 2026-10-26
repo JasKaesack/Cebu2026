@@ -22,10 +22,10 @@ function detectTier() {
 
 // Lighting presets for the four time-of-day phases (Cebu / Asia/Manila clock decided by the page)
 const LOOK = {
-  dawn:  { skyTop: '#F0B9B0', skyHor: '#FFE4CF', fog: '#F8DCCB', sea: '#6CB9C4', seaOp: 0.58, hemiSky: '#FFE6DA', hemiGnd: '#86AEBB', hemi: 1.95, sun: '#FFC29A', sunI: 2.2, glow: 0.5, sunDir: [0.85, 0.42, 0.3], shadow: 0.6, win: 0.5, bulb: 0.8, stars: 0.05, floor: 1.0 },
-  day:   { skyTop: '#A9D9E6', skyHor: '#F1F4EA', fog: '#EEF2E8', sea: '#3FB2B6', seaOp: 0.56, hemiSky: '#FFFFFF', hemiGnd: '#8FAF95', hemi: 1.25, sun: '#FFF4E2', sunI: 2.5, glow: 0.3, sunDir: [0.42, 1.0, 0.62], shadow: 0.85, win: 0.0, bulb: 0.0, stars: 0.0, floor: 1.0 },
-  dusk:  { skyTop: '#7B6FA8', skyHor: '#FFB08A', fog: '#EFB797', sea: '#4A93AA', seaOp: 0.62, hemiSky: '#FFD4BC', hemiGnd: '#6A74A4', hemi: 1.65, sun: '#FF9454', sunI: 2.6, glow: 0.45, sunDir: [-0.85, 0.38, 0.35], shadow: 0.62, win: 0.9, bulb: 1.5, stars: 0.12, floor: 0.88 },
-  night: { skyTop: '#0D1830', skyHor: '#253A63', fog: '#1E2F52', sea: '#164A66', seaOp: 0.7, hemiSky: '#5A72AD', hemiGnd: '#121B30', hemi: 0.62, sun: '#A9BCFF', sunI: 0.55, glow: 0.22, sunDir: [-0.3, 0.95, 0.45], shadow: 0.42, win: 1.35, bulb: 2.2, stars: 0.9, floor: 0.55 },
+  dawn:  { skyTop: '#F0B9B0', skyHor: '#FFE4CF', fog: '#F8DCCB', sea: '#6CB9C4', seaOp: 0.58, hemiSky: '#FFE6DA', hemiGnd: '#86AEBB', hemi: 1.95, sun: '#FFC29A', sunI: 2.2, glow: 0.5, sunDir: [0.85, 0.42, 0.3], shadow: 0.6, win: 0.5, bulb: 0.8, stars: 0.05, floor: 1.0, nav: 0.55 },
+  day:   { skyTop: '#A9D9E6', skyHor: '#F1F4EA', fog: '#EEF2E8', sea: '#3FB2B6', seaOp: 0.56, hemiSky: '#FFFFFF', hemiGnd: '#8FAF95', hemi: 1.25, sun: '#FFF4E2', sunI: 2.5, glow: 0.3, sunDir: [0.42, 1.0, 0.62], shadow: 0.85, win: 0.0, bulb: 0.0, stars: 0.0, floor: 1.0, nav: 0.0 },
+  dusk:  { skyTop: '#7B6FA8', skyHor: '#FFB08A', fog: '#EFB797', sea: '#4A93AA', seaOp: 0.62, hemiSky: '#FFD4BC', hemiGnd: '#6A74A4', hemi: 1.65, sun: '#FF9454', sunI: 2.6, glow: 0.45, sunDir: [-0.85, 0.38, 0.35], shadow: 0.62, win: 0.9, bulb: 1.5, stars: 0.12, floor: 0.88, nav: 1.1 },
+  night: { skyTop: '#0D1830', skyHor: '#253A63', fog: '#1E2F52', sea: '#164A66', seaOp: 0.7, hemiSky: '#5A72AD', hemiGnd: '#121B30', hemi: 0.62, sun: '#A9BCFF', sunI: 0.55, glow: 0.22, sunDir: [-0.3, 0.95, 0.45], shadow: 0.42, win: 1.35, bulb: 2.2, stars: 0.9, floor: 0.55, nav: 1.7 },
 };
 
 export async function init(opts) {
@@ -202,8 +202,17 @@ export async function init(opts) {
       R.mesh.instanceMatrix.needsUpdate = true;
     }
   }
+  const PLANE_LEN = 2.25;                 // world units nose-to-tail at scale 1
+  let planeK = 0;
   function updateZoomScale() {
     const dist = camera.position.distanceTo(controls.target);
+    // Aircraft size. Measured at the default overview: 1440x900 gives 9.38 px per
+    // world unit and 390x844 gives 4.33, so a plane about 14-16 units long lands
+    // inside both acceptance windows (desktop 90-140 px, phone 55-90 px).
+    // Compensation is deliberately gentle (dist^0.55) and clamped at both ends,
+    // so zooming never makes it pop or swallow the island.
+    const want = Math.max(1.1, Math.min(7.0, 5.0 * Math.pow(dist / 179, 0.55)));
+    if (Math.abs(want - planeK) / Math.max(planeK, 1e-3) > 0.02) { planeK = want; props.setPlaneScale(want); }
     const k = Math.min(5.5, Math.max(1, Math.pow(dist / 24, 0.9)));
     if (Math.abs(k - viewK) / Math.max(viewK, 1e-3) < 0.03) return false;
     viewK = k; layoutRoutes(k); props.setScale(k);
@@ -313,7 +322,7 @@ export async function init(opts) {
   /* ---------------- phases ---------------- */
   const cur = {}; const tgt = {};
   const colorKeys = ['skyTop', 'skyHor', 'fog', 'sea', 'hemiSky', 'hemiGnd', 'sun'];
-  const numKeys = ['seaOp', 'hemi', 'sunI', 'shadow', 'win', 'bulb', 'stars', 'floor', 'glow'];
+  const numKeys = ['seaOp', 'hemi', 'sunI', 'shadow', 'win', 'bulb', 'stars', 'floor', 'glow', 'nav'];
   function loadLook(dst, key) {
     const L = LOOK[key];
     for (const k of colorKeys) { dst[k] = dst[k] || new THREE.Color(); dst[k].set(L[k]); }
@@ -348,6 +357,9 @@ export async function init(opts) {
     sun.shadow.intensity = cur.shadow;
     props.nightMats.win.emissiveIntensity = cur.win; props.nightMats.bulb.emissiveIntensity = cur.bulb;
     for (const L of pointLights) L.intensity = cur.bulb * 2.2;
+    const nm = props.nightMats;
+    if (nm.nav) { nm.nav.emissiveIntensity = cur.nav * 1.5; nm.navR.emissiveIntensity = cur.nav * 1.5; nm.navG.emissiveIntensity = cur.nav * 1.5; }
+    if (nm.planeBody) nm.planeBody.emissiveIntensity = cur.nav * 0.22;
     starMat.opacity = cur.stars;
     floorMat.color.copy(floorBase).multiplyScalar(cur.floor);
     foamMat.color.setScalar(0.55 + cur.floor * 0.45);
@@ -363,7 +375,12 @@ export async function init(opts) {
   }
 
   /* ---------------- markers ---------------- */
-  const mk = GEO.markers.map(m => ({ ...m, el: markers.find(e => e.dataset.marker === m.id), v: new THREE.Vector3(m.x, Math.max(0.3, field.h(m.x, m.z)) + 1.0, m.z) }));
+  const mk = GEO.markers.map(m => ({ ...m, prio: 0, el: markers.find(e => e.dataset.marker === m.id),
+    v: new THREE.Vector3(m.x, Math.max(0.3, field.h(m.x, m.z)) + 1.0, m.z) }));
+  for (const L of (props.landmarks || [])) {
+    const el = (opts.landmarks || []).find(e => e.dataset.landmark === L.id);
+    if (el) mk.push({ id: L.id, prio: 1, el, v: new THREE.Vector3(L.x, L.y, L.z) });
+  }
   const tmp = new THREE.Vector3();
   function placeMarkers() {
     const vis = [], top = safeTop();
@@ -372,14 +389,29 @@ export async function init(opts) {
       tmp.copy(m.v).project(camera);
       m.sx = (tmp.x * 0.5 + 0.5) * W; m.sy = (-tmp.y * 0.5 + 0.5) * H;
       m.off = tmp.z > 1 || m.sx < -80 || m.sx > W + 80 || m.sy < -40 || m.sy > H + 60;
+      m.sy0 = m.sy;
       if (!m.w) { const p = m.el.firstElementChild; m.w = p ? p.offsetWidth : 110; m.hh = p ? p.offsetHeight : 40; }
       if (!m.off) vis.push(m);
     }
     // keep labels from covering each other: lift the one further north
-    vis.sort((a, b) => b.sy - a.sy);
+    vis.sort((a, b) => (a.prio - b.prio) || (b.sy - a.sy));
+    // sx/sy are the label's top-left corner, so this is a plain rectangle test:
+    // only labels that really overlap push each other, and only far enough to clear.
+    const G = 4;
     for (let i = 0; i < vis.length; i++) for (let j = 0; j < i; j++) {
       const a = vis[i], b = vis[j];
-      if (Math.abs(a.sx - b.sx) < (a.w + b.w) / 2 + 4 && a.sy > b.sy - b.hh - 4) a.sy = b.sy - b.hh - 4;
+      if (a.sx > b.sx + b.w + G || b.sx > a.sx + a.w + G) continue;
+      if (a.sy > b.sy + b.hh + G || b.sy > a.sy + a.hh + G) continue;
+      a.sy = b.sy - a.hh - G;
+    }
+    // A label dragged too far has stopped pointing at its own model. Date markers
+    // win the space; a landmark label that cannot sit near its landmark hides
+    // instead of drifting across the map.
+    for (const m of vis) {
+      const lift = m.sy0 - m.sy;
+      if (m.prio > 0 ? lift > 64 : lift > 150) { m.off = true; m.sy = m.sy0; continue; }
+      // a landmark label near the edge is pulled back into view rather than clipped
+      if (m.prio > 0) m.sx = Math.max(6, Math.min(m.sx, W - m.w - 6));
     }
     for (const m of mk) {
       if (!m.el) continue;
@@ -444,6 +476,20 @@ export async function init(opts) {
   raf = requestAnimationFrame(frame);
   document.addEventListener('visibilitychange', () => { last = performance.now(); need = true; });
 
+  const _bb = new THREE.Box3(), _v = new THREE.Vector3();
+  function planeScreenPx() {
+    if (!props.plane) return 0;
+    props.plane.updateMatrixWorld();
+    _bb.setFromObject(props.plane);
+    let minx = 1e9, maxx = -1e9, miny = 1e9, maxy = -1e9;
+    for (let i = 0; i < 8; i++) {
+      _v.set(i & 1 ? _bb.max.x : _bb.min.x, i & 2 ? _bb.max.y : _bb.min.y, i & 4 ? _bb.max.z : _bb.min.z).project(camera);
+      const x = (_v.x * 0.5 + 0.5) * W, y = (-_v.y * 0.5 + 0.5) * H;
+      minx = Math.min(minx, x); maxx = Math.max(maxx, x); miny = Math.min(miny, y); maxy = Math.max(maxy, y);
+    }
+    return Math.round(Math.max(maxx - minx, maxy - miny));
+  }
+
   const api = {
     tier,
     flyTo, setInsets, setSelected, setPhase,
@@ -464,7 +510,8 @@ export async function init(opts) {
         tier, degraded, fps: perf.fps, loadMs: Math.round(performance.now() - t0), props: props.counts, trees: props.trees, hills: props.hills,
         life: life.counts(), people: life.list, drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles,
         camera: { target: controls.target.toArray().map(v => +v.toFixed(2)), dist: +camera.position.distanceTo(controls.target).toFixed(2) },
-        phase: phaseKey, inset: { ...inset },
+        phase: phaseKey, inset: { ...inset }, planeScale: +planeK.toFixed(3), planePx: planeScreenPx(), simT: +simT.toFixed(3),
+      landmarks: (props.landmarks || []).map(l => l.id), dolphins: life.counts().dolphins,
       };
     },
     _debug: { scene, camera, controls, field, life, props, renderer, GEO },

@@ -66,6 +66,16 @@ export function buildProps(ctx) {
   const reserved = out.reserved;
   const isReserved = (x, z, r) => reserved.some(o => Math.hypot(x - o.x, z - o.z) < o.r + r && field.sd(x, z) < o.smax + 0.45 + r);
 
+  // Loboc river corridor. Reserved up front, before a single building, palm or
+  // resort is placed, so nothing ends up standing in the water.
+  // Pier: Loboc River Cruise, 9.6347975 / 124.0298253 (Google Places, 2026-10-26).
+  // Turn-around: Busai Dream Falls, 9.6723232 / 124.0478767 — the cruise runs
+  // upstream from the pier and back, so only that reach carries the boat.
+  const RIVER = [[9.6723, 124.0479], [9.6640, 124.0442], [9.6530, 124.0380], [9.6430, 124.0330],
+                 [9.6348, 124.0298], [9.6230, 124.0240], [9.6100, 124.0160], [9.5960, 124.0100]];
+  const riverCurve = new THREE.CatmullRomCurve3(RIVER.map(a => LL(...a)).map(([x, z]) => new THREE.Vector3(x, 0, z)));
+  for (let i = 0; i <= 64; i++) { const q = riverCurve.getPointAt(i / 64); obst.add(q.x, q.z, 0.82, 'river'); }
+
   // --------------------------------------------------------------- buildings
   const B = { house: [], tower: [], nipa: [] };
   const dbg = { inside: 0, sea: 0, high: 0, slope: 0, obst: 0, res: 0, ok: 0 };
@@ -104,7 +114,10 @@ export function buildProps(ctx) {
     [cx, cz] = LL(9.5215, 123.4320); landmark(K.church(), cx, cz, 0.6, -0.3, 0.9);
     [cx, cz] = LL(10.1075, 123.6440); landmark(K.church(), cx, cz, 0.55, 0.2, 0.8);
     [cx, cz] = LL(9.6230, 123.9140); landmark(K.church(), cx, cz, 0.5, 0.1, 0.8);
-    [cx, cz] = LL(9.6400, 124.0330); landmark(K.church(), cx, cz, 0.5, 0.6, 0.8);
+    // Loboc's riverside church, nudged onto the north bank: the cruise channel is
+    // drawn far wider than the real river so the boat reads at map scale, and at
+    // its true lon it would stand in the water.
+    [cx, cz] = LL(9.6395, 124.0385); landmark(K.church(), cx, cz, 0.5, 1.9, 0.8);
   }
   // airport (runway ~ NE–SW)
   {
@@ -254,67 +267,108 @@ export function buildProps(ctx) {
     obst.add(kx, kz, 1.3, 'falls');
     out.updaters.push((dt, t) => { foam.scale.setScalar(1 + Math.sin(t * 3) * 0.15); waterMat.opacity = 0.78 + Math.sin(t * 5) * 0.06; });
   }
-  // Loboc river + floating restaurant
-  const river = [[9.668, 124.058], [9.655, 124.048], [9.643, 124.036], [9.632, 124.028], [9.619, 124.021], [9.605, 124.013], [9.596, 124.010]].map(p => LL(...p));
+  // ----------------------------------------------- Loboc river + cruise boat
+  // Pier: Loboc River Cruise, 9.6347975 / 124.0298253 (Google Places, 2026-10-26).
+  // Turn-around: Busai Dream Falls, 9.6723232 / 124.0478767 — the cruise runs
+  // upstream from the pier and comes back, so only that reach carries the boat.
   {
-    const pts = river.map(([x, z]) => new THREE.Vector3(x, 0, z));
-    const curve = new THREE.CatmullRomCurve3(pts);
-    const N = 60, pos = [], idx = [];
+    const curve = riverCurve;
+    const N = 70, pos = [], idx = [];
     for (let i = 0; i <= N; i++) {
-      const p = curve.getPoint(i / N), t = curve.getTangent(i / N);
-      const nx = -t.z, nz = t.x, w = 0.28;
+      const p = curve.getPointAt(i / N), t = curve.getTangentAt(i / N);
+      const nx = -t.z, nz = t.x, w = 0.52;          // widened for visibility; course and location unchanged
+      const y = field.h(p.x, p.z) + 0.04;            // flat across the channel, so no sloped water
       for (const s of [-1, 1]) {
         const x = p.x + nx * w * s, z = p.z + nz * w * s;
-        pos.push(x, Math.max(field.h(x, z), field.h(p.x, p.z)) + 0.05, z);
+        pos.push(x, y, z);
       }
       if (i < N) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
     }
     const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
     const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: '#4FA79C', roughness: 0.3, side: THREE.DoubleSide }));
     m.receiveShadow = true; scene.add(m);
-    for (let i = 0; i <= 20; i++) { const p = curve.getPoint(i / 20); obst.add(p.x, p.z, 0.35, 'river'); }
-    const raft = new THREE.Mesh(K.bake([K.part(K.G.box(), '#A88A60', K.M(0, 0, 0, 0, 0, 0, 0.32, 0.05, 0.7)),
-      K.part(K.G.box(), '#C24F3A', K.M(0, 0.24, 0, 0, 0, 0, 0.36, 0.03, 0.74)),
-      ...[[-0.13, -0.3], [0.13, -0.3], [-0.13, 0.3], [0.13, 0.3]].map(([x, z]) => K.part(K.G.cyl(4), '#6E5034', K.M(x, 0.05, z, 0, 0, 0, 0.02, 0.2, 0.02))),
-      K.part(K.G.box(), '#F1E6CF', K.M(0, 0.05, 0, 0, 0, 0, 0.22, 0.05, 0.5))]), matV);
-    raft.castShadow = castShadow; scene.add(raft);
-    let u = 0.35, dir = 1;
-    out.updaters.push((dt) => {
-      u += dir * dt * 0.012; if (u > 0.62) dir = -1; if (u < 0.3) dir = 1;
-      const p = curve.getPoint(u), t = curve.getTangent(u);
-      raft.position.set(p.x, field.h(p.x, p.z) + 0.07, p.z); raft.rotation.y = Math.atan2(t.x, t.z);
+
+    // the cruise reach only: pier (index 4) back up to Busay (index 0)
+    const reach = new THREE.CatmullRomCurve3(RIVER.slice(0, 5).reverse().map(a => LL(...a)).map(([x, z]) => new THREE.Vector3(x, 0, z)));
+    const reachLen = reach.getLength();
+    const boat = new THREE.Mesh(K.cruiseBoat(), matV);
+    boat.scale.setScalar(0.5); boat.castShadow = castShadow; scene.add(boat);
+    out.lobocBoat = boat;
+    // out-and-back: run → slow down → pause → swing the bow round → run back
+    const ONE_WAY = 22, PAUSE = 3.0, TURN = 3.2;      // ≈ 56 s per full round trip
+    const TURN_RATE = 1.15;                           // rad/s cap: the bow swings round, never snaps
+    let u = 0.04, dir = 1, phase = 'run', timer = 0, heading = 0, headSet = false;
+    out.updaters.push((dt, t) => {
+      let speed = 1;
+      if (phase === 'pause') { speed = 0; timer -= dt; if (timer <= 0) { phase = 'turn'; timer = TURN; dir = -dir; } }
+      else if (phase === 'turn') { speed = 0; timer -= dt; if (timer <= 0) { phase = 'run'; } }
+      else {
+        const edge = dir > 0 ? (1 - u) : u;             // ease the last 12 % of the reach
+        speed = Math.max(0.12, Math.min(1, edge / 0.12));
+        u += dir * dt * speed / ONE_WAY;
+        if (u >= 1) { u = 1; phase = 'pause'; timer = PAUSE; }
+        if (u <= 0) { u = 0; phase = 'pause'; timer = PAUSE; }
+      }
+      const p = reach.getPointAt(Math.max(0, Math.min(1, u))), tg = reach.getTangentAt(Math.max(0, Math.min(1, u)));
+      const want = Math.atan2(tg.x * dir, tg.z * dir);
+      if (!headSet) { heading = want; headSet = true; }
+      let d = want - heading; while (d > Math.PI) d -= Math.PI * 2; while (d < -Math.PI) d += Math.PI * 2;
+      let step = d * Math.min(1, dt * (phase === 'turn' ? 2.2 : 2.6));
+      const cap = TURN_RATE * dt;                     // never faster than TURN_RATE, so no 180 deg snap
+      if (Math.abs(step) > cap) step = Math.sign(step) * cap;
+      heading += step;
+      boat.position.set(p.x, field.h(p.x, p.z) + 0.07 + Math.sin(t * 1.1) * 0.012, p.z);
+      boat.rotation.set(Math.sin(t * 0.9) * 0.012, heading, Math.sin(t * 1.3) * 0.016);
     });
-    out.raft = raft;
+    out.landmarks = out.landmarks || [];
+    // label the middle of the cruise reach, not the pier itself: the pier already
+    // carries the 12/7 date marker, and the reach is what the boat actually runs
+    { const [lx, lz] = LL(9.6530, 124.0380); out.landmarks.push({ id: 'lm_loboc', x: lx, z: lz, y: field.h(lx, lz) + 1.0 }); }
   }
-  // Chocolate Hills
+
+  // ----------------------------------------------- Chocolate Hills + a chocolate bar
+  // Anchor: Chocolate Hills Complex, Carmen — 9.7986441 / 124.1674637 (Google Places).
+  // One cluster only; the hills are a spread-out group, so they fan out from the
+  // viewing complex rather than sitting on "the middle of Bohol".
   {
     const [cx, cz] = P('chocolate');
     const hills = []; let tries = 0;
-    const target = tier === 'low' ? 45 : 85;
-    while (hills.length < target && tries < 2000) {
+    const target = tier === 'low' ? 13 : 17;            // a readable group, not a field of cones
+    while (hills.length < target && tries < 3000) {
       tries++;
-      const a = rnd() * Math.PI * 2, rr = Math.sqrt(rnd()) * 7.5;
-      const x = cx + Math.cos(a) * rr * 1.25, z = cz + Math.sin(a) * rr;
-      const r = 0.42 + rnd() * 0.3;
-      if (field.sd(x, z) < 2) continue;
-      if (hills.some(h => Math.hypot(h.x - x, h.z - z) < h.r + r + 0.08)) continue;
+      const a = rnd() * Math.PI * 2, rr = Math.sqrt(rnd()) * 6.0;
+      const x = cx + Math.cos(a) * rr * 1.2, z = cz + Math.sin(a) * rr;
+      const r = 0.95 + rnd() * 0.85;
+      if (field.sd(x, z) < 3) continue;
+      if (hills.some(h => Math.hypot(h.x - x, h.z - z) < h.r + r + 0.25)) continue;
       if (obst.hit(x, z, r)) continue;
-      hills.push({ x, z, r, h: 0.55 + rnd() * 0.55 });
+      hills.push({ x, z, r, h: 1.9 + rnd() * 1.4 });    // clearly above the tree canopy
     }
-    hills.unshift({ x: cx, z: cz, r: 0.85, h: 1.35, deck: true });
+    hills.unshift({ x: cx, z: cz, r: 1.3, h: 3.1, deck: true });
     const m = new THREE.InstancedMesh(K.hillDome(), matHill, hills.length);
+    const BROWN = new THREE.Color('#7B4A26'), GREEN = new THREE.Color('#6F9441');
     hills.forEach((hl, i) => {
-      dummy.position.set(hl.x, field.h(hl.x, hl.z) - 0.05, hl.z); dummy.rotation.set(0, rnd() * 6, 0); dummy.scale.set(hl.r * 2, hl.h, hl.r * 2); dummy.updateMatrix();
+      dummy.position.set(hl.x, field.h(hl.x, hl.z) - 0.08, hl.z);
+      dummy.rotation.set(0, rnd() * 6, 0); dummy.scale.set(hl.r * 2, hl.h, hl.r * 2); dummy.updateMatrix();
       m.setMatrixAt(i, dummy.matrix);
-      const t = rnd();
-      m.setColorAt(i, col.setRGB(0.9 + t * 0.25, 0.95 - t * 0.08, 0.85 - t * 0.2));
-      obst.add(hl.x, hl.z, hl.r, 'hill');
+      m.setColorAt(i, col.copy(BROWN).lerp(GREEN, 0.12 + rnd() * 0.55));
+      obst.add(hl.x, hl.z, hl.r + 1.35, 'hill');   // keep the canopy off the hills' grassy flanks
     });
     m.castShadow = castShadow; m.receiveShadow = true; scene.add(m);
     const d = hills[0];
-    const deck = new THREE.Mesh(K.bake([K.part(K.G.box(), '#F1ECE2', K.M(0, 0, 0, 0, 0, 0, 0.5, 0.18, 0.5)), K.part(K.G.pyr(), '#C9573F', K.M(0, 0.18, 0, 0, 0, 0, 0.55, 0.2, 0.55))]), matV);
+    const deck = new THREE.Mesh(K.bake([K.part(K.G.box(), '#F1ECE2', K.M(0, 0, 0, 0, 0, 0, 0.5, 0.18, 0.5)),
+      K.part(K.G.pyr(), '#C9573F', K.M(0, 0.18, 0, 0, 0, 0, 0.55, 0.2, 0.55))]), matV);
     deck.position.set(d.x, field.h(d.x, d.z) + d.h - 0.12, d.z); deck.castShadow = castShadow; scene.add(deck);
+    // the joke: an actual bar of chocolate parked beside the hills
+    const bar = new THREE.Mesh(K.chocolateBar(), matV);
+    const bx = cx - 5.6, bz = cz + 4.2;
+    bar.scale.setScalar(2.7);
+    bar.position.set(bx, field.h(bx, bz) + 0.16, bz); bar.rotation.y = -0.45;
+    bar.castShadow = castShadow; bar.receiveShadow = true; scene.add(bar);
+    obst.add(bx, bz, 1.2, 'choc');
     out.hills = hills.length;
+    out.landmarks = out.landmarks || [];
+    out.landmarks.push({ id: 'lm_choc', x: cx, z: cz, y: field.h(cx, cz) + d.h + 1.1 });
   }
 
   // ------------------------------------------------------------- lamps (night lights) near key spots
@@ -486,7 +540,8 @@ export function buildProps(ctx) {
     const sea = (day, idx) => geo.routes[day].filter(r => r.mode === 'sea')[idx].pts;
     mover(fg, 0.42, sea('d1208', 0), 1.1);
     mover(geoB, 0.46, sea('d1205', 0), 1.0);      // 12/5 crossing is a bangka (per itinerary)
-    mover(geoA, 0.42, sea('d1207', 0), 0.7);
+    mover(geoA, 0.42, sea('d1206', 0), 0.7);      // 12/6 跳島包船
+    mover(fg, 0.38, sea('d1207', 0), 1.2);        // 12/7 Lance 團回宿霧
   }
 
   // ------------------------------------------------------------- vans on today's road
@@ -508,10 +563,48 @@ export function buildProps(ctx) {
       });
     }
     car('d1204', 0.9, 0.1); car('d1204', 0.9, 0.13);   // two premium vans
-    car('d1206', 0.8, 0.4);
+    car('d1207', 0.8, 0.4);
     car('d1203', 0.6, 0.5);
     car('d1205', 0.6, 0.2);
     car('d1208', 0.7, 0.6);
+  }
+
+  // ----------------------------------------------- STARLUX widebody over Cebu City
+  // Decorative orbit only — not a real flight path. Livery checked against
+  // official fleet photos (Wikimedia Commons, 2026-10-26).
+  {
+    const [ax, az] = P('holidayinn');            // the Cebu City anchor the 12/3 marker uses
+    const CX = ax - 2.0, CZ = az + 1.5, A = 16.5, B = 11.0, ALT = 9.6, PERIOD = 44;
+    const planeMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.55, metalness: 0.05, flatShading: true,
+      emissive: new THREE.Color('#9FB4CC'), emissiveIntensity: 0 });
+    out.nightMats.planeBody = planeMat;
+    const plane = new THREE.Mesh(K.starluxPlane(), planeMat);
+    plane.castShadow = false; plane.frustumCulled = false; scene.add(plane);
+    const navMat = new THREE.MeshStandardMaterial({ color: '#F3F6F8', emissive: new THREE.Color('#FFF3DC'), emissiveIntensity: 0, roughness: 0.4 });
+    const redMat = new THREE.MeshStandardMaterial({ color: '#F6D8D4', emissive: new THREE.Color('#FF4A3A'), emissiveIntensity: 0, roughness: 0.4 });
+    const grnMat = new THREE.MeshStandardMaterial({ color: '#D6F3DC', emissive: new THREE.Color('#3BE07A'), emissiveIntensity: 0, roughness: 0.4 });
+    const L = K.planeLights();
+    const lr = new THREE.Mesh(L.red, redMat), lg = new THREE.Mesh(L.green, grnMat), lt = new THREE.Mesh(L.tail, navMat);
+    [lr, lg, lt].forEach(m => { m.frustumCulled = false; plane.add(m); });
+    out.nightMats.nav = navMat; out.nightMats.navR = redMat; out.nightMats.navG = grnMat;
+
+    let scale = 5.0, wantScale = 5.0, prevHead = null, roll = 0, ang0 = Math.PI * 0.35;
+    out.setPlaneScale = (v) => { wantScale = v; };
+    out.updaters.push((dt, t) => {
+      const ang = ang0 + (t / PERIOD) * Math.PI * 2;
+      const x = CX + Math.cos(ang) * A, z = CZ + Math.sin(ang) * B;
+      const head = Math.atan2(-Math.sin(ang) * A, Math.cos(ang) * B);
+      if (prevHead === null) prevHead = head;
+      let d = head - prevHead; while (d > Math.PI) d -= Math.PI * 2; while (d < -Math.PI) d += Math.PI * 2;
+      const rate = dt > 1e-4 ? d / dt : 0;
+      prevHead = head;
+      roll += (Math.max(-0.42, Math.min(0.42, -rate * 1.5)) - roll) * Math.min(1, dt * 1.6);
+      scale += (wantScale - scale) * Math.min(1, dt * 2.2);
+      plane.position.set(x, ALT + Math.sin(t * 0.33) * 0.22, z);
+      plane.rotation.set(Math.sin(t * 0.27) * 0.015, head, roll, 'YXZ');
+      plane.scale.setScalar(scale);
+    });
+    out.plane = plane;
   }
 
   out.update = (dt, t) => { for (const f of out.updaters) f(dt, t); };
