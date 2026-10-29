@@ -12,6 +12,10 @@ const DEG = Math.PI / 180;
 function detectTier() {
   const q = new URLSearchParams(location.search).get('q');
   if (q === 'low' || q === 'mid' || q === 'high') return q;
+  try {                                   // a quality level the reader picked by hand
+    const saved = localStorage.getItem('cebu3d-quality');
+    if (saved === 'low' || saved === 'mid' || saved === 'high') return saved;
+  } catch (e) { /* private mode: fall through to auto-detect */ }
   const cores = navigator.hardwareConcurrency || 4, mem = navigator.deviceMemory || 4;
   const coarse = matchMedia('(pointer:coarse)').matches;
   const small = Math.min(screen.width, screen.height) < 500;
@@ -52,14 +56,36 @@ export async function init(opts) {
 
   townBumps(field);
 
+  /* ---------------- shared depth texture ----------------
+     The island's signed-distance grid, uploaded once as a small single-channel
+     texture. Both the sea shader and the terrain shader read it, so depth-aware
+     colour, transparency and wet-sand roughness all cost one texture between them. */
+  const sdTex = (() => {
+    const n = field.nx * field.nz, data = new Uint8Array(n);
+    for (let i = 0; i < n; i++) data[i] = Math.max(0, Math.min(255, Math.round(field.sdv[i] * 8 + 128)));
+    const t = new THREE.DataTexture(data, field.nx, field.nz, THREE.RedFormat, THREE.UnsignedByteType);
+    t.minFilter = t.magFilter = THREE.LinearFilter;
+    t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping;
+    t.needsUpdate = true;
+    return t;
+  })();
+  const sdBnd = new THREE.Vector4(field.x0, field.z0, 1 / (field.x1 - field.x0), 1 / (field.z1 - field.z0));
+  const terrU = { tSD: { value: sdTex }, tBnd: { value: sdBnd } };
+
   /* ---------------- terrain ---------------- */
   const step = tier === 'low' ? 2 : 1;
   const nx = Math.floor((field.nx - 1) / step) + 1, nz = Math.floor((field.nz - 1) / step) + 1;
   {
     const pos = new Float32Array(nx * nz * 3), colr = new Float32Array(nx * nz * 3);
+    // Sea floor and land ramps. The water sheet is now depth-graded and nearly
+    // clear in the shallows, so the floor has to carry the near-shore colour
+    // itself: wet sand, then sand, then seagrass patches, then reef, then deep.
     const C = {
-      deep: new THREE.Color('#2B7E93'), mid: new THREE.Color('#5EC0BC'), shallow: new THREE.Color('#BFE6D2'), wet: new THREE.Color('#E3D6A6'),
-      sand: new THREE.Color('#F0DDAA'), g1: new THREE.Color('#AFCB6D'), g2: new THREE.Color('#93BE5E'), g3: new THREE.Color('#78AC52'), g4: new THREE.Color('#5F9447'), rock: new THREE.Color('#5C8A47'),
+      deep: new THREE.Color('#1F5E74'), reef: new THREE.Color('#2F8491'), grassbed: new THREE.Color('#5E9A86'),
+      shallow: new THREE.Color('#C2B486'), wet: new THREE.Color('#DCCB9C'),
+      sand: new THREE.Color('#EFDCA8'), sand2: new THREE.Color('#E4CE96'),
+      g1: new THREE.Color('#AFCB6D'), g2: new THREE.Color('#93BE5E'), g3: new THREE.Color('#78AC52'), g4: new THREE.Color('#5F9447'),
+      rock: new THREE.Color('#7E7A63'),
     };
     const c = new THREE.Color();
     const rnd = mulberry32(7);
@@ -70,14 +96,23 @@ export async function init(opts) {
       const k = (j * nx + i) * 3;
       pos[k] = x; pos[k + 1] = h; pos[k + 2] = z;
       if (s < 0) {
-        const d = Math.min(1, -s / 6);
-        if (d < 0.08) c.copy(C.wet).lerp(C.shallow, d / 0.08);
-        else if (d < 0.35) c.copy(C.shallow).lerp(C.mid, (d - 0.08) / 0.27);
-        else c.copy(C.mid).lerp(C.deep, Math.min(1, (d - 0.35) / 0.65));
-      } else if (s < BEACH_W) c.copy(C.sand);
-      else {
+        const d = -s;                                   // units of water
+        if (d < 0.35) c.copy(C.wet).lerp(C.shallow, d / 0.35);
+        else if (d < 1.1) c.copy(C.shallow).lerp(C.grassbed, (d - 0.35) / 0.75);
+        else if (d < 4.0) c.copy(C.grassbed).lerp(C.reef, (d - 1.1) / 2.9);
+        else c.copy(C.reef).lerp(C.deep, Math.min(1, (d - 4.0) / 5.5));
+        const n = (rnd() - 0.5) * 0.045; c.r += n; c.g += n * 0.8; c.b += n * 0.6;   // patchiness
+      } else {
+        // land. the beach no longer stops at a hard line: it fades into grass,
+        // and steep ground shows rock instead of more green
         const lv = h;
-        if (lv < 0.75) c.copy(C.g1); else if (lv < 1.3) c.copy(C.g2); else if (lv < 2.2) c.copy(C.g3); else if (lv < 3.3) c.copy(C.g4); else c.copy(C.rock);
+        const g = new THREE.Color();
+        if (lv < 0.75) g.copy(C.g1); else if (lv < 1.3) g.copy(C.g2); else if (lv < 2.2) g.copy(C.g3); else g.copy(C.g4);
+        const slope = Math.abs(field.h(x + 0.6, z) - field.h(x - 0.6, z)) + Math.abs(field.h(x, z + 0.6) - field.h(x, z - 0.6));
+        if (slope > 0.55) g.lerp(C.rock, Math.min(0.72, (slope - 0.55) * 0.9));
+        const beach = C.sand.clone().lerp(C.sand2, (rnd() * 0.6 + 0.2));
+        const t = Math.min(1, Math.max(0, (s - BEACH_W * 0.45) / (BEACH_W * 1.25)));
+        c.copy(beach).lerp(g, t * t * (3 - 2 * t));
         const n = (rnd() - 0.5) * 0.05; c.r += n; c.g += n; c.b += n * 0.5;
       }
       colr[k] = c.r; colr[k + 1] = c.g; colr[k + 2] = c.b;
@@ -94,17 +129,84 @@ export async function init(opts) {
     g.setAttribute('color', new THREE.BufferAttribute(colr, 3));
     g.setIndex(new THREE.BufferAttribute(idx, 1));
     g.computeVertexNormals();
+    // Sand, wet sand, grass and rock should not all reflect light the same way.
+    // The shore band is read back from the signed-distance field and given a
+    // lower roughness, so wet sand catches the sun the way grass never does.
     var terrainMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.96, metalness: 0, flatShading: true });
+    terrainMat.onBeforeCompile = (sh) => {
+      Object.assign(sh.uniforms, terrU);
+      sh.vertexShader = sh.vertexShader
+        .replace('#include <common>', '#include <common>\nvarying vec3 vTWP;')
+        .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\n  vTWP = (modelMatrix * vec4(transformed,1.0)).xyz;');
+      sh.fragmentShader = sh.fragmentShader
+        .replace('#include <common>', `#include <common>
+varying vec3 vTWP; uniform sampler2D tSD; uniform vec4 tBnd;`)
+        .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
+{
+  vec2 uv = vec2((vTWP.x-tBnd.x)*tBnd.z, (vTWP.z-tBnd.y)*tBnd.w);
+  float sd = (uv.x<0.0||uv.x>1.0||uv.y<0.0||uv.y>1.0) ? -13.0 : (texture2D(tSD, uv).r*255.0-128.0)/8.0;
+  float wet = 1.0 - smoothstep(-0.9, 1.1, sd);     // 1 just offshore, 0 inland
+  roughnessFactor = mix(roughnessFactor, 0.34, wet * 0.8);
+}`);
+    };
     const terrain = new THREE.Mesh(g, terrainMat);
     terrain.receiveShadow = true; scene.add(terrain);
     // far sea floor
-    const floor = new THREE.Mesh(new THREE.PlaneGeometry(3000, 3000).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: '#2B7E93', roughness: 1 }));
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(3000, 3000).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: '#1F5E74', roughness: 1 }));
     floor.position.y = -3.62; scene.add(floor);
     var floorMat = floor.material;
   }
 
-  /* ---------------- water + shore foam ---------------- */
+  /* ---------------- water + shore foam ----------------
+     The sea used to be one flat semi-transparent sheet, which flattened the whole
+     map. It now reads its depth from the island's own signed-distance field
+     (uploaded once as a small red-channel texture), so the shallows go pale and
+     nearly clear over the sand while the open sea turns deep and opaque. Ripples
+     and a surf band are added in the same shader, so this costs one texture and
+     no extra draw calls. */
+  const seaU = {
+    uSD: { value: sdTex }, uTime: { value: 0 }, uBnd: { value: sdBnd },
+    uShallow: { value: new THREE.Color('#9FE7DA') },   // shallow water keeps its own aqua
+    uDeep: { value: new THREE.Color('#4E7E9E') },      // multiplied in out in the channel
+  };
   const waterMat = new THREE.MeshStandardMaterial({ color: '#3FB2B6', transparent: true, opacity: 0.56, roughness: 0.28, metalness: 0.02, depthWrite: false });
+  waterMat.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, seaU);
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vWP;')
+      .replace('#include <worldpos_vertex>',
+               '#include <worldpos_vertex>\n  vWP = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', `#include <common>
+varying vec3 vWP;
+uniform sampler2D uSD; uniform float uTime; uniform vec4 uBnd; uniform vec3 uShallow; uniform vec3 uDeep;
+float sdAt(vec2 p){ vec2 uv = vec2((p.x-uBnd.x)*uBnd.z, (p.y-uBnd.y)*uBnd.w);
+  if(uv.x<0.0||uv.x>1.0||uv.y<0.0||uv.y>1.0) return -13.0;
+  return (texture2D(uSD, uv).r*255.0-128.0)/8.0; }`)
+      .replace('#include <color_fragment>', `#include <color_fragment>
+{
+  float sd = sdAt(vWP.xz);
+  float d  = max(0.0, -sd);                       // metres of water, roughly
+  // three bands: pale aqua over sand, true colour on the reef flat, darker and
+  // bluer out in the channel. the shoreline surf is the existing foam mesh's job,
+  // so nothing is added here and nothing double-draws.
+  vec3 tint = mix(uShallow, vec3(1.0), smoothstep(0.4, 5.0, d));
+  tint = mix(tint, uDeep, smoothstep(5.5, 17.0, d));
+  diffuseColor.rgb *= tint;
+  diffuseColor.a   *= mix(0.34, 1.0, smoothstep(0.12, 5.0, d));
+  float deep = smoothstep(0.4, 8.0, d);
+  // two crossing ripple trains, stronger offshore where the sheet is opaque
+  float w = sin(vWP.x*1.7 + uTime*0.75) * sin(vWP.z*1.45 - uTime*0.55)
+          + 0.5*sin(vWP.x*3.3 - vWP.z*2.6 + uTime*1.15);
+  diffuseColor.rgb *= 1.0 + w * 0.05 * (0.25 + deep);
+}`)
+      .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
+{
+  float g = sin(vWP.x*2.1 + uTime*0.9) * sin(vWP.z*1.9 - uTime*0.7);
+  roughnessFactor = clamp(roughnessFactor + g*0.10, 0.04, 1.0);   // glints that drift
+}`);
+    waterMat.userData.sh = sh;
+  };
   const water = new THREE.Mesh(new THREE.PlaneGeometry(3000, 3000).rotateX(-Math.PI / 2), waterMat);
   water.renderOrder = 2; scene.add(water);
   {
@@ -455,6 +557,7 @@ export async function init(opts) {
       props.update(dt, simT);
       life.update(dt, simT, camera, controls.target);
       foamMat.opacity = 0.55 + Math.sin(simT * 0.9) * 0.2;
+      seaU.uTime.value = simT;
       if (selectedDay && routes[selectedDay]) {
         const R = routes[selectedDay];
         R.mat.color.setHSL(0.045, 0.82, 0.55 + Math.sin(simT * 3) * 0.06);

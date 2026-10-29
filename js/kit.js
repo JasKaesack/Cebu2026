@@ -362,3 +362,58 @@ export function cruiseBoat() {
   }
   return bake(p);
 }
+
+// ---- Philippine tarsier: tiny body, huge forward eyes, long thin tail.
+// Built facing +z, clinging upright; the head is a separate group so it can turn.
+export function tarsierBody() {
+  const F = '#9A8468', FL = '#C3B295', SK = '#6E5B45', EY = '#F4C542', PU = '#1A1208';
+  const p = [];
+  p.push(part(G.sph(10, 8), F, M(0, 0.30, 0, 0.18, 0, 0, 0.30, 0.38, 0.30)));      // trunk
+  p.push(part(G.sph(10, 8), FL, M(0, 0.27, 0.07, 0.18, 0, 0, 0.21, 0.28, 0.20)));   // pale belly
+  for (const s of [-1, 1]) {                                                         // folded legs
+    p.push(part(G.sph(7, 5), F, M(s * 0.13, 0.20, 0.03, 0, 0, s * 0.5, 0.11, 0.20, 0.12)));
+    p.push(part(G.sph(6, 5), SK, M(s * 0.14, 0.09, 0.09, 0, 0, 0, 0.07, 0.07, 0.11)));  // foot
+    p.push(part(G.sph(7, 5), F, M(s * 0.14, 0.36, 0.06, 0, 0, s * 0.35, 0.08, 0.17, 0.08))); // arm
+    p.push(part(G.sph(6, 5), SK, M(s * 0.145, 0.45, 0.11, 0, 0, 0, 0.055, 0.055, 0.07))); // hand
+  }
+  // tail: a chain of shrinking segments curving away behind
+  for (let i = 0; i < 7; i++) {
+    const t = i / 6, a = -0.55 - t * 0.5;
+    p.push(part(G.sph(5, 4), i > 4 ? FL : SK,
+      M(0, 0.20 - Math.sin(a) * 0.04 - t * 0.14, -0.10 - t * 0.34, 0, 0, 0,
+        0.055 - t * 0.022, 0.055 - t * 0.022, 0.085)));
+  }
+  return bake(p);
+}
+export function tarsierHead() {
+  const F = '#9A8468', FL = '#C9B89C', EY = '#F2C230', PU = '#140E05', SK = '#6E5B45';
+  const p = [];
+  p.push(part(G.sph(10, 8), F, M(0, 0, 0, 0, 0, 0, 0.30, 0.29, 0.27)));             // skull
+  p.push(part(G.sph(8, 6), FL, M(0, -0.05, 0.10, 0, 0, 0, 0.19, 0.16, 0.14)));      // muzzle
+  for (const s of [-1, 1]) {
+    p.push(part(G.sph(10, 8), EY, M(s * 0.095, 0.035, 0.115, 0, 0, 0, 0.145, 0.145, 0.13))); // huge eye
+    p.push(part(G.sph(8, 6), PU, M(s * 0.097, 0.035, 0.168, 0, 0, 0, 0.072, 0.072, 0.05))); // pupil
+    p.push(part(G.sph(7, 6), SK, M(s * 0.17, 0.13, -0.02, 0.2, s * 0.3, 0, 0.13, 0.15, 0.05))); // ear
+  }
+  p.push(part(G.sph(5, 4), PU, M(0, -0.065, 0.185, 0, 0, 0, 0.045, 0.035, 0.03)));  // nose
+  return bake(p);
+}
+// a bare perch for the tarsier to cling to
+export function perch() {
+  const p = [];
+  p.push(part(G.cyl(7), '#6B543C', M(0, 0, 0, 0, 0, 0, 0.09, 1.95, 0.09)));
+  p.push(part(G.cyl(6), '#6B543C', M(0.16, 1.55, 0, 0, 0.4, 0.95, 0.055, 0.7, 0.055)));
+  p.push(part(G.sph(7, 5), '#5F8F43', M(0.62, 2.30, 0.10, 0, 0, 0, 0.42, 0.22, 0.38)));
+  p.push(part(G.sph(7, 5), '#6DA14E', M(-0.34, 2.52, -0.16, 0, 0, 0, 0.38, 0.20, 0.34)));
+  return bake(p);
+}
+// Virgin Island sandbar: a long low spit of pale sand
+export function sandbar() {
+  const p = [];
+  for (let i = 0; i < 9; i++) {
+    const t = i / 8, x = (t - 0.5) * 2.0, w = 0.62 * Math.cos((t - 0.5) * 2.1);
+    p.push(part(G.sph(9, 5), i % 2 ? '#F3E6CB' : '#EFDFC0',
+      M(x, 0, Math.sin(t * 2.4) * 0.16, 0, 0, 0, Math.max(0.12, w), 0.11, Math.max(0.1, w * 0.52))));
+  }
+  return bake(p);
+}

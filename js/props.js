@@ -56,7 +56,38 @@ export function buildProps(ctx) {
   const matWalls = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.95, flatShading: true });
   const matWin = new THREE.MeshStandardMaterial({ color: '#E8E0D2', emissive: new THREE.Color('#FFC56B'), emissiveIntensity: 0, roughness: 0.6 });
   const matBulb = new THREE.MeshStandardMaterial({ color: '#F4EEDF', emissive: new THREE.Color('#FFD58A'), emissiveIntensity: 0, roughness: 0.5 });
-  const matHill = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95, flatShading: true });
+  const matHill = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.78, metalness: 0.02, flatShading: true });
+  // painted hulls and bodywork: the one family of objects that should catch a highlight
+  const matPaint = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.42, metalness: 0.06, flatShading: true });
+
+  // Foliage gets its own material so palms, trees and bushes can move in the wind
+  // while buildings and boats stay put. The sway is done on the GPU from each
+  // instance's own position, so it costs no extra draw calls and no CPU work:
+  // every plant gets a different phase and the crown moves more than the trunk.
+  const windU = { uWindT: { value: 0 }, uWind: { value: 1 } };
+  const matFoliage = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.88, metalness: 0, flatShading: true });
+  matFoliage.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, windU);
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nuniform float uWindT; uniform float uWind;')
+      .replace('#include <begin_vertex>', `#include <begin_vertex>
+{
+  float h = max(transformed.y, 0.0);
+  float k = pow(clamp(h / 1.9, 0.0, 1.0), 1.4);        // trunk still, crown loose
+  #ifdef USE_INSTANCING
+    vec3 ip = instanceMatrix[3].xyz;
+  #else
+    vec3 ip = vec3(0.0);
+  #endif
+  float ph = ip.x * 0.37 + ip.z * 0.51;
+  float w1 = sin(uWindT * 1.05 + ph);
+  float w2 = sin(uWindT * 2.27 + ph * 1.7) * 0.42;      // a lighter, faster flutter
+  float w = w1 + w2;
+  transformed.x += w * k * uWind * 0.115;
+  transformed.z += (w1 * 0.7 - w2 * 0.5) * k * uWind * 0.085;
+  transformed.y -= abs(w) * k * uWind * 0.018;          // a little shortening as it leans
+}`);
+  };
 
   let vk = 1, lastT = 0;                       // vehicle zoom scale (1 = close-up), set by island.js
   const scalables = [];                         // {obj, base, cap}
@@ -75,6 +106,10 @@ export function buildProps(ctx) {
                  [9.6348, 124.0298], [9.6230, 124.0240], [9.6100, 124.0160], [9.5960, 124.0100]];
   const riverCurve = new THREE.CatmullRomCurve3(RIVER.map(a => LL(...a)).map(([x, z]) => new THREE.Vector3(x, 0, z)));
   for (let i = 0; i <= 64; i++) { const q = riverCurve.getPointAt(i / 64); obst.add(q.x, q.z, 0.82, 'river'); }
+
+  // Tarsier sanctuary clearing, reserved before the forest is planted so the
+  // perches and the tarsier are not buried under the canopy.
+  { const [sx, sz] = P('tarsier'); obst.add(sx + 0.6, sz + 0.5, 3.2, 'sanctuary'); }
 
   // --------------------------------------------------------------- buildings
   const B = { house: [], tower: [], nipa: [] };
@@ -453,7 +488,7 @@ export function buildProps(ctx) {
       obst.add(x, z, 0.14, 'bush'); bushes.push([x, z]);
     }
     const pg = [K.palm(0), K.palm(1), K.palm(2)];
-    const pm = pg.map((g, gi) => inst(g, matV, Math.ceil(palms.length / 3)));
+    const pm = pg.map((g, gi) => inst(g, matFoliage, Math.ceil(palms.length / 3)));
     const pc = [0, 0, 0];
     palms.forEach(([x, z], i) => {
       const gi = i % 3, s = 0.75 + rnd() * 0.45;
@@ -461,16 +496,16 @@ export function buildProps(ctx) {
       pm[gi].setMatrixAt(pc[gi]++, dummy.matrix);
     });
     pm.forEach((m, i) => m.count = pc[i]);
-    const tm = inst(K.roundTree(), matV, trees.length);
+    const tm = inst(K.roundTree(), matFoliage, trees.length);
     trees.forEach(([x, z], i) => {
       const s = 0.7 + rnd() * 0.6;
       dummy.position.set(x, field.h(x, z), z); dummy.rotation.set(0, rnd() * 6.28, 0); dummy.scale.set(s, s * (0.85 + rnd() * 0.4), s); dummy.updateMatrix();
       tm.setMatrixAt(i, dummy.matrix);
       const t = rnd(); tm.setColorAt(i, col.setRGB(0.82 + t * 0.2, 0.9 + t * 0.1, 0.78 + t * 0.12));
     });
-    const bm = inst(K.bush(), matV, bushes.length);
+    const bm = inst(K.bush(), matFoliage, bushes.length);
     bushes.forEach(([x, z], i) => { dummy.position.set(x, field.h(x, z), z); dummy.rotation.set(0, rnd() * 6, 0); dummy.scale.setScalar(0.8 + rnd() * 0.6); dummy.updateMatrix(); bm.setMatrixAt(i, dummy.matrix); });
-    const mm = inst(K.mahogany(), matV, mahog.length);
+    const mm = inst(K.mahogany(), matFoliage, mahog.length);
     mahog.forEach(([x, z], i) => { dummy.position.set(x, field.h(x, z), z); dummy.rotation.set(0, rnd() * 6, 0); dummy.scale.setScalar(0.85 + rnd() * 0.35); dummy.updateMatrix(); mm.setMatrixAt(i, dummy.matrix); });
     out.trees = { palms: palms.length, trees: trees.length, bushes: bushes.length, mahogany: mahog.length };
   }
@@ -499,7 +534,7 @@ export function buildProps(ctx) {
     moor('virgin', 3, 1.4, 1.0);
     const geoA = K.banca('#2F7FB6'), geoB = K.banca('#C94F3D');
     const A = fleet.filter(b => b.trim === '#2F7FB6'), Bf = fleet.filter(b => b.trim !== '#2F7FB6');
-    const ma = inst(geoA, matV, A.length), mb = inst(geoB, matV, Bf.length);
+    const ma = inst(geoA, matPaint, A.length), mb = inst(geoB, matPaint, Bf.length);
     const place = (m, list, t) => {
       list.forEach((b, i) => {
         dummy.position.set(b.x, 0.02 + Math.sin(t * 1.3 + b.ph) * 0.025, b.z);
@@ -515,7 +550,7 @@ export function buildProps(ctx) {
     // docked ferries
     const fg = K.ferry();
     for (const pr of [p1, ptag]) {
-      const m = new THREE.Mesh(fg, matV); m.scale.setScalar(0.5); scalables.push({ obj: m, base: 0.5, cap: 3 });
+      const m = new THREE.Mesh(fg, matPaint); m.scale.setScalar(0.5); scalables.push({ obj: m, base: 0.5, cap: 3 });
       m.position.set(pr.x + Math.cos(pr.a) * 0.45, 0.02, pr.z - Math.sin(pr.a) * 0.45); m.rotation.y = pr.a; m.castShadow = castShadow; scene.add(m);
     }
     // moving boats on the trip's sea routes
@@ -523,7 +558,7 @@ export function buildProps(ctx) {
       const pts = routes.map(([x, z]) => new THREE.Vector3(x, y, z));
       const curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal');
       const len = curve.getLength();
-      const m = new THREE.Mesh(geom, matV); m.scale.setScalar(scale); m.castShadow = castShadow; scene.add(m);
+      const m = new THREE.Mesh(geom, matPaint); m.scale.setScalar(scale); m.castShadow = castShadow; scene.add(m);
       scalables.push({ obj: m, base: scale, cap: 99 });
       let u = rnd(), dir = 1, wait = 0;
       out.updaters.push((dt, t) => {
@@ -553,7 +588,7 @@ export function buildProps(ctx) {
       if (pts.length < 2) return;
       const curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal');
       const len = curve.getLength();
-      const m = new THREE.Mesh(vg, matV); m.scale.setScalar(0.85); m.castShadow = castShadow; scene.add(m);
+      const m = new THREE.Mesh(vg, matPaint); m.scale.setScalar(0.85); m.castShadow = castShadow; scene.add(m);
       scalables.push({ obj: m, base: 0.85, cap: 99 });
       let u = phase, dir = 1;
       out.updaters.push((dt) => {
@@ -567,6 +602,97 @@ export function buildProps(ctx) {
     car('d1203', 0.6, 0.5);
     car('d1205', 0.6, 0.2);
     car('d1208', 0.7, 0.6);
+  }
+
+  // ----------------------------------------------- Corella tarsier sanctuary
+  // Philippine Tarsier Sanctuary, Corella — 9.6907827 / 123.9526892 (Google Places).
+  // One tarsier clings to a perch, turns its head, and now and then hops to the
+  // next perch. Deliberately slow: tarsiers sit still for long stretches.
+  {
+    const [tx, tz] = P('tarsier');
+    const ty = field.h(tx, tz);
+    // a small fenced clearing with a ranger hut, so the spot reads as a sanctuary
+    const hut = new THREE.Mesh(K.bake([
+      K.part(K.G.box(), '#E9DCC4', K.M(0, 0, 0, 0, 0, 0, 0.9, 0.55, 0.7)),
+      K.part(K.G.pyr(), '#8B6A44', K.M(0, 0.55, 0, 0, 0, 0, 1.15, 0.42, 0.95)),
+      K.part(K.G.box(), '#6B543C', K.M(0, 0, 0.36, 0, 0, 0, 0.26, 0.38, 0.04))]), matV);
+    hut.position.set(tx - 1.9, ty, tz + 1.5); hut.rotation.y = 0.35; hut.scale.setScalar(1.3);
+    hut.castShadow = castShadow; hut.receiveShadow = true; scene.add(hut);
+    obst.add(tx - 1.5, tz + 1.2, 0.8, 'hut');
+
+    // scaled up well past life size: at map scale a real tarsier would be invisible
+    const PS = 1.45, PERCH = [[tx + 0.3, tz - 0.6], [tx + 2.2, tz + 0.4], [tx + 0.9, tz + 2.0]];
+    const pg = K.perch();
+    for (const [px, pz] of PERCH) {
+      const m = new THREE.Mesh(pg, matV);
+      m.position.set(px, field.h(px, pz), pz);
+      m.rotation.y = rnd() * 6; m.scale.setScalar(PS * (0.92 + rnd() * 0.2));
+      m.castShadow = castShadow; scene.add(m);
+      obst.add(px, pz, 0.5, 'perch');
+    }
+    const tar = new THREE.Group();
+    const body = new THREE.Mesh(K.tarsierBody(), matV);
+    const head = new THREE.Mesh(K.tarsierHead(), matV);
+    head.position.set(0, 0.60, 0.02);
+    tar.add(body, head);
+    tar.scale.setScalar(2.1);      // person-sized on the map, so it actually reads
+    tar.castShadow = castShadow; scene.add(tar);
+    out.tarsier = tar;
+
+    // sit on a perch → look around → hop to the next one
+    // face roughly toward the default overview camera so the eyes are the thing you see
+    let at = 0, next = 1, phase = 'sit', timer = 6 + rnd() * 5, hop = 0, yaw = 0.15;
+    const pos = (i) => { const [x, z] = PERCH[i]; return { x, z, y: field.h(x, z) + 1.18 * PS }; };
+    let cur = pos(0);
+    tar.position.set(cur.x, cur.y, cur.z); tar.rotation.y = yaw;
+    out.updaters.push((dt, t) => {
+      if (phase === 'sit') {
+        timer -= dt;
+        // slow head turns with long pauses, plus a tiny breathing bob
+        const look = Math.sin(t * 0.33) * 0.9 + Math.sin(t * 0.11 + 1.7) * 0.5;
+        head.rotation.y = look * 0.55;
+        head.rotation.x = Math.sin(t * 0.21) * 0.12;
+        tar.position.y = cur.y + Math.sin(t * 1.6) * 0.012;
+        tar.rotation.y = yaw + look * 0.12;
+        if (timer <= 0) { phase = 'hop'; hop = 0; next = (at + 1 + ((rnd() * 2) | 0)) % PERCH.length; }
+      } else {
+        hop += dt / 0.85;                       // one short leap, under a second
+        const a = pos(at), b = pos(next), k = Math.min(1, hop);
+        const e = k * k * (3 - 2 * k);
+        tar.position.set(a.x + (b.x - a.x) * e, a.y + (b.y - a.y) * e + Math.sin(k * Math.PI) * 0.8,
+                         a.z + (b.z - a.z) * e);
+        const want = Math.atan2(b.x - a.x, b.z - a.z);
+        let d = want - yaw; while (d > Math.PI) d -= Math.PI * 2; while (d < -Math.PI) d += Math.PI * 2;
+        yaw += d * Math.min(1, dt * 5);
+        tar.rotation.y = yaw;
+        head.rotation.set(-Math.sin(k * Math.PI) * 0.25, 0, 0);
+        if (k >= 1) { at = next; cur = pos(at); phase = 'sit'; timer = 7 + rnd() * 7; }
+      }
+    });
+    out.landmarks = out.landmarks || [];
+    out.landmarks.push({ id: 'lm_tarsier', x: tx + 0.6, z: tz + 0.5, y: ty + 5.2 });
+  }
+
+  // ----------------------------------------------- Balicasag reef + Virgin Island sandbar
+  {
+    // Balicasag: a pale reef shelf ringing the island, which is what people come for
+    const [bx, bz] = P('balicasag');
+    const ring = new THREE.Mesh(new THREE.RingGeometry(1.35, 2.55, 36),
+      new THREE.MeshStandardMaterial({ color: '#59C9C4', roughness: 0.35, transparent: true,
+        opacity: 0.55, side: THREE.DoubleSide, depthWrite: false }));
+    ring.rotation.x = -Math.PI / 2; ring.position.set(bx, -0.12, bz); scene.add(ring);
+    out.landmarks.push({ id: 'lm_balicasag', x: bx, z: bz, y: Math.max(0.3, field.h(bx, bz)) + 1.3 });
+
+    // Virgin Island: the sandbar is the whole point, so give it an actual spit
+    const [vx, vz] = P('virgin');
+    const bar = new THREE.Mesh(K.sandbar(), matV);
+    bar.position.set(vx + 0.3, 0.02, vz + 0.5); bar.rotation.y = -0.7; bar.scale.set(1.5, 1, 1.5);
+    bar.receiveShadow = true; scene.add(bar);
+    const shoal = new THREE.Mesh(new THREE.CircleGeometry(2.3, 26),
+      new THREE.MeshStandardMaterial({ color: '#8FE0D8', roughness: 0.3, transparent: true,
+        opacity: 0.5, depthWrite: false }));
+    shoal.rotation.x = -Math.PI / 2; shoal.position.set(vx + 0.3, -0.1, vz + 0.5); scene.add(shoal);
+    out.landmarks.push({ id: 'lm_virgin', x: vx, z: vz, y: Math.max(0.3, field.h(vx, vz)) + 1.2 });
   }
 
   // ----------------------------------------------- STARLUX widebody over Cebu City
@@ -607,7 +733,8 @@ export function buildProps(ctx) {
     out.plane = plane;
   }
 
-  out.update = (dt, t) => { for (const f of out.updaters) f(dt, t); };
+  out.windU = windU;
+  out.update = (dt, t) => { windU.uWindT.value = t; for (const f of out.updaters) f(dt, t); };
   // keep boats / ferries / vans readable from the overview: grow with camera distance
   out.setScale = (k) => {
     vk = k;

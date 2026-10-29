@@ -403,8 +403,17 @@ export function buildLife(ctx) {
   const shark = buildWhaleShark(rnd, mat); shark.root.scale.setScalar(1.0); scene.add(shark.root);
   const sA = new Swimmer({ field, rnd, seed: 1, home: sharkHome, x: sharkHome.x, z: sharkHome.z, speed: 0.42, turn: 0.22, depth: [-0.95, -0.42], clear: 0.5, sepR: 1.6, look: 3.0, pauseP: 0.1, margin: 1.4 });
   out.swimmers.push({ a: sA, kind: 'whaleshark', obj: shark.root, anim: (t, a) => {
-    const w = Math.sin(t * 1.25);
-    shark.tail.rotation.y = w * 0.38; shark.body.rotation.y = -w * 0.06 + a.yawRate * -0.4;
+    // a travelling wave: the trunk leads, the tail follows about a third of a
+    // beat later, so the animal pushes itself along instead of pivoting as one
+    // rigid piece. Slow and heavy, as a 9 m fish should be.
+    const f = 1.15, lag = 1.05;
+    const body = Math.sin(t * f);
+    const tail = Math.sin(t * f - lag);
+    shark.body.rotation.y = body * 0.085 + a.yawRate * -0.4;
+    shark.tail.rotation.y = tail * 0.46;
+    shark.tail.rotation.z = Math.cos(t * f - lag) * 0.07;          // the fluke rolls as it sweeps
+    shark.body.rotation.z = Math.sin(t * f * 0.5) * 0.035;         // a slow lazy roll
+    shark.root.position.y += Math.sin(t * 0.47) * 0.004;           // barely-there rise and fall
   } });
 
   // sardine ball
@@ -448,8 +457,14 @@ export function buildLife(ctx) {
     const a = new Swimmer({ field, rnd, seed: 10 + i, home: h, x: h.x, z: h.z, speed: 0.22 + rnd() * 0.06, turn: 0.55, depth: [-1.15, -0.35], clear: 0.32, sepR: 0.8, look: 1.2, pauseP: 0.35, margin: 0.9 });
     a.breath = 20 + rnd() * 30;
     out.swimmers.push({ a, kind: 'turtle', obj: tt.root, anim: (t, ag, dt) => {
-      const k = Math.sin(t * 1.6 + i);
-      for (const f of tt.flips) { f.piv.rotation.z = f.s * (0.05 + k * 0.32); f.piv.rotation.y = f.s * (0.1 - k * 0.3); }
+      // stroke, then glide: a turtle beats a few times and then coasts, so the
+      // flippers must not windmill at a constant rate
+      const cyc = (t * 0.42 + i * 0.37) % 1;
+      const stroke = cyc < 0.45 ? Math.sin((cyc / 0.45) * Math.PI * 2) : 0;   // 45 % power, 55 % glide
+      const ease = cyc < 0.45 ? 1 : Math.max(0, 1 - (cyc - 0.45) / 0.18);
+      const k = stroke * ease;
+      for (const f of tt.flips) { f.piv.rotation.z = f.s * (0.05 + k * 0.42); f.piv.rotation.y = f.s * (0.1 - k * 0.34); }
+      tt.root.rotation.z = (tt.root.rotation.z || 0) * 0.9 + k * 0.03;        // a little body roll per stroke
       ag.breath -= dt; if (ag.breath < 0) { ag.tDepth = -0.12; if (ag.breath < -6) { ag.breath = 25 + rnd() * 35; ag.pickTarget(false); } }
     } });
   });
@@ -628,16 +643,30 @@ export function buildLife(ctx) {
     if (p.state === 'wave' && p.timer <= 0) { p.state = 'idle'; p.timer = 1 + rnd() * 2; }
   }
   function posePerson(p, t) {
-    const walk = p.state === 'walk', s = walk ? Math.sin(p.phase) : 0;
+    // The stride used to snap on and off the moment the state changed. It now
+    // eases in and out, and standing still is no longer completely frozen:
+    // there is a breath, a slow weight shift, and the arms hang with a lag.
+    const walk = p.state === 'walk';
+    p.sw = (p.sw === undefined ? (walk ? 1 : 0) : p.sw + ((walk ? 1 : 0) - p.sw) * 0.11);
+    const sw = p.sw;
+    const s = Math.sin(p.phase) * sw;
+    const sLag = Math.sin(p.phase - 0.35) * sw;          // arms trail the legs slightly
     p.legs[0].rotation.x = s * 0.55; p.legs[1].rotation.x = -s * 0.55;
     const holds = p.c.parasol;
-    p.arms[0].rotation.x = -s * 0.45; p.arms[0].rotation.z = 0;
-    p.arms[1].rotation.x = holds ? -0.5 : s * 0.45; p.arms[1].rotation.z = 0;
+    const breathe = Math.sin(t * 1.25 + p.seed * 7) * (1 - sw);
+    p.arms[0].rotation.x = -sLag * 0.45;
+    p.arms[0].rotation.z = breathe * 0.045;
+    p.arms[1].rotation.x = holds ? -0.5 : sLag * 0.45;
+    p.arms[1].rotation.z = holds ? 0 : -breathe * 0.045;
     p.wave += ((p.state === 'wave' ? 1 : 0) - p.wave) * 0.12;
     if (p.wave > 0.01 && !holds) { p.arms[1].rotation.z = p.wave * 2.55 + Math.sin(t * 9) * 0.25 * p.wave; p.arms[1].rotation.x = 0; }
     const y = field.h(p.x, p.z);
-    p.root.position.set(p.x, y + (walk ? Math.abs(Math.sin(p.phase)) * 0.012 : Math.sin(t * 1.5 + p.seed * 6) * 0.002), p.z);
-    p.root.rotation.y = p.yaw;
+    const bob = sw * Math.abs(Math.sin(p.phase)) * 0.014 + (1 - sw) * Math.sin(t * 1.25 + p.seed * 7) * 0.004;
+    p.root.position.set(p.x, y + bob, p.z);
+    // torso counter-rotates a little against the stride; standing, the weight
+    // drifts slowly from one foot to the other
+    p.root.rotation.set(0, p.yaw + s * 0.07 + (1 - sw) * Math.sin(t * 0.42 + p.seed * 11) * 0.05,
+                        sw * Math.sin(p.phase) * 0.025 + (1 - sw) * Math.sin(t * 0.37 + p.seed * 5) * 0.012);
   }
   out.people.forEach(p => posePerson(p, 0));
 
