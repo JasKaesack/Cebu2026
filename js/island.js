@@ -511,9 +511,7 @@ float sdAt(vec2 p){ vec2 uv = vec2((p.x-uBnd.x)*uBnd.z, (p.y-uBnd.y)*uBnd.w);
     // instead of drifting across the map.
     for (const m of vis) {
       const lift = m.sy0 - m.sy;
-      if (m.prio > 0 ? lift > 64 : lift > 150) { m.off = true; m.sy = m.sy0; continue; }
-      // a landmark label near the edge is pulled back into view rather than clipped
-      if (m.prio > 0) m.sx = Math.max(6, Math.min(m.sx, W - m.w - 6));
+      if (m.prio > 0 ? lift > 64 : lift > 150) { m.off = true; m.sy = m.sy0; }
     }
     for (const m of mk) {
       if (!m.el) continue;
