@@ -6,6 +6,7 @@ import { GEO } from './geo-data.js';
 import { Field, Obstacles, mulberry32, BEACH_W } from './field.js';
 import { buildProps, townBumps } from './props.js';
 import { buildLife } from './life.js';
+import { setDetail } from './kit.js';
 
 const DEG = Math.PI / 180;
 
@@ -45,7 +46,10 @@ export async function init(opts) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.shadowMap.enabled = tier !== 'low';
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = THREE.PCFShadowMap;      // PCF honours shadow.radius, so edges can be blurred
+  renderer.toneMapping = THREE.NeutralToneMapping;   // gentle highlight roll-off, colours stay as authored
+  renderer.toneMappingExposure = 1.0;
+  setDetail(tier === 'low' ? 0 : 1, tier !== 'low', tier === 'high' ? 1 : 0); // rounder primitives + chamfered boxes off on 'low'
 
   const scene = new THREE.Scene();
   scene.fog = new THREE.Fog('#EEF2E8', 150, 380);
@@ -132,7 +136,7 @@ export async function init(opts) {
     // Sand, wet sand, grass and rock should not all reflect light the same way.
     // The shore band is read back from the signed-distance field and given a
     // lower roughness, so wet sand catches the sun the way grass never does.
-    var terrainMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.96, metalness: 0, flatShading: true });
+    var terrainMat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.96, metalness: 0 });
     terrainMat.onBeforeCompile = (sh) => {
       Object.assign(sh.uniforms, terrU);
       sh.vertexShader = sh.vertexShader
@@ -168,6 +172,7 @@ varying vec3 vTWP; uniform sampler2D tSD; uniform vec4 tBnd;`)
     uSD: { value: sdTex }, uTime: { value: 0 }, uBnd: { value: sdBnd },
     uShallow: { value: new THREE.Color('#9FE7DA') },   // shallow water keeps its own aqua
     uDeep: { value: new THREE.Color('#4E7E9E') },      // multiplied in out in the channel
+    uFoam: { value: 0.62 },
   };
   const waterMat = new THREE.MeshStandardMaterial({ color: '#3FB2B6', transparent: true, opacity: 0.56, roughness: 0.28, metalness: 0.02, depthWrite: false });
   waterMat.onBeforeCompile = (sh) => {
@@ -179,7 +184,7 @@ varying vec3 vTWP; uniform sampler2D tSD; uniform vec4 tBnd;`)
     sh.fragmentShader = sh.fragmentShader
       .replace('#include <common>', `#include <common>
 varying vec3 vWP;
-uniform sampler2D uSD; uniform float uTime; uniform vec4 uBnd; uniform vec3 uShallow; uniform vec3 uDeep;
+uniform sampler2D uSD; uniform float uTime; uniform vec4 uBnd; uniform vec3 uShallow; uniform vec3 uDeep; uniform float uFoam;
 float sdAt(vec2 p){ vec2 uv = vec2((p.x-uBnd.x)*uBnd.z, (p.y-uBnd.y)*uBnd.w);
   if(uv.x<0.0||uv.x>1.0||uv.y<0.0||uv.y>1.0) return -13.0;
   return (texture2D(uSD, uv).r*255.0-128.0)/8.0; }`)
@@ -188,8 +193,7 @@ float sdAt(vec2 p){ vec2 uv = vec2((p.x-uBnd.x)*uBnd.z, (p.y-uBnd.y)*uBnd.w);
   float sd = sdAt(vWP.xz);
   float d  = max(0.0, -sd);                       // metres of water, roughly
   // three bands: pale aqua over sand, true colour on the reef flat, darker and
-  // bluer out in the channel. the shoreline surf is the existing foam mesh's job,
-  // so nothing is added here and nothing double-draws.
+  // bluer out in the channel.
   vec3 tint = mix(uShallow, vec3(1.0), smoothstep(0.4, 5.0, d));
   tint = mix(tint, uDeep, smoothstep(5.5, 17.0, d));
   diffuseColor.rgb *= tint;
@@ -199,6 +203,14 @@ float sdAt(vec2 p){ vec2 uv = vec2((p.x-uBnd.x)*uBnd.z, (p.y-uBnd.y)*uBnd.w);
   float w = sin(vWP.x*1.7 + uTime*0.75) * sin(vWP.z*1.45 - uTime*0.55)
           + 0.5*sin(vWP.x*3.3 - vWP.z*2.6 + uTime*1.15);
   diffuseColor.rgb *= 1.0 + w * 0.05 * (0.25 + deep);
+  // surf line, drawn per pixel from the same distance field so it follows the
+  // rounded coast exactly instead of stepping along a coarse mesh
+  float lap  = 0.07 * sin(uTime*0.9 + vWP.x*0.9 + vWP.z*0.7);
+  float surf = (1.0 - smoothstep(0.0, 0.40, abs(sd + 0.33 + lap)))
+             + 0.45 * (1.0 - smoothstep(0.0, 0.16, abs(sd + 0.95 + lap*1.6 + 0.12*sin(vWP.x*2.3 - vWP.z*1.9))));
+  surf = clamp(surf, 0.0, 1.0) * uFoam * step(-12.5, sd);
+  diffuseColor.rgb = mix(diffuseColor.rgb, vec3(1.0), surf);
+  diffuseColor.a   = max(diffuseColor.a, surf * 0.92);
 }`)
       .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
 {
@@ -209,26 +221,6 @@ float sdAt(vec2 p){ vec2 uv = vec2((p.x-uBnd.x)*uBnd.z, (p.y-uBnd.y)*uBnd.w);
   };
   const water = new THREE.Mesh(new THREE.PlaneGeometry(3000, 3000).rotateX(-Math.PI / 2), waterMat);
   water.renderOrder = 2; scene.add(water);
-  {
-    const fs = 2, fnx = Math.floor((field.nx - 1) / fs) + 1, fnz = Math.floor((field.nz - 1) / fs) + 1;
-    const pos = new Float32Array(fnx * fnz * 3), col = new Float32Array(fnx * fnz * 4);
-    for (let j = 0; j < fnz; j++) for (let i = 0; i < fnx; i++) {
-      const x = field.x0 + i * fs * field.res, z = field.z0 + j * fs * field.res, s = field.sdv[(j * fs) * field.nx + i * fs];
-      const k = j * fnx + i;
-      pos[k * 3] = x; pos[k * 3 + 1] = 0.02; pos[k * 3 + 2] = z;
-      const a = Math.max(0, 1 - Math.abs(s + 0.35) / 0.42);
-      col[k * 4] = 1; col[k * 4 + 1] = 1; col[k * 4 + 2] = 1; col[k * 4 + 3] = a * 0.9;
-    }
-    const idx = [];
-    for (let j = 0; j < fnz - 1; j++) for (let i = 0; i < fnx - 1; i++) { const a = j * fnx + i; idx.push(a, a + fnx, a + 1, a + 1, a + fnx, a + fnx + 1); }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    g.setAttribute('color', new THREE.BufferAttribute(col, 4));
-    g.setIndex(idx);
-    var foamMat = new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, depthWrite: false, opacity: 0.7 });
-    const foam = new THREE.Mesh(g, foamMat); foam.renderOrder = 3; scene.add(foam);
-  }
-
   /* ---------------- sky + stars ---------------- */
   const skyMat = new THREE.ShaderMaterial({
     side: THREE.BackSide, depthWrite: false, fog: false,
@@ -251,6 +243,9 @@ float sdAt(vec2 p){ vec2 uv = vec2((p.x-uBnd.x)*uBnd.z, (p.y-uBnd.y)*uBnd.w);
   sun.castShadow = renderer.shadowMap.enabled;
   sun.shadow.mapSize.set(tier === 'high' ? 2048 : 1024, tier === 'high' ? 2048 : 1024);
   sun.shadow.bias = -0.0006; sun.shadow.normalBias = 0.03;
+  sun.shadow.radius = 2.6;                           // soft penumbra instead of a hard edge
+  // weak fill from the far side of the sun so shaded faces never go flat and harsh
+  const fill = new THREE.DirectionalLight('#FFFFFF', 0.3); scene.add(fill, fill.target);
   scene.add(sun, sun.target);
   // a few warm point lights that only wake at dusk / night
   const pointLights = [];
@@ -456,6 +451,8 @@ float sdAt(vec2 p){ vec2 uv = vec2((p.x-uBnd.x)*uBnd.z, (p.y-uBnd.y)*uBnd.w);
     waterMat.color.copy(cur.sea); waterMat.opacity = cur.seaOp; waterMat.emissive.copy(cur.sea).multiplyScalar(cur.glow);
     hemi.color.copy(cur.hemiSky); hemi.groundColor.copy(cur.hemiGnd); hemi.intensity = cur.hemi;
     sun.color.copy(cur.sun); sun.intensity = cur.sunI;
+    fill.color.copy(cur.hemiSky); fill.intensity = cur.sunI * 0.13;
+    fill.position.set(-cur.sunDir.x * 60, 28, -cur.sunDir.z * 60);
     sun.shadow.intensity = cur.shadow;
     props.nightMats.win.emissiveIntensity = cur.win; props.nightMats.bulb.emissiveIntensity = cur.bulb;
     for (const L of pointLights) L.intensity = cur.bulb * 2.2;
@@ -464,7 +461,6 @@ float sdAt(vec2 p){ vec2 uv = vec2((p.x-uBnd.x)*uBnd.z, (p.y-uBnd.y)*uBnd.w);
     if (nm.planeBody) nm.planeBody.emissiveIntensity = cur.nav * 0.22;
     starMat.opacity = cur.stars;
     floorMat.color.copy(floorBase).multiplyScalar(cur.floor);
-    foamMat.color.setScalar(0.55 + cur.floor * 0.45);
   }
   function placeSun() {
     const t = controls.target, dist = camera.position.distanceTo(t);
@@ -554,7 +550,7 @@ float sdAt(vec2 p){ vec2 uv = vec2((p.x-uBnd.x)*uBnd.z, (p.y-uBnd.y)*uBnd.w);
       simT += dt;
       props.update(dt, simT);
       life.update(dt, simT, camera, controls.target);
-      foamMat.opacity = 0.55 + Math.sin(simT * 0.9) * 0.2;
+      seaU.uFoam.value = 0.62 + Math.sin(simT * 0.9) * 0.16;
       seaU.uTime.value = simT;
       if (selectedDay && routes[selectedDay]) {
         const R = routes[selectedDay];

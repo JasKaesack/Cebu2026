@@ -6,7 +6,7 @@
    - 天氣 API 與匯率 API＝永不快取（寧可顯示「取不到」，也不給過期或猜測的數字）
    - Google 地圖等外部連結＝不攔截，交給瀏覽器 */
 'use strict';
-var VERSION = 'cebu-bohol-2026-v13-1109';
+var VERSION = 'cebu-bohol-2026-v14-1111';
 var CORE = [
   './',
   './index.html',
