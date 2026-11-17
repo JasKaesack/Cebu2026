@@ -476,6 +476,40 @@ body.reading-wide #home{display:none}
 .note .tblwrap{margin:2px 0 10px}
 .note.warn{border-left-color:#E3A17F;background:#FCF1EA}
 .note.good{border-left-color:#8CC3A2;background:#EEF6F0}
+/* 12/8 OceanJet OJ990 */
+.ojcard,.ojdetails{margin:12px 0 0 94px}
+.ojcard{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);box-shadow:0 1px 0 rgba(60,40,20,.03);padding:16px 18px 14px}
+.ojtag{margin:0 0 4px;font-size:11.5px;letter-spacing:.14em;color:var(--gold-soft);font-weight:700}
+.ojtag span{margin-left:10px;letter-spacing:.04em;color:var(--ink-3);font-weight:600}
+.ojtitle{margin:0 0 10px;font-size:18px;font-weight:700;color:var(--ink)}
+.ojclass{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;padding:2px 9px;border-radius:999px;background:#EEF6F0;color:#2F6B4A;vertical-align:2px}
+.ojkv{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
+.ojkv div{display:flex;gap:10px;align-items:baseline;min-width:0}
+.ojkv dt{flex:0 0 auto;font-size:12px;color:var(--ink-3);min-width:2.6em}
+.ojkv dd{margin:0;font-size:14px;color:var(--ink);line-height:1.55;min-width:0}
+.ojsrc{display:inline-block;margin-left:6px;font-size:11px;color:var(--ink-3)}
+.ojsum{margin:12px 0 0;padding-top:10px;border-top:1px dashed var(--line-2);font-size:13.5px;line-height:1.75;color:var(--ink-2)}
+.ojmore{display:inline-block;margin-left:4px;color:var(--gold-soft);font-weight:600;text-decoration:none}
+.ojdetails{scroll-margin-top:12px}
+.ojdetails>summary .ojen{font-size:12px;font-weight:500;color:var(--ink-3);letter-spacing:.04em}
+.ojh{margin:16px 0 8px;font-size:14.5px;font-weight:700;color:var(--ink)}
+.ojh:first-child{margin-top:4px}
+.ojcap{margin:8px 0 0;font-size:12px;line-height:1.7;color:var(--ink-3)}
+.ojcap a,.ojphoto a{text-decoration:underline;text-decoration-color:rgba(0,0,0,.25)}
+.ojphoto{background:var(--paper-2);border-radius:12px;padding:12px 14px;font-size:13.5px;line-height:1.75}
+.ojtbl td,.ojtbl th{vertical-align:top}
+.ojtbl .oc-b{background:rgba(140,195,162,.10)}
+.ojph,.phgrid.ojph{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}.ojph figcaption{font-size:12px;line-height:1.55}.ojph figcaption b{font-size:13px}
+@container (max-width:560px){
+  .ojcard,.ojdetails{margin-left:0}
+  .ojkv{grid-template-columns:1fr}
+  .ojtbl thead{display:none}
+  .ojtbl tr{display:block;padding:10px 0;border-bottom:1px solid var(--line-2)}
+  .ojtbl td{display:block;border:0!important;padding:3px 0!important;background:none!important}
+  .ojtbl .oc-n{font-weight:700;color:var(--ink)}
+  .ojtbl .oc-t::before,.ojtbl .oc-b::before{content:attr(data-l);display:block;font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+  .ojtbl .oc-b{padding-left:8px!important;border-left:3px solid #8CC3A2!important}
+}
 .note strong{color:var(--ink);font-weight:700}
 .team{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-ui);font-size:10.5px;font-weight:700;letter-spacing:.08em;padding:3px 10px;border-radius:99px}
 .team.d{color:#1F6680;background:#E1F0F5}.team.l{color:#7A4A86;background:#F1E6F4}.team.all{color:var(--accent-2);background:#FBE9E1}
@@ -933,7 +967,73 @@ footer.is-page{padding:22px 0 34px}
     <span class="sec" style="font-size:14px">回宿霧(Cebu)．兩隊同班機回台</span>
     <span class="daymeta"><span class="wx" id="wx-D6">天氣載入中…</span></span>
   </div>
-  <div class="tl"><div class="ev rv"><div class="evtop"><span class="evt num">睡到自然醒</span><span class="evn">Derek 團：早餐、打包</span><span class="team d">Derek 團</span></div><div class="evd">Bathala 退房 12:00。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5497713%2C123.7683181&query_place_id=ChIJs4Fk1UatqzMRrRAOGF7Wyy0" target="_blank" rel="noopener" title="在 Google 地圖開啟：Bathala Resort, Panglao"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Bathala Resort, Panglao</span></a></div></div><div class="ev rv"><div class="evtop"><span class="evt num">11:15</span><span class="evn">Derek 團：出發去碼頭</span><span class="team d">Derek 團</span></div><div class="evd">邦勞島(Panglao) → 塔比拉蘭(Tagbilaran)港，約 30–40 分鐘。</div></div><div class="ev hard rv"><div class="evtop"><span class="evt num">13:00</span><span class="evn">薄荷島(Bohol) → 宿霧(Cebu)</span><span class="team d">Derek 團</span><span class="chip no">13:00 這班 ・ 唯一硬線</span></div><div class="evd">OceanJet　塔比拉蘭(Tagbilaran) → 宿霧一號碼頭(Cebu Pier 1)。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.649125%2C123.847322&query_place_id=ChIJI2PdpKxNqjMRVZJV512i7oE" target="_blank" rel="noopener" title="在 Google 地圖開啟：OceanJet Tagbilaran Port"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>OceanJet Tagbilaran Port</span></a></div><div class="note warn"><strong>這是全程唯一不能妥協的時間點。</strong>請搭 13:00 這一班。下一班 14:00 約 16:00 才到宿霧，碰上平日尖峰大約 18:00 才到機場，離 19:35 起飛只剩約 1.5 小時，只能當作 13:00 停駛時的最後備案；更晚的班次一定趕不上。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">15:00</span><span class="evn">抵達宿霧一號碼頭(Cebu Pier 1)</span><span class="team d">Derek 團</span></div><div class="evd">船程約 2 小時。下船、領行李估計要 20–30 分鐘，行李多可能更久。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=10.29232%2C123.90899&query_place_id=ChIJ2TImteCbqTMRtRck6dNcgEM" target="_blank" rel="noopener" title="在 Google 地圖開啟：Cebu Pier 1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Cebu Pier 1</span></a></div></div><div class="ev key rv"><div class="evtop"><span class="evt num">約 17:00</span><span class="evn">Derek 團：抵達麥克坦機場</span><span class="team d">Derek 團</span></div><div class="evd">碼頭到機場：平常白天 40–60 分鐘，尖峰 75 分鐘以上。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=10.316577%2C123.978638&query_place_id=ChIJK4jfzHyXqTMRpCxOXU4S3e8" target="_blank" rel="noopener" title="在 Google 地圖開啟：Mactan-Cebu International Airport"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Mactan-Cebu International Airport</span></a></div><div class="note warn"><strong>請用 17:00 到機場來規劃。</strong>15:20–15:30 從碼頭出發，平常路況約 16:00–16:30 到；但 12/8 是<span class="soft">星期二</span>，平日 16:00–19:00 是宿霧的塞車尖峰，你們剛好碰上，就會是 16:45 以後，塞得兇更晚。用 17:00 算，離 19:35 起飛還有約 2 小時 35 分。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">整天</span><span class="evn">Lance 團：宿霧(Cebu)自由活動</span><span class="team l">Lance 團</span><span class="chip p">自由</span></div><div class="evd">已經在宿霧，傍晚直接去機場。</div></div><div class="ev key rv"><div class="evtop"><span class="evt num">19:35 → 22:25</span><span class="evn">兩隊回台北(Taipei)</span><span class="team all">全員</span></div><div class="evd">星宇 JX784　CEB 第二航廈 → TPE 第二航廈。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=10.316577%2C123.978638&query_place_id=ChIJK4jfzHyXqTMRpCxOXU4S3e8" target="_blank" rel="noopener" title="在 Google 地圖開啟：Mactan-Cebu International Airport"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Mactan-Cebu International Airport</span></a></div></div><div class="ev rv"><div class="evtop"><span class="evt num">晚上</span><span class="evn">Jas 多住宿霧(Cebu)一晚</span></div><div class="evd">Jas 隔天才回台，這晚留在宿霧。建議挑 Mactan／Lapu-Lapu 機場側。</div></div></div>
+  <div class="tl"><div class="ev rv"><div class="evtop"><span class="evt num">睡到自然醒</span><span class="evn">Derek 團：早餐、打包</span><span class="team d">Derek 團</span></div><div class="evd">Bathala 退房 12:00。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.5497713%2C123.7683181&query_place_id=ChIJs4Fk1UatqzMRrRAOGF7Wyy0" target="_blank" rel="noopener" title="在 Google 地圖開啟：Bathala Resort, Panglao"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Bathala Resort, Panglao</span></a></div></div><div class="ev rv"><div class="evtop"><span class="evt num">11:15</span><span class="evn">Derek 團：出發去碼頭</span><span class="team d">Derek 團</span></div><div class="evd">邦勞島(Panglao) → 塔比拉蘭(Tagbilaran)港，約 30–40 分鐘。</div></div><div class="ev hard rv"><div class="evtop"><span class="evt num">13:00</span><span class="evn">薄荷島(Bohol) → 宿霧(Cebu)</span><span class="team d">Derek 團</span><span class="chip no">13:00 這班 ・ 唯一硬線</span></div><div class="evd">OceanJet　塔比拉蘭(Tagbilaran) → 宿霧一號碼頭(Cebu Pier 1)。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=9.649125%2C123.847322&query_place_id=ChIJI2PdpKxNqjMRVZJV512i7oE" target="_blank" rel="noopener" title="在 Google 地圖開啟：OceanJet Tagbilaran Port"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>OceanJet Tagbilaran Port</span></a></div><div class="note warn"><strong>這是全程唯一不能妥協的時間點。</strong>請搭 13:00 這一班。下一班 14:00 約 16:00 才到宿霧，碰上平日尖峰大約 18:00 才到機場，離 19:35 起飛只剩約 1.5 小時，只能當作 13:00 停駛時的最後備案；更晚的班次一定趕不上。</div>
+<div class="ojcard" id="oj990">
+  <p class="ojtag">船票　Ferry Ticket<span>Derek 團</span></p>
+  <p class="ojtitle">OceanJet <span class="num">OJ990</span>　<span class="ojclass">Business</span></p>
+  <dl class="ojkv">
+    <div><dt>人數</dt><dd>6 人</dd></div>
+    <div><dt>航線</dt><dd>塔比拉蘭(Tagbilaran) → 宿霧(Cebu)</dd></div>
+    <div><dt>日期</dt><dd>12/8（二）</dd></div>
+    <div><dt>時間</dt><dd><span class="num">13:00</span> 出發 → 約 <span class="num">15:00</span> 抵達（約 2 小時）</dd></div>
+    <div><dt>艙等</dt><dd>Business</dd></div>
+    <div><dt>票價</dt><dd><span class="num">₱1,450</span>／人<span class="ojsrc">依訂位資料</span></dd></div>
+  </dl>
+  <p class="ojsum">Business 每人免費行李 <strong>20 公斤</strong>，還可以把<strong>一個拉桿箱帶上座位</strong>（長寬高合計 ≤130 公分）。
+    碼頭費另付現金，每人約 ₱25–30。<a href="#oj990-more" class="ojmore" onclick="var d=document.getElementById('oj990-more');if(d)d.open=true">艙等比較、超重費與注意事項 ↓</a></p>
+</div>
+
+<details class="ac ojdetails" id="oj990-more">
+  <summary>艙等比較、超重費與注意事項　<span class="ojen">Class &amp; Baggage</span></summary>
+  <div class="acbody">
+
+    <p class="ojh">Business 與 Tourist 比較</p>
+    <div class="tblwrap"><div class="tblwrap"><table class="tbl ojtbl">
+      <thead><tr><th>項目</th><th>Tourist／Open Air</th><th>Business（我們訂的）</th></tr></thead>
+      <tbody>
+        <tr><td class="oc-n">免費行李</td><td class="oc-t" data-l="Tourist／Open Air">每人 10 公斤</td><td class="oc-b" data-l="Business">每人 <strong>20 公斤</strong></td></tr>
+        <tr><td class="oc-n">拉桿行李箱</td><td class="oc-t" data-l="Tourist／Open Air">一律托運，放行李區</td><td class="oc-b" data-l="Business">可以<strong>手提一個上座位</strong>，長寬高合計 ≤130 公分</td></tr>
+        <tr><td class="oc-n">大型行李</td><td class="oc-t" data-l="Tourist／Open Air">放行李區</td><td class="oc-b" data-l="Business">放行李區（手提的那一個除外）</td></tr>
+      </tbody>
+    </table></div></div>
+    <p class="ojcap">出處：<a href="https://oceanjet.net/news-and-updates/revised-charges-per-item-and-excess-baggage-policy" target="_blank" rel="noopener">OceanJet 官方公告</a>（2024/3/15 起實施）。
+      除了上表的差異，座位、樓層、插座、餐點等其他差別，請參考旅客評價（例如 <a href="https://12go.asia/en/travel/tagbilaran-pier/cebu-pier-1/?z=1864900" target="_blank" rel="noopener">12go</a>、<a href="https://www.mightytravels.com/2024/11/oceanjet-ferry-review-business-vs-tourist-class---is-the-5-upgrade-worth-it-on-philippine-inter-island-routes/" target="_blank" rel="noopener">Mighty Travels</a>）或船公司官網，實際以現場為準。</p>
+
+    <p class="ojh">三種艙等的照片　Photos</p>
+    <p class="ojcap" style="margin:0 0 10px">先看 Klook 的三張對照（同一個角度比較清楚），下面是其他網站與旅客拍的實景。</p>
+    <div class="phgrid ojph"><figure class="ph r43"><div class="phbox"><img src="https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/e9ihxxrnxjciujkdnaaz.jpg" alt="OceanJet Business（我們訂的）" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="phalt">Business（我們訂的）<br><a href="https://www.klook.com/activity/10063-cebu-bohol-oceanjet-ferry-ticket-cebu/" target="_blank" rel="noopener" style="font-size:12px">到 Klook 看照片</a></span></div><figcaption><b>Business（我們訂的）</b>座位較寬敞。<span class="cr">照片：<a href="https://www.klook.com/activity/10063-cebu-bohol-oceanjet-ferry-ticket-cebu/" target="_blank" rel="noopener">Klook</a></span></figcaption></figure><figure class="ph r43"><div class="phbox"><img src="https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/feja15vatiqofhz9cgog.jpg" alt="OceanJet Tourist" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="phalt">Tourist<br><a href="https://www.klook.com/activity/10063-cebu-bohol-oceanjet-ferry-ticket-cebu/" target="_blank" rel="noopener" style="font-size:12px">到 Klook 看照片</a></span></div><figcaption><b>Tourist</b>一般冷氣艙。<span class="cr">照片：<a href="https://www.klook.com/activity/10063-cebu-bohol-oceanjet-ferry-ticket-cebu/" target="_blank" rel="noopener">Klook</a></span></figcaption></figure><figure class="ph r43"><div class="phbox"><img src="https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_792/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/mk4vnhiiwiqsctwvzvot/Cebu-BoholFerrybyOceanJet.jpg" alt="OceanJet Open Air" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="phalt">Open Air<br><a href="https://www.klook.com/activity/10063-cebu-bohol-oceanjet-ferry-ticket-cebu/" target="_blank" rel="noopener" style="font-size:12px">到 Klook 看照片</a></span></div><figcaption><b>Open Air</b>長椅、自然通風的甲板，看得到海。<span class="cr">照片：<a href="https://www.klook.com/activity/10063-cebu-bohol-oceanjet-ferry-ticket-cebu/" target="_blank" rel="noopener">Klook</a></span></figcaption></figure></div>
+    <div class="phgrid ojph" style="margin-top:14px"><figure class="ph r43"><div class="phbox"><img src="https://bustickets.ph/wp-content/uploads/2023/10/bussiness-class.jpg" alt="OceanJet Business 艙" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="phalt">Business 艙<br><a href="https://bustickets.ph/oceanjet/" target="_blank" rel="noopener" style="font-size:12px">到 bustickets.ph 看照片</a></span></div><figcaption><b>Business 艙</b><span class="cr">照片：<a href="https://bustickets.ph/oceanjet/" target="_blank" rel="noopener">bustickets.ph</a></span></figcaption></figure><figure class="ph r43"><div class="phbox"><img src="https://rmrjnibxulbdixuqguwc.supabase.co/storage/v1/object/public/post-content/imported-naver/image-1785745628400-1785745628400-b2826213.jpg" alt="OceanJet 船艙內部（一）" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="phalt">船艙內部（一）<br><a href="https://www.trvlogue.com/en/cebu-bohol-oceanjet-ferry-guide" target="_blank" rel="noopener" style="font-size:12px">到 Trvlogue 看照片</a></span></div><figcaption><b>船艙內部（一）</b>原文說一樓是 Tourist、二樓是 Business，照片本身沒有標示是哪一層。<span class="cr">照片：<a href="https://www.trvlogue.com/en/cebu-bohol-oceanjet-ferry-guide" target="_blank" rel="noopener">Trvlogue</a></span></figcaption></figure><figure class="ph r43"><div class="phbox"><img src="https://rmrjnibxulbdixuqguwc.supabase.co/storage/v1/object/public/post-content/imported-naver/image-1785745628484-1785745628484-a6e43f92.jpg" alt="OceanJet 船艙內部（二）" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="phalt">船艙內部（二）<br><a href="https://www.trvlogue.com/en/cebu-bohol-oceanjet-ferry-guide" target="_blank" rel="noopener" style="font-size:12px">到 Trvlogue 看照片</a></span></div><figcaption><b>船艙內部（二）</b>同上，未標示樓層。<span class="cr">照片：<a href="https://www.trvlogue.com/en/cebu-bohol-oceanjet-ferry-guide" target="_blank" rel="noopener">Trvlogue</a></span></figcaption></figure><figure class="ph r43"><div class="phbox"><img src="https://rmrjnibxulbdixuqguwc.supabase.co/storage/v1/object/public/post-content/imported-naver/image-1788081576018-1788081576018-353085a9.jpg" alt="OceanJet 一樓 Economy（Tourist）艙" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="phalt">一樓 Economy（Tourist）艙<br><a href="https://www.trvlogue.com/en/cebu-bohol-oceanjet-guide" target="_blank" rel="noopener" style="font-size:12px">到 Trvlogue 看照片</a></span></div><figcaption><b>一樓 Economy（Tourist）艙</b>原文標示為經濟艙。<span class="cr">照片：<a href="https://www.trvlogue.com/en/cebu-bohol-oceanjet-guide" target="_blank" rel="noopener">Trvlogue</a></span></figcaption></figure><figure class="ph r43"><div class="phbox"><img src="https://rmrjnibxulbdixuqguwc.supabase.co/storage/v1/object/public/post-content/imported-naver/image-1788081575280-1788081575280-c9095d1b.jpg" alt="OceanJet 二樓 Business 艙（推定）" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="phalt">二樓 Business 艙（推定）<br><a href="https://www.trvlogue.com/en/cebu-bohol-oceanjet-guide" target="_blank" rel="noopener" style="font-size:12px">到 Trvlogue 看照片</a></span></div><figcaption><b>二樓 Business 艙（推定）</b>原文沒有標示，依所在段落推定。作者說二樓開船約 20 多分鐘後就冷到受不了。<span class="cr">照片：<a href="https://www.trvlogue.com/en/cebu-bohol-oceanjet-guide" target="_blank" rel="noopener">Trvlogue</a></span></figcaption></figure></div>
+
+    <p class="ojh">超重費　Excess Baggage</p>
+    <p class="ojcap" style="margin-top:0">宿霧–塔比拉蘭(Cebu–Tagbilaran) 航線，每公斤費率</p>
+    <div class="tblwrap"><div class="tblwrap"><table class="tbl ojtbl2">
+      <thead><tr><th>超過免費額度的重量</th><th class="r">每公斤</th></tr></thead>
+      <tbody>
+        <tr><td>10 公斤以下</td><td class="num r">₱15</td></tr>
+        <tr><td>11–30 公斤</td><td class="num r">₱25</td></tr>
+        <tr><td>30 公斤以上</td><td class="num r">₱30</td></tr>
+      </tbody>
+    </table></div></div>
+    <ul class="ul" style="margin:12px 0 0">
+      <li>官方表沒有寫清楚級距是指「超重的部分」還是「行李總重」，<strong>此表依「超重部分」解讀</strong>。</li>
+      <li>試算：Business 每人行李 25 公斤，超重 5 公斤 × ₱15 = <strong>₱75</strong>；20 公斤以內免費。</li>
+      <li>易碎物品（電子產品、玻璃製品）不含在免費額度內，另依重量或體積計費。</li>
+      <li>費率只是運費，不含碼頭搬運工費用；船公司對行李的賠償上限很低（每人 ₱100），等於沒有行李保險。</li>
+    </ul>
+    <p class="ojcap">出處：費率見 <a href="https://www.klook.com/en-PH/activity/10063-cebu-bohol-oceanjet-ferry-ticket-cebu/" target="_blank" rel="noopener">Klook</a> 的行李說明（OceanJet 官方費率）；免費額度見 <a href="https://oceanjet.net/news-and-updates/revised-charges-per-item-and-excess-baggage-policy" target="_blank" rel="noopener">OceanJet 官方公告</a>。</p>
+
+    <div class="note warn" style="margin:18px 0 0">
+      <strong>注意事項</strong>
+      <ul class="ul" style="margin:6px 0 0">
+        <li>碼頭現場要另付<strong>碼頭費(terminal fee)</strong>，每人約 ₱25–30，<strong>只收現金</strong>，請準備零錢。</li>
+        <li>兩種艙等的<strong>冷氣都很強</strong>，記得準備薄外套（見 <a href="https://www.trvlogue.com/en/cebu-bohol-oceanjet-guide" target="_blank" rel="noopener">Trvlogue</a> 的 Business 艙乘坐心得）。</li>
+        <li>手機、筆電、藥品、現金、珠寶、重要證件<strong>務必隨身攜帶</strong>，不要放進托運行李。</li>
+        <li>出發前先秤行李，每人控制在 <strong>20 公斤以內</strong>就不用付超重費。</li>
+      </ul>
+    </div>
+  </div>
+</details>
+</div><div class="ev rv"><div class="evtop"><span class="evt num">15:00</span><span class="evn">抵達宿霧一號碼頭(Cebu Pier 1)</span><span class="team d">Derek 團</span></div><div class="evd">船程約 2 小時。下船、領行李估計要 20–30 分鐘，行李多可能更久。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=10.29232%2C123.90899&query_place_id=ChIJ2TImteCbqTMRtRck6dNcgEM" target="_blank" rel="noopener" title="在 Google 地圖開啟：Cebu Pier 1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Cebu Pier 1</span></a></div></div><div class="ev key rv"><div class="evtop"><span class="evt num">約 17:00</span><span class="evn">Derek 團：抵達麥克坦機場</span><span class="team d">Derek 團</span></div><div class="evd">碼頭到機場：平常白天 40–60 分鐘，尖峰 75 分鐘以上。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=10.316577%2C123.978638&query_place_id=ChIJK4jfzHyXqTMRpCxOXU4S3e8" target="_blank" rel="noopener" title="在 Google 地圖開啟：Mactan-Cebu International Airport"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Mactan-Cebu International Airport</span></a></div><div class="note warn"><strong>請用 17:00 到機場來規劃。</strong>15:20–15:30 從碼頭出發，平常路況約 16:00–16:30 到；但 12/8 是<span class="soft">星期二</span>，平日 16:00–19:00 是宿霧的塞車尖峰，你們剛好碰上，就會是 16:45 以後，塞得兇更晚。用 17:00 算，離 19:35 起飛還有約 2 小時 35 分。</div></div><div class="ev rv"><div class="evtop"><span class="evt num">整天</span><span class="evn">Lance 團：宿霧(Cebu)自由活動</span><span class="team l">Lance 團</span><span class="chip p">自由</span></div><div class="evd">已經在宿霧，傍晚直接去機場。</div></div><div class="ev key rv"><div class="evtop"><span class="evt num">19:35 → 22:25</span><span class="evn">兩隊回台北(Taipei)</span><span class="team all">全員</span></div><div class="evd">星宇 JX784　CEB 第二航廈 → TPE 第二航廈。<a class="pin" href="https://www.google.com/maps/search/?api=1&query=10.316577%2C123.978638&query_place_id=ChIJK4jfzHyXqTMRpCxOXU4S3e8" target="_blank" rel="noopener" title="在 Google 地圖開啟：Mactan-Cebu International Airport"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span>Mactan-Cebu International Airport</span></a></div></div><div class="ev rv"><div class="evtop"><span class="evt num">晚上</span><span class="evn">Jas 多住宿霧(Cebu)一晚</span></div><div class="evd">Jas 隔天才回台，這晚留在宿霧。建議挑 Mactan／Lapu-Lapu 機場側。</div></div></div>
 </article>
   </div>
 </section>
