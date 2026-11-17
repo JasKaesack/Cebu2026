@@ -480,6 +480,14 @@ body.reading-wide #home{display:none}
 .team{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-ui);font-size:10.5px;font-weight:700;letter-spacing:.08em;padding:3px 10px;border-radius:99px}
 .team.d{color:#1F6680;background:#E1F0F5}.team.l{color:#7A4A86;background:#F1E6F4}.team.all{color:var(--accent-2);background:#FBE9E1}
 .tbl{width:100%;border-collapse:collapse;font-size:14px}
+.cashpick{background:var(--paper-2);border-radius:12px;padding:14px 16px;margin:0 0 18px}
+.cashbig{font-size:clamp(24px,6vw,30px);font-weight:700;color:var(--gold);margin:0;line-height:1.25}
+.cashbig small{display:block;font-size:13px;font-weight:500;color:var(--ink-2);margin-top:3px}
+.cashhero{padding:clamp(24px,3.4vw,48px)}
+.cashbig2{font-size:clamp(28px,5vw,46px);letter-spacing:.03em;margin:16px 0 6px;color:var(--gold-soft)}
+.tbl tfoot td{border-top:2px solid var(--line)}
+.cashtbl .cn,.cashtbl .cv{white-space:nowrap}.cashtbl .cv{color:var(--gold-soft)}
+@container (max-width:680px){.cashtbl thead{display:none}.cashtbl tr{display:grid;grid-template-columns:1fr auto;column-gap:12px;row-gap:4px;padding:12px 0;border-bottom:1px solid var(--line-2)}.cashtbl td{border:0!important;padding:0!important;white-space:normal}.cashtbl .cn{grid-column:1;grid-row:1}.cashtbl .cv{grid-column:2;grid-row:1;text-align:right;white-space:nowrap}.cashtbl .cd,.cashtbl .cs{grid-column:1/-1}.cashtbl tfoot tr:first-child{border-top:2px solid var(--line)}.cashtbl tfoot .cs{grid-column:2;grid-row:2;text-align:right}}
 .tbl th{font-family:var(--f-ui);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:0 12px 10px 0;border-bottom:2px solid var(--line)}
 .tbl td{padding:11px 12px 11px 0;border-bottom:1px solid var(--line-2);vertical-align:top;color:var(--ink);line-height:1.65}
 .tbl td.r,.tbl th.r{text-align:right;padding-right:0}
@@ -1359,7 +1367,13 @@ footer.is-page{padding:22px 0 34px}
         <div class="card rv" style="margin-top:18px">
           <p class="tag">現金　Cash</p>
           <p class="h3" style="margin:14px 0 18px">一定要帶現金的項目</p>
-          <div class="tblwrap"><table class="tbl"><tbody><tr><td>卡瓦森瀑布(Kawasan Falls) 門票<span class="src">入口現場付，只收現金</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱200</td><td class="cap" style="white-space:nowrap">每人</td></tr><tr><td>卡瓦森竹筏（可選）<span class="src">想拍竹筏被拉到瀑布底下的畫面</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱300</td><td class="cap" style="white-space:nowrap">每艘</td></tr><tr><td>卡瓦森置物櫃（可選）<span class="src"></span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱100</td><td class="cap" style="white-space:nowrap">每個</td></tr><tr><td>habal-habal 載一段（可選）<span class="src">步道 1.5 公里，不想走可以搭</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱20–30</td><td class="cap" style="white-space:nowrap">每人</td></tr><tr><td>包車停車費<span class="src">「至少」這個數字，實際可能更高。兩台車先抓 ₱200–400，多帶一點。</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱100–200</td><td class="cap" style="white-space:nowrap">每台車</td></tr><tr><td>Momo Beach → Alona 接駁<span class="src">Apekop 官網標示；線上訂票加不到，要另外聯絡業者</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱100</td><td class="cap" style="white-space:nowrap">每人</td></tr><tr><td>Apekop 超重行李費<span class="src">超過 10 公斤的件數</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱100–150</td><td class="cap" style="white-space:nowrap">每件</td></tr><tr><td>小費<span class="src">司機、船家、嚮導</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">—</td><td class="cap" style="white-space:nowrap">自由</td></tr></tbody></table></div>
+          <div class="cashpick">
+            <p class="cap" style="margin:0 0 4px">建議每人兌換（估算）</p>
+            <p class="cashbig">最少 US$300<small>約 ₱18,000（以 1 美元 ≈ ₱60 保守計）</small></p>
+            <p class="cap" style="margin:8px 0 0;line-height:1.7">只算要付現的部分，飯店已刷卡付清。
+              推算約每人 ₱16,100，多出的作為緩衝。<a href="#cashprep">看推算過程 →</a></p>
+          </div>
+          <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table class="tbl" style="min-width:300px"><tbody><tr><td>墨寶(Moalboal) 環境費<span class="src">抵達時在檢查站付；沙丁魚行程的 ₱500 不含</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱25</td><td class="cap" style="white-space:nowrap">每人</td></tr><tr><td>卡瓦森瀑布(Kawasan Falls) 門票<span class="src">入口現場付，只收現金</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱200</td><td class="cap" style="white-space:nowrap">每人</td></tr><tr><td>卡瓦森竹筏（可選）<span class="src">想拍竹筏被拉到瀑布底下的畫面</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱300</td><td class="cap" style="white-space:nowrap">每艘</td></tr><tr><td>卡瓦森置物櫃（可選）<span class="src"></span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱100</td><td class="cap" style="white-space:nowrap">每個</td></tr><tr><td>habal-habal 載一段（可選）<span class="src">步道 1.5 公里，不想走可以搭</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱20–30</td><td class="cap" style="white-space:nowrap">每人</td></tr><tr><td>包車停車費<span class="src">「至少」這個數字，實際可能更高。兩台車先抓 ₱200–400，多帶一點。</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱100–200</td><td class="cap" style="white-space:nowrap">每台車</td></tr><tr><td>Momo Beach → Alona 接駁<span class="src">Apekop 官網標示；線上訂票加不到，要另外聯絡業者</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱100</td><td class="cap" style="white-space:nowrap">每人</td></tr><tr><td>Apekop 超重行李費<span class="src">超過 10 公斤的件數</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">₱100–150</td><td class="cap" style="white-space:nowrap">每件</td></tr><tr><td>小費<span class="src">司機、船家、嚮導</span></td><td class="num" style="color:var(--gold-soft);white-space:nowrap">—</td><td class="cap" style="white-space:nowrap">自由</td></tr></tbody></table></div>
         </div>
       </div>
     </div>
@@ -1684,7 +1698,7 @@ footer.is-page{padding:22px 0 34px}
     <div style="overflow-x:auto" class="rv">
       <table class="tbl" style="min-width:720px">
         <thead><tr><th style="width:1%">日期</th><th>項目</th><th class="r">單價</th><th class="r">數量</th><th class="r">小計</th></tr></thead>
-        <tbody><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/4</td><td>包車 premium van（含油資與司機費）<span class="src">業者報價（你提供）。上限 12 小時，超時每台每小時加 ₱400。</span></td><td class="num cap r" style="white-space:nowrap">₱8,500</td><td class="num cap r" style="white-space:nowrap">2 台</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="17000">₱17,000<span class="twd" data-php="17000"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/4</td><td>沙丁魚互動（含當地嚮導、環境費、浮潛裝備）<span class="src">業者報價（你提供）。含海龜互動與沙丁魚風暴，不含 Pescador Island。</span></td><td class="num cap r" style="white-space:nowrap">₱500</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="5500">₱5,500<span class="twd" data-php="5500"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/4</td><td>卡瓦森瀑布(Kawasan Falls) 門票 Level 1<span class="src">Suroy.ph，2026/8 現場查核。只收現金。</span></td><td class="num cap r" style="white-space:nowrap">₱200</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="2200">₱2,200<span class="twd" data-php="2200"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/4</td><td>卡瓦森竹筏（可選）<span class="src">Suroy.ph。艘數為估計。</span></td><td class="num cap r" style="white-space:nowrap">₱300</td><td class="num cap r" style="white-space:nowrap">2 艘</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="600">₱600<span class="twd" data-php="600"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/4</td><td>卡瓦森置物櫃（可選）<span class="src">Suroy.ph。數量為估計。</span></td><td class="num cap r" style="white-space:nowrap">₱100</td><td class="num cap r" style="white-space:nowrap">3 個</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="300">₱300<span class="twd" data-php="300"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/5</td><td>W Golf 鯨鯊共游（含來回接送、外國人觀賞費、浮潛裝備、1 位導遊）<span class="src">W Golf Resort 安排，你轉述。<strong>不含蛙鞋</strong>；入住時在櫃台付現。</span></td><td class="num cap r" style="white-space:nowrap">₱1,800</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="19800">₱19,800<span class="twd" data-php="19800"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/5</td><td>廂型車　W Golf → Quartel Beach（飯店向外叫車）<span class="src">W Golf 提供，你轉述。比叫嘟嘟車貴約 ₱650–750，但 11 人與行李一台載完。</span></td><td class="num cap r" style="white-space:nowrap">₱1,500</td><td class="num cap r" style="white-space:nowrap">1 台</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="1500">₱1,500<span class="twd" data-php="1500"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/5</td><td>Apekop 船　奧斯陸(Oslob) → Panglao<span class="src">Apekop 官網，2026/9/6 確認。</span></td><td class="num cap r" style="white-space:nowrap">₱1,000</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="11000">₱11,000<span class="twd" data-php="11000"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/5</td><td>Momo Beach → Alona 接駁<span class="src">Apekop 官網標示每人 ₱100；訂票頁沒有這個選項，要另外聯絡業者加訂。</span></td><td class="num cap r" style="white-space:nowrap">₱100</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="1100">₱1,100<span class="twd" data-php="1100"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/6</td><td>Balicasag 環境／浮潛費<span class="src">2023 年旅客實付紀錄，需重新確認。</span></td><td class="num cap r" style="white-space:nowrap">₱300</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="3300">₱3,300<span class="twd" data-php="3300"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/6</td><td>Virgin Island 環境費<span class="src">2023 年旅客實付紀錄，需重新確認。</span></td><td class="num cap r" style="white-space:nowrap">₱100</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="1100">₱1,100<span class="twd" data-php="1100"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/7</td><td>巧克力山(Chocolate Hills) 門票（成人非居民）<span class="src">2025/10/1 起，Carmen Ordinance No. 27, s.2023。</span></td><td class="num cap r" style="white-space:nowrap">₱150</td><td class="num cap r" style="white-space:nowrap">6 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="900">₱900<span class="twd" data-php="900"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/7</td><td>OceanJet　Tagbilaran → Cebu<span class="src">travelphil 2026/8 查得 ₱880–920。</span></td><td class="num cap r" style="white-space:nowrap">₱900</td><td class="num cap r" style="white-space:nowrap">5 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="4500">₱4,500<span class="twd" data-php="4500"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/7</td><td>Tagbilaran 碼頭費<span class="src">travelphil 2026/8。</span></td><td class="num cap r" style="white-space:nowrap">₱25</td><td class="num cap r" style="white-space:nowrap">5 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="125">₱125<span class="twd" data-php="125"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/8</td><td>OceanJet　Tagbilaran → Cebu<span class="src">travelphil 2026/8 查得 ₱880–920。</span></td><td class="num cap r" style="white-space:nowrap">₱900</td><td class="num cap r" style="white-space:nowrap">6 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="5400">₱5,400<span class="twd" data-php="5400"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/8</td><td>Tagbilaran 碼頭費<span class="src">travelphil 2026/8。</span></td><td class="num cap r" style="white-space:nowrap">₱25</td><td class="num cap r" style="white-space:nowrap">6 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="150">₱150<span class="twd" data-php="150"></span></td></tr></tbody>
+        <tbody><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/4</td><td>包車 premium van（含油資與司機費）<span class="src">業者報價（你提供）。上限 12 小時，超時每台每小時加 ₱400。</span></td><td class="num cap r" style="white-space:nowrap">₱8,500</td><td class="num cap r" style="white-space:nowrap">2 台</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="17000">₱17,000<span class="twd" data-php="17000"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/4</td><td>沙丁魚互動（含當地嚮導、浮潛裝備；不含墨寶環境費）<span class="src">業者報價（你提供）。含海龜互動與沙丁魚風暴，不含 Pescador Island。</span></td><td class="num cap r" style="white-space:nowrap">₱500</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="5500">₱5,500<span class="twd" data-php="5500"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/4</td><td>卡瓦森瀑布(Kawasan Falls) 門票 Level 1<span class="src">Suroy.ph，2026/8 現場查核。只收現金。</span></td><td class="num cap r" style="white-space:nowrap">₱200</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="2200">₱2,200<span class="twd" data-php="2200"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/4</td><td>卡瓦森竹筏（可選）<span class="src">Suroy.ph。艘數為估計。</span></td><td class="num cap r" style="white-space:nowrap">₱300</td><td class="num cap r" style="white-space:nowrap">2 艘</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="600">₱600<span class="twd" data-php="600"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/4</td><td>卡瓦森置物櫃（可選）<span class="src">Suroy.ph。數量為估計。</span></td><td class="num cap r" style="white-space:nowrap">₱100</td><td class="num cap r" style="white-space:nowrap">3 個</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="300">₱300<span class="twd" data-php="300"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/5</td><td>W Golf 鯨鯊共游（含來回接送、外國人觀賞費、浮潛裝備、1 位導遊）<span class="src">W Golf Resort 安排，你轉述。<strong>不含蛙鞋</strong>；入住時在櫃台付現。</span></td><td class="num cap r" style="white-space:nowrap">₱1,800</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="19800">₱19,800<span class="twd" data-php="19800"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/5</td><td>廂型車　W Golf → Quartel Beach（飯店向外叫車）<span class="src">W Golf 提供，你轉述。比叫嘟嘟車貴約 ₱650–750，但 11 人與行李一台載完。</span></td><td class="num cap r" style="white-space:nowrap">₱1,500</td><td class="num cap r" style="white-space:nowrap">1 台</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="1500">₱1,500<span class="twd" data-php="1500"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/5</td><td>Apekop 船　奧斯陸(Oslob) → Panglao<span class="src">Apekop 官網，2026/9/6 確認。</span></td><td class="num cap r" style="white-space:nowrap">₱1,000</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="11000">₱11,000<span class="twd" data-php="11000"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/5</td><td>Momo Beach → Alona 接駁<span class="src">Apekop 官網標示每人 ₱100；訂票頁沒有這個選項，要另外聯絡業者加訂。</span></td><td class="num cap r" style="white-space:nowrap">₱100</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="1100">₱1,100<span class="twd" data-php="1100"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/6</td><td>Balicasag 環境／浮潛費<span class="src">2023 年旅客實付紀錄，需重新確認。</span></td><td class="num cap r" style="white-space:nowrap">₱300</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="3300">₱3,300<span class="twd" data-php="3300"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/6</td><td>Virgin Island 環境費<span class="src">2023 年旅客實付紀錄，需重新確認。</span></td><td class="num cap r" style="white-space:nowrap">₱100</td><td class="num cap r" style="white-space:nowrap">11 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="1100">₱1,100<span class="twd" data-php="1100"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/7</td><td>巧克力山(Chocolate Hills) 門票（成人非居民）<span class="src">2025/10/1 起，Carmen Ordinance No. 27, s.2023。</span></td><td class="num cap r" style="white-space:nowrap">₱150</td><td class="num cap r" style="white-space:nowrap">6 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="900">₱900<span class="twd" data-php="900"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/7</td><td>OceanJet　Tagbilaran → Cebu<span class="src">travelphil 2026/8 查得 ₱880–920。</span></td><td class="num cap r" style="white-space:nowrap">₱900</td><td class="num cap r" style="white-space:nowrap">5 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="4500">₱4,500<span class="twd" data-php="4500"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/7</td><td>Tagbilaran 碼頭費<span class="src">travelphil 2026/8。</span></td><td class="num cap r" style="white-space:nowrap">₱25</td><td class="num cap r" style="white-space:nowrap">5 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="125">₱125<span class="twd" data-php="125"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/8</td><td>OceanJet　Tagbilaran → Cebu<span class="src">travelphil 2026/8 查得 ₱880–920。</span></td><td class="num cap r" style="white-space:nowrap">₱900</td><td class="num cap r" style="white-space:nowrap">6 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="5400">₱5,400<span class="twd" data-php="5400"></span></td></tr><tr><td class="num cap" style="white-space:nowrap;color:var(--gold)">12/8</td><td>Tagbilaran 碼頭費<span class="src">travelphil 2026/8。</span></td><td class="num cap r" style="white-space:nowrap">₱25</td><td class="num cap r" style="white-space:nowrap">6 人</td><td class="num r" style="white-space:nowrap;color:var(--gold-soft)" data-php="150">₱150<span class="twd" data-php="150"></span></td></tr></tbody>
         <tfoot><tr><td colspan="4">已查證項目合計<span class="src" style="color:var(--platinum)">這不是全團總預算，只是量級參考。</span></td>
           <td class="num r" style="font-size:17px" data-php="74475">₱74,475<span class="twd" data-php="74475"></span></td></tr></tfoot>
       </table>
@@ -1699,8 +1713,107 @@ footer.is-page{padding:22px 0 34px}
           請自行詢價後填入。
         </p>
       </div>
-      <div class="c7 offset1"><ul class="ul rv d1"><li><strong>12/6 下午跳島包船（不含海豚）</strong>——改成下午出發、人數也從 6 變成 11，<strong>一定要重新詢價</strong>，並先問清楚下午巴里卡薩還進不進得去、當天潮汐幾點退。</li><li><strong>12/4 包車超時費</strong>——依目前時刻幾乎確定會超過 12 小時，見上方提醒。</li><li>12/4 沙丁魚自潛長蛙（若業者的 ₱500 不含）</li><li>12/3 機場 → 宿霧(Cebu)市區接送</li><li>12/5 Apekop 超重行李費（&gt;10kg 每件 ₱100–150）</li><li><strong>12/7 兩台車</strong>——Derek 團全日陸遊一台、Lance 團帶行李跑短程到塔比拉蘭港一台，兩條路線不同方向沒辦法共用。還沒詢價。</li><li>12/7 Loboc 河遊船午餐、眼鏡猴保育區、巴克拉永教堂等零星門票</li><li>12/6 備案 C 的希納格達南洞(Hinagdanan Cave)門票 ₱75／人（選配）</li><li>12/5 W Golf 延遲退房 ₱1,200／間——<span class="soft">依目前時刻用不到</span>，見 12/5 說明</li><li>12/7 Lance 團宿霧(Cebu)住宿</li><li>12/8 Panglao → Tagbilaran 港包車、Cebu Pier 1 → 機場 Grab</li><li>Jas 的 12/8 宿霧(Cebu)住宿</li><li>全程餐費、小費、SIM 卡、旅遊不便險</li></ul></div>
+      <div class="c7 offset1"><ul class="ul rv d1"><li><strong>12/6 下午跳島包船（不含海豚）</strong>——改成下午出發、人數也從 6 變成 11，<strong>一定要重新詢價</strong>，並先問清楚下午巴里卡薩還進不進得去、當天潮汐幾點退。</li><li><strong>12/4 包車超時費</strong>——依目前時刻幾乎確定會超過 12 小時，見上方提醒。</li><li>12/4 沙丁魚自潛長蛙（若業者的 ₱500 不含）</li><li>12/4 墨寶(Moalboal) 環境費 ₱25／人——沙丁魚行程的 ₱500 不含，抵達時現場付（已算進下方「現金準備」）</li><li>12/3 機場 → 宿霧(Cebu)市區接送</li><li>12/5 Apekop 超重行李費（&gt;10kg 每件 ₱100–150）</li><li><strong>12/7 兩台車</strong>——Derek 團全日陸遊一台、Lance 團帶行李跑短程到塔比拉蘭港一台，兩條路線不同方向沒辦法共用。還沒詢價。</li><li>12/7 Loboc 河遊船午餐、眼鏡猴保育區、巴克拉永教堂等零星門票</li><li>12/6 備案 C 的希納格達南洞(Hinagdanan Cave)門票 ₱75／人（選配）</li><li>12/5 W Golf 延遲退房 ₱1,200／間——<span class="soft">依目前時刻用不到</span>，見 12/5 說明</li><li>12/7 Lance 團宿霧(Cebu)住宿</li><li>12/8 Panglao → Tagbilaran 港包車、Cebu Pier 1 → 機場 Grab</li><li>Jas 的 12/8 宿霧(Cebu)住宿</li><li>全程餐費、小費、SIM 卡、旅遊不便險</li></ul></div>
     </div>
+
+    <hr class="rule" style="margin:var(--sect-s) 0">
+    <p class="tag rv" id="cashprep" style="margin:var(--sect-s) 0 20px;scroll-margin-top:12px">現金準備　Cash on Hand</p>
+    <p class="han2 rv d1" style="margin-bottom:20px">每個人要帶多少現金</p>
+
+    <div class="card rv cashhero">
+      <span class="chip todo">估算</span>
+      <p class="h1 cashbig2">建議每人換 <span class="num">US$300</span></p>
+      <p class="h2" style="font-size:clamp(17px,2.4vw,24px);margin:0 0 20px;color:var(--pearl)">
+        約 <span class="num">₱18,000</span>（以 1 美元 ≈ ₱60 計）</p>
+      <div class="rule-soft" style="margin-bottom:18px"></div>
+      <ul class="ul" style="margin:0">
+        <li>推算值約每人 <strong class="num">₱16,100</strong>（≈ US$270），多出的約 <strong class="num">₱1,900</strong> 作為緩衝。</li>
+        <li><strong>飯店費用已刷卡付清</strong>，這裡只算行程、交通、餐費等要付現的項目。</li>
+        <li><strong>匯率以 1 美元 ≈ ₱60 保守估算。</strong>2026 年 11 月中旬的中間價約 ₱63.5–64，
+            但現場換匯會比中間價差，所以刻意抓低；實際以現場匯率為準，換到的披索通常會比 ₱18,000 多。</li>
+      </ul>
+    </div>
+
+    <div class="g12" style="margin:var(--sect-s) 0 0">
+      <div class="c4">
+        <p class="h3 rv" style="margin:0 0 14px">和上面的合計有什麼不同</p>
+        <p class="sec rv d1" style="margin:0;font-size:14.5px">
+          上面的「已查證項目合計 ₱74,475」是<strong class="soft">全團、每一筆都查得到出處</strong>的項目，不論刷卡或付現。<br><br>
+          這一節則是<strong class="soft">每個人、只算要付現的部分</strong>，並把查不到報價的項目（跳島包船、陸遊包車、餐費、小費）也用估算補進來，
+          目的是讓你知道錢包裡要放多少。兩者範圍不同，數字不能直接相比。<br><br>
+          船票（Apekop、OceanJet）已線上預付，這一節不含。
+        </p>
+      </div>
+      <div class="c7 offset1">
+        <p class="cap rv" style="margin:0 0 10px">每人明細　Per Person · 單位：菲律賓披索</p>
+        <div class="rv" style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+          <table class="tbl cashtbl">
+            <thead><tr><th>項目</th><th>內容</th><th class="r">每人</th><th>依據</th></tr></thead>
+            <tbody><tr><td class="cn"><strong>12/4 墨寶＋卡瓦森</strong></td><td class="cd cap">包車尾款 50%、超時預備、停車費、沙丁魚行程、墨寶(Moalboal) 環境費、卡瓦森瀑布門票</td><td class="cv num r">₱1,750</td><td class="cs"><span class="chip p">部分業者報價、部分估算</span></td></tr><tr><td class="cn"><strong>12/5 鯨鯊＋送碼頭</strong></td><td class="cd cap">W Golf 鯨鯊行程每人 ₱1,800、送碼頭廂型車分攤</td><td class="cv num r">₱1,950</td><td class="cs"><span class="chip ok">業者報價</span></td></tr><tr><td class="cn"><strong>交通與碼頭雜費</strong></td><td class="cd cap">Momo Beach 接駁、超重行李費、碼頭及航廈費、薄荷島接送、宿霧港到機場的計程車</td><td class="cv num r">₱1,150</td><td class="cs"><span class="chip todo">估算</span></td></tr><tr><td class="cn"><strong>12/6 跳島</strong></td><td class="cd cap">Balicasag＋Virgin Island，船資分攤＋環境費</td><td class="cv num r">₱1,500</td><td class="cs"><span class="chip todo">估算（尚無報價）</span></td></tr><tr><td class="cn"><strong>12/7 陸遊</strong></td><td class="cd cap">巧克力山＋眼鏡猴，包車分攤＋門票</td><td class="cv num r">₱2,000</td><td class="cs"><span class="chip todo">估算（尚無報價）</span></td></tr><tr><td class="cn"><strong>小費</strong></td><td class="cd cap">司機、導遊、船家</td><td class="cv num r">₱270</td><td class="cs"><span class="chip todo">估算</span></td></tr><tr><td class="cn"><strong>餐費</strong></td><td class="cd cap">6 天 × 每天約 ₱1,000</td><td class="cv num r">₱6,000</td><td class="cs"><span class="chip todo">估算</span></td></tr><tr><td class="cn"><strong>預備金</strong></td><td class="cd cap">以上合計 ₱14,620 的 10%</td><td class="cv num r">₱1,462</td><td class="cs"><span class="chip p">計算</span></td></tr></tbody>
+            <tfoot>
+              <tr><td class="cn" colspan="2"><strong>合計</strong></td>
+                <td class="cv num r" style="font-size:16px">約 ₱16,100</td><td class="cs cap">≈ US$270</td></tr>
+              <tr><td class="cn" colspan="2"><strong>建議兌換</strong><span class="src">含緩衝約 ₱1,900</span></td>
+                <td class="cv num r" style="font-size:16px;color:var(--gold)">US$300</td><td class="cs cap">約 ₱18,000</td></tr>
+            </tfoot>
+          </table>
+        </div>
+        <p class="cap rv" style="margin:12px 0 0;line-height:2">
+          <span class="chip ok">業者報價</span> 業者或飯店給的價格
+          <span class="chip todo">估算</span> 沒有報價，用經驗值抓的
+          <span class="chip p">部分</span> 兩者混合
+        </p>
+
+        <details class="ac rv" style="margin-top:22px;border-top:1px solid var(--line-2)">
+          <summary>推算過程（全團 11 人怎麼算的）</summary>
+          <div class="acbody">
+            <p style="margin:0 0 8px"><strong>12/4 墨寶＋卡瓦森 → 每人約 ₱1,725，取整 ₱1,750</strong></p>
+            <ul class="ul" style="margin:0 0 16px">
+              <li>包車：業者報價總價 ₱18,000（2 台 × ₱8,000＋奧斯陸放客 2 台 × ₱1,000），只含司機與油錢。
+                  先付的 50% 訂金不用現金，<strong>出團當天付尾款 ₱9,000 現金</strong>。<span class="chip ok">業者報價</span></li>
+              <li>超時：每台每小時 ₱400，預留 2 台 × 2 小時 = <strong>₱1,600</strong>。<span class="chip todo">估算</span></li>
+              <li>停車費：每台至少 ₱100–200，兩台抓上限 <strong>₱400</strong>。<span class="chip todo">估算</span></li>
+              <li>以上全團共 ₱11,000，÷ 11 人 = <strong>每人 ₱1,000</strong>。</li>
+              <li>沙丁魚行程每人 <strong>₱500</strong>（含嚮導與浮潛裝備）。<span class="chip ok">業者報價</span></li>
+              <li>墨寶(Moalboal) 環境費每人 <strong>₱25</strong>。<span class="chip ok">公告金額</span></li>
+              <li>卡瓦森瀑布(Kawasan Falls) 門票每人 <strong>₱200</strong>。<span class="chip ok">現場查核</span></li>
+              <li>竹筏、置物櫃屬選配，沒有算進去，要用的人自己多帶。</li>
+            </ul>
+            <p style="margin:0 0 8px"><strong>12/5 鯨鯊＋送碼頭 → 每人約 ₱1,936，取整 ₱1,950</strong></p>
+            <ul class="ul" style="margin:0 0 16px">
+              <li>W Golf 鯨鯊行程每人 <strong>₱1,800</strong>，入住時在櫃台付現。<span class="chip ok">業者報價</span></li>
+              <li>W Golf → Quartel Beach 廂型車 ₱1,500 ÷ 11 人 ≈ <strong>₱136</strong>。<span class="chip ok">業者報價</span></li>
+            </ul>
+            <p style="margin:0 0 8px"><strong>交通與碼頭雜費 → 每人 ₱1,150</strong> <span class="chip todo">估算</span></p>
+            <ul class="ul" style="margin:0 0 16px">
+              <li>有標價的部分：Momo Beach → Alona 接駁 ₱100、超重行李費每件 ₱100–150（抓 ₱150）、Tagbilaran 碼頭費 ₱25，共約 ₱275。</li>
+              <li>其餘約 ₱875 是 12/8 薄荷島接送與宿霧港到機場計程車的分攤，<strong>目前沒有報價</strong>。</li>
+            </ul>
+            <p style="margin:0 0 8px"><strong>12/6 跳島 → 每人 ₱1,500</strong> <span class="chip todo">估算（尚無報價）</span></p>
+            <ul class="ul" style="margin:0 0 16px">
+              <li>環境費 Balicasag ₱300＋Virgin Island ₱100 = ₱400（2023 年旅客實付紀錄，需重新確認）。</li>
+              <li>其餘約 ₱1,100 是下午包船的船資分攤，<strong>要等船家報價</strong>。</li>
+            </ul>
+            <p style="margin:0 0 8px"><strong>12/7 陸遊 → 每人 ₱2,000</strong> <span class="chip todo">估算（尚無報價）</span></p>
+            <ul class="ul" style="margin:0 0 16px">
+              <li>巧克力山(Chocolate Hills) 門票 ₱150；其餘約 ₱1,850 是包車分攤與眼鏡猴保育區等門票，<strong>要等報價</strong>。</li>
+              <li>這是 Derek 團的行程。Lance 團 12/7 改去洛博克(Loboc)並提早回宿霧(Cebu)，<strong>沒有另外估算</strong>，先沿用同一個數字。</li>
+            </ul>
+            <p style="margin:0 0 8px"><strong>小費 ₱270、餐費 ₱6,000</strong> <span class="chip todo">估算</span></p>
+            <ul class="ul" style="margin:0 0 16px">
+              <li>小費：司機、導遊、船家，全團約 ₱3,000 ÷ 11 人。</li>
+              <li>餐費：6 天 × 每天約 ₱1,000。</li>
+            </ul>
+            <p style="margin:0 0 8px"><strong>加總</strong></p>
+            <ul class="ul" style="margin:0">
+              <li>以上七項合計 ₱14,620，加 10% 預備金 ₱1,462 = ₱16,082，<strong>約 ₱16,100</strong>。</li>
+              <li>₱16,100 ÷ ₱60 ≈ <strong>US$270</strong>，往上取到 <strong>US$300（₱18,000）</strong>，多出約 ₱1,900 當緩衝。</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </div>
+
   </div>
 </section>
 
